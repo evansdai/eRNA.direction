@@ -1,0 +1,64 @@
+meme-chip -meme-p=12 -norc -order=5 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=0 -oc ./motif\ analysis\ output/burst_size_t0 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_burstsize10_t0.fa.masked ./fasta/masked/tss_burstsizemore_t0.fa.masked 
+
+
+meme-chip -norc -meme-p=12 -norc -order=5 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=0 -oc ./motif\ analysis\ output/burst_freq_t0 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_numcell1_t0.fa.masked ./fasta/masked/tss_numcellmore_t0.fa.masked 
+
+meme-chip -norc -meme-p=12 -norc -order=5 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=0 -oc ./motif\ analysis\ output/burst_freq_t24 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_numcell1_t24.fa.masked ./fasta/masked/tss_numcellmore_t24.fa.masked 
+
+meme-chip -norc -meme-p=12 -norc -order=5 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=3 -filter-thresh=10 -dreme-m=10 -centrimo-local -centrimo-score=0 -oc ./motif\ analysis\ output/burst_freq_t24 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_numcell1_t24.fa.masked ./fasta/masked/tss_numcellmore_t24.fa.masked 
+
+
+
+meme-chip -norc -meme-p=12 -norc -order=1 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=100 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=1000 -oc ./motif\ analysis\ output/direction_t24 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_plusenhancer_minus_t24.fa.masked ./fasta/masked/tss_plusenhancer_plus_t24.fa.masked 
+
+
+meme-chip -norc -meme-p=12 -norc -order=1 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=100 -dreme-m=5 -centrimo-local -centrimo-score=5 -centrimo-ethresh=100 -oc ./motif\ analysis\ output/direction_t0 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_plusenhancer_minus_t0.fa.masked ./fasta/masked/tss_plusenhancer_plus_t0.fa.masked 
+
+
+
+how to 
+meme-chip -norc -meme-p=10 -norc -order=1 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=100 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=100 -oc ./motif\ analysis\ output/direction_t24 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_plusenhancer_minus_t24.fa.masked ./fasta/masked/tss_plusenhancer_plus_t24.fa.masked 
+
+
+main minor
+
+meme-chip -norc -meme-p=10 -norc -order=1 -ccut=0 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=200 -meme-searchsize=0 -meme-mod=anr -meme-nmotifs=3 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+meme-chip -norc -meme-p=10 -order=1 -meme-mod=anr -meme-nmotifs=3 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -norc -meme-p=10 -order=1 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -db ./motif\ db/HOCOMOCOv11_core_HUMAN_mono_meme_format.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+meme-chip -norc -meme-p=10 -order=1 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor1 -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -group-thresh=0.1 -oc ./motif\ analysis\ output/main_vs_minor4 -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -group-thresh=0.5 -oc ./motif\ analysis\ output/main_vs_minor5 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor6 -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor7 -db ./motif\ db/JASPAR2018_PHYLOFACTS.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor8 -db ./motif\ db/HOCOMOCOv11_core_HUMAN_mono_meme_format.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+- final
+
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor_polii -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+meme-chip -norc -meme-p=10 -order=5 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=10 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=10 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=1 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=1 -centrimo-maxreg=50 -oc ./motif\ analysis\ output/main_vs_minor -db ./motif\ db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif\ db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked 
+
+
+- ame
+
+ame --oc ./motif\ analysis\ output/ame_mainvsminor_polii --scoring avg --method fisher --hit-lo-fraction 0.25 --evalue-report-threshold 10.0 --control tss_minor.fa.masked tss_main.fa.masked JASPAR2018_POLII.meme

@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+assign_main_strand <- function(ctss_object, enhancer_object){
+  
+  main_strands = c()
+  plus_sums = c()
+  minus_sums = c()
+  
+  for(i in 1:nrow(enhancer_object)){
+    temp = subsetByOverlaps(ctss_object,enhancer_object[i]) %>% rowRanges()
+    temp_plus_sum = temp[temp %>% strand == '+'] %>% score %>% sum
+    temp_minus_sum = temp[temp %>% strand == '-'] %>% score %>% sum
+    if(temp_plus_sum>temp_minus_sum){
+      temp_main_strand = "+"
+    }else{
+      temp_main_strand = "-"
+    }
+    main_strands = c(main_strands,temp_main_strand)
+    plus_sums = c(plus_sums, temp_plus_sum)
+    minus_sums = c(minus_sums, temp_minus_sum)
+  }
+  rowRanges(enhancer_object)$plus_sums = plus_sums
+  rowRanges(enhancer_object)$minus_sums = minus_sums
+  rowRanges(enhancer_object)$main = main_strands
+  enhancer_object
+}
+```
+
+```{r}
+test0  = assign_main_strand(CTSSs_bulk_t0, info_bulk_t0$SC_Validated_Enhancers$with_sc)
+
+test0sc  = assign_main_strand(CTSSs_singlecell_t0, info_bulk_t0$SC_Validated_Enhancers$with_sc)
+
+test6  = assign_main_strand(CTSSs_bulk_t6, info_bulk_t6$SC_Validated_Enhancers$with_sc)
+test6sc  = assign_main_strand(CTSSs_singlecell_t6, info_bulk_t6$SC_Validated_Enhancers$with_sc)
+
+test24 = assign_main_strand(CTSSs_bulk_t24, info_bulk_t24$SC_Validated_Enhancers$with_sc)
+test24sc  = assign_main_strand(CTSSs_singlecell_t24, info_bulk_t24$SC_Validated_Enhancers$with_sc)
+
+```
+
+```{r}
+classify_direction <- function(burst_events){
+  burst_events %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>0, yes = ifelse(minus_counts>0, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>0, yes = 'minus',no='ERROR')))) %>%
+  group_by(eid) %>% 
+  summarise(ncells = mean(ncells),
+            nbidirection = sum(direction == 'bidirectional'), 
+            nplus = sum(direction == 'plus'), 
+            nminus = sum(direction == 'minus')
+            )%>%
+  mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no = ifelse(nplus>0&nminus>0, yes = 'mixed', no = ifelse(nplus>0, yes = 'plus', no = ifelse(nminus>0, yes = 'minus', no = 'nonsc'))))) 
+}
+```
+
+
+```{r}
+
+cbind(test0 %>% rowRanges %>% as.data.frame() %>% transmute(eid1 = row.names(.), bulk_ratio = plus_sums/(plus_sums+minus_sums)) %>% arrange(eid1), 
+  test_sc_t0 %>% classify_direction() %>% dplyr::select(eid, group) %>% arrange(eid)) -> df_temp_t0
+
+cbind(test6 %>% rowRanges %>% as.data.frame() %>% transmute(eid1 = row.names(.), bulk_ratio = plus_sums/(plus_sums+minus_sums)) %>% arrange(eid1), 
+  test_sc_t6 %>% classify_direction() %>% dplyr::select(eid, group) %>% arrange(eid)) -> df_temp_t6
+
+cbind(test24 %>% rowRanges %>% as.data.frame() %>% transmute(eid1 = row.names(.), bulk_ratio = plus_sums/(plus_sums+minus_sums)) %>% arrange(eid1), 
+  test_sc_t24 %>% classify_direction() %>% dplyr::select(eid, group) %>% arrange(eid)) -> df_temp_t24
+
+  
+
+
+df_temp = rbind(rbind(df_temp_t0, df_temp_t6), df_temp_t24)
+
+ggplot(df_temp, aes(x = cut(
+          bulk_ratio, 
+          breaks = c(0, 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0)), 
+         fill = group))+
+geom_bar(position = "dodge")+
+  scale_fill_hue(limits = c("plus", "bidirectional", "mixed", "minus"))+
+  labs(fill = 'Single-cell Class', 
+       x = 'Plus Tag Fraction on Bulk Level')+
+  theme_bw()
+
+ ggsave('Jun8_preferance_bulk_sc_alltime.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 8, height=4, limitsize = FALSE)
+```
+

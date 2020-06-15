@@ -1,0 +1,309 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+# classify_direction <- function(burst_events){
+#   burst_events %>%
+#   mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>0, yes = ifelse(minus_counts>0, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>0, yes = 'minus',no='ERROR')))) %>%
+#   group_by(eid) %>% 
+#   summarise(ncells = mean(ncells),
+#             nbidirection = sum(direction == 'bidirectional'), 
+#             nplus = sum(direction == 'plus'), 
+#             nminus = sum(direction == 'minus')
+#             )%>%
+#   mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no = ifelse(nplus>0&nminus>0, yes = 'mixed', no = ifelse(nplus>0, yes = 'plus', no = ifelse(nminus>0, yes = 'minus', no = 'nonsc'))))) 
+# }
+
+classify_direction <- function(burst_events){
+  burst_events %>%
+  mutate(direction = ifelse(
+    plus_counts+minus_counts == 0, yes='nonactive',
+    no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, 
+                      yes = 'bidirectional',
+                      no=ifelse(minus_counts == 1, yes = 'near_plus',no = 'plus')), 
+             no = ifelse(plus_counts == 1, yes = 
+                  ifelse(minus_counts>1, yes = 'near_minus',no = 
+                        ifelse(minus_counts==1, yes = 'near_bidirectional',
+                                           no = 'basal')),
+                                  no = ifelse(minus_counts>1, yes = 'minus', no = 
+                                                ifelse(minus_counts == 1, yes = 'basal',
+                                                       no = 'ERROR')))))) %>%
+  group_by(eid) %>% 
+  summarise(
+            nbidirection = sum(direction == 'bidirectional'), 
+            nplus = sum(direction == 'plus'), 
+            nminus = sum(direction == 'minus'),
+            nbasal = sum(direction == 'basal'),
+            nnearplus = sum(direction == 'near_plus'),
+            nnearminus = sum(direction == 'near_minus'),
+            nnonactive = sum(direction == 'nonactive'),
+            nnearbidirectional = sum(direction == 'near_bidirectional'),
+            ncells = n() - nnonactive,
+            sum_plus = sum(plus_counts),
+            sum_minus = sum(minus_counts)) %>%
+  mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no =  ifelse((nnearplus+nplus)>0&(nnearminus+nminus)>0, yes = 'mixed', no = ifelse((nnearplus+nplus)>0, yes = 'plus', no = ifelse((nnearminus+nminus)>0, yes = 'minus', no = 'basal')))),
+         bias = ifelse(sum_plus == sum_minus, yes = 'balanced', no = 
+                         ifelse(sum_plus>sum_minus , yes = 'plus', no = 'minus'))) 
+}
+
+
+```
+
+
+```{r}
+classify_direction_rough <- function(burst_events){
+  burst_events %>%
+  mutate(direction = ifelse(
+    plus_counts+minus_counts == 0, yes='nonactive',
+    no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, 
+                      yes = 'bidirectional',
+                      no=ifelse(minus_counts == 1, yes = 'near_plus',no = 'plus')), 
+             no = ifelse(plus_counts == 1, yes = 
+                  ifelse(minus_counts>1, yes = 'near_minus',no = 
+                        ifelse(minus_counts==1, yes = 'near_bidirectional',
+                                           no = 'basal')),
+                                  no = ifelse(minus_counts>1, yes = 'minus', no = 
+                                                ifelse(minus_counts == 1, yes = 'basal',
+                                                       no = 'ERROR')))))) %>%
+  group_by(eid) %>% 
+  summarise(
+            nbidirection = sum(direction == 'bidirectional'), 
+            nplus = sum(direction == 'plus'), 
+            nminus = sum(direction == 'minus'),
+            nbasal = sum(direction == 'basal'),
+            nnearplus = sum(direction == 'near_plus'),
+            nnearminus = sum(direction == 'near_minus'),
+            nnonactive = sum(direction == 'nonactive'),
+            nnearbidirectional = sum(direction == 'near_bidirectional'),
+            ncells = n() - nnonactive) %>%
+  mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no =  ifelse((nnearplus+nplus)>0&(nnearminus+nminus)>0, yes = 'mixed', no = ifelse((nnearplus+nplus)>0, yes = 'plus', no = ifelse((nnearminus+nminus)>0, yes = 'minus', no = 'basal'))))) 
+}
+
+```
+
+
+```{r}
+test_sc_t0 %>% complete(eid, cid,  fill = list(plus_counts = 0, minus_counts=0)) %>%
+  classify_direction() 
+
+
+
+```
+
+```{r}
+
+info_bulk_t0$Classified_SC_Enhancers = list()
+
+
+test_sc_t0 %>% 
+  classify_direction() %>% 
+  filter(group == 'plus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t0$Classified_SC_Enhancers$plus
+
+test_sc_t0 %>% 
+  classify_direction() %>% 
+  filter(group == 'minus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t0$Classified_SC_Enhancers$minus
+
+test_sc_t0 %>% 
+  classify_direction() %>% 
+  filter(group == 'mixed') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t0$Classified_SC_Enhancers$mixed
+
+test_sc_t0 %>% 
+  classify_direction() %>% 
+  filter(group == 'bidirectional') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t0$Classified_SC_Enhancers$bidirectional
+```
+
+
+
+
+```{r}
+info_bulk_t6$Classified_SC_Enhancers = list()
+
+
+test_sc_t6 %>% 
+  classify_direction() %>% 
+  filter(group == 'plus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t6$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t6$Classified_SC_Enhancers$plus
+
+test_sc_t6 %>% 
+  classify_direction() %>% 
+  filter(group == 'minus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t6$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t6$Classified_SC_Enhancers$minus
+
+test_sc_t6 %>% 
+  classify_direction() %>% 
+  filter(group == 'mixed') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t6$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t6$Classified_SC_Enhancers$mixed
+
+test_sc_t6 %>% 
+  classify_direction() %>% 
+  filter(group == 'bidirectional') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t6$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t6$Classified_SC_Enhancers$bidirectional
+```
+
+
+```{r}
+info_bulk_t24$Classified_SC_Enhancers = list()
+
+
+test_sc_t24 %>% 
+  classify_direction() %>% 
+  filter(group == 'plus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t24$Classified_SC_Enhancers$plus
+
+test_sc_t24 %>% 
+  classify_direction() %>% 
+  filter(group == 'minus') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t24$Classified_SC_Enhancers$minus
+
+test_sc_t24 %>% 
+  classify_direction() %>% 
+  filter(group == 'mixed') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t24$Classified_SC_Enhancers$mixed
+
+test_sc_t24 %>% 
+  classify_direction() %>% 
+  filter(group == 'bidirectional') %>% 
+  .$eid %>%
+  GRanges() %>%
+  subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc,.) ->
+  info_bulk_t24$Classified_SC_Enhancers$bidirectional
+```
+
+
+```{r plot scatter single cell}
+
+a = test_sc_t0 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't0', group2 = 'Single-cell')
+
+c %>% .$Burst_Direction %>% table()
+
+
+b = test_sc_t6 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't6', group2 = 'Single-cell')
+
+
+c = test_sc_t24 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't24', group2 = 'Single-cell')
+
+d = test_bulk_t0 %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't0', group2 = 'Bulk')
+
+e = test_bulk_t6 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't6', group2 = 'Bulk')
+
+
+f = test_bulk_t24 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't24', group2 = 'Bulk')
+
+
+d %>%
+  rbind(e) %>%
+  rbind(f) %>% 
+  .$Burst_Direction %>%
+  table()
+
+
+a %>% 
+  rbind(b) %>%
+  rbind(c) %>%
+  rbind(d) %>%
+  rbind(e) %>%
+  rbind(f) %>%
+  # filter(Burst_Direction!='basal') %>%
+    ggplot(aes(x = log10(minus_counts+1)+log10(plus_counts+1), 
+             y = log10(plus_counts+1)-log10(minus_counts+1),
+             color = Burst_Direction))+
+  geom_jitter(alpha = 0.3, width = 0.1, height=0.1) + 
+  scale_color_hue(limits = c('plus','bidirectional','minus','basal'))+
+  facet_grid(group2~ factor(group, levels = c('t0','t6','t24')))+
+  theme_bw()
+
+
+ggsave('Jun11_scatter_burst_events_direction.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 7, height=4, limitsize = FALSE)
+
+```
+
+
+```{r scatter bulk}
+a = test_bulk_t0 %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't0')
+
+b = test_bulk_t6 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't6')
+
+
+c = test_bulk_t24 %>%
+ filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't24')
+
+a %>% 
+  rbind(b) %>%
+  rbind(c) %>%
+  filter(Burst_Direction!='basal') %>%
+    ggplot(aes(x = log10(minus_counts+1)+log10(plus_counts+1), 
+             y = log10(plus_counts+1)-log10(minus_counts+1),
+             color = Burst_Direction))+
+  geom_jitter(alpha = 0.3, width = 0.1, height=0.1) + 
+  scale_color_hue(limits = c('plus','bidirectional','minus'))+
+  facet_wrap(~ factor(group, levels = c('t0','t6','t24')),
+              ncol=3)+
+  theme_bw()
+
+```
+
+

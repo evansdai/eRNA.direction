@@ -1,0 +1,26 @@
+Invoking:
+  getsize "motif analysis output/main_vs_minor/tss_main.fa.masked" 1> $metrics
+Finished invoke:
+  name: count_seqs  status: 0  time: 0.025838
+Invoking:
+  fasta-most -min 50 < "motif analysis output/main_vs_minor/tss_main.fa.masked" 1> $metrics
+Finished invoke:
+  name: most_seqs  status: 0  time: 0.139951
+Invoking:
+  fasta-get-markov -nostatus -nosummary -dna -m 1 "motif analysis output/main_vs_minor/tss_main.fa.masked" "motif analysis output/main_vs_minor/background"
+Finished invoke:
+  name: bg  status: 0  time: 0.041499
+Invoking:
+  getsize "motif analysis output/main_vs_minor/tss_minor.fa.masked" 1> $metrics
+Finished invoke:
+  name: count_seqs  status: 0  time: 0.022331
+Invoking:
+  centrimo -seqlen 200 -verbosity 1 -oc "motif analysis output/main_vs_minor/centrimo_out" -bfile "motif analysis output/main_vs_minor/background" -local -score 5 -maxreg 50 -ethresh 1 -norc -neg "motif analysis output/main_vs_minor/tss_minor.fa.masked" "motif analysis output/main_vs_minor/tss_main.fa.masked" "./motif db/JASPAR2018_CORE_vertebrates_non-redundant.meme" "./motif db/JASPAR2018_POLII.meme"
+Finished invoke:
+  name: centrimo  status: 0  time: 3.940212
+Writing output
+Invoking:
+  meme-chip_html_to_tsv "./motif analysis output/main_vs_minor/meme-chip.html" "./motif analysis output/main_vs_minor/summary.tsv" "meme-chip -norc -meme-p=10 -order=1 -ccut=0 -meme-mod=anr -meme-nmotifs=0 -filter-thresh=1 -dreme-m=0 -centrimo-local -centrimo-score=5 -centrimo-ethresh=1 -centrimo-maxreg=50 -oc ./motif analysis output/main_vs_minor -db ./motif db/JASPAR2018_CORE_vertebrates_non-redundant.meme -db ./motif db/JASPAR2018_POLII.meme -neg=./fasta/masked/tss_minor.fa.masked ./fasta/masked/tss_main.fa.masked" 5.1.1 "Wed Jan 29 15\:00\:42 2020 -0800"
+Finished invoke:
+  name: summary  status: 0  time: 0.246395
+Done

@@ -1,0 +1,4614 @@
+1: CAGE_6_H12
+Identifiers: BioSample: SAMD00066475
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H12, Run: 1772-123-074, Well: H12, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066475	ID: 6029763
+
+2: CAGE_6_H11
+Identifiers: BioSample: SAMD00066474
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H11, Run: 1772-123-074, Well: H11, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066474	ID: 6029762
+
+3: CAGE_6_H10
+Identifiers: BioSample: SAMD00066473
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H10, Run: 1772-123-074, Well: H10, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066473	ID: 6029761
+
+4: CAGE_6_H09
+Identifiers: BioSample: SAMD00066472
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H09, Run: 1772-123-074, Well: H09, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066472	ID: 6029760
+
+5: CAGE_6_H08
+Identifiers: BioSample: SAMD00066471
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H08, Run: 1772-123-074, Well: H08, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066471	ID: 6029759
+
+6: CAGE_6_H07
+Identifiers: BioSample: SAMD00066470
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H07, Run: 1772-123-074, Well: H07, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066470	ID: 6029758
+
+7: CAGE_6_H06
+Identifiers: BioSample: SAMD00066469
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H06, Run: 1772-123-074, Well: H06, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066469	ID: 6029757
+
+8: CAGE_6_H05
+Identifiers: BioSample: SAMD00066468
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H05, Run: 1772-123-074, Well: H05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066468	ID: 6029756
+
+9: CAGE_6_H04
+Identifiers: BioSample: SAMD00066467
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H04, Run: 1772-123-074, Well: H04, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066467	ID: 6029755
+
+10: CAGE_6_H03
+Identifiers: BioSample: SAMD00066466
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H03, Run: 1772-123-074, Well: H03, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066466	ID: 6029754
+
+11: CAGE_6_H02
+Identifiers: BioSample: SAMD00066465
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H02, Run: 1772-123-074, Well: H02, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066465	ID: 6029753
+
+12: CAGE_6_H01
+Identifiers: BioSample: SAMD00066464
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_H01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_H01, Run: 1772-123-074, Well: H01, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066464	ID: 6029752
+
+13: CAGE_6_G12
+Identifiers: BioSample: SAMD00066463
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G12, Run: 1772-123-074, Well: G12, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066463	ID: 6029751
+
+14: CAGE_6_G11
+Identifiers: BioSample: SAMD00066462
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G11, Run: 1772-123-074, Well: G11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066462	ID: 6029750
+
+15: CAGE_6_G10
+Identifiers: BioSample: SAMD00066461
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G10, Run: 1772-123-074, Well: G10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066461	ID: 6029749
+
+16: CAGE_6_G09
+Identifiers: BioSample: SAMD00066460
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G09, Run: 1772-123-074, Well: G09, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066460	ID: 6029748
+
+17: CAGE_6_G08
+Identifiers: BioSample: SAMD00066459
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G08, Run: 1772-123-074, Well: G08, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066459	ID: 6029747
+
+18: CAGE_6_G07
+Identifiers: BioSample: SAMD00066458
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G07, Run: 1772-123-074, Well: G07, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066458	ID: 6029746
+
+19: CAGE_6_G06
+Identifiers: BioSample: SAMD00066457
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G06, Run: 1772-123-074, Well: G06, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066457	ID: 6029745
+
+20: CAGE_6_G05
+Identifiers: BioSample: SAMD00066456
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G05, Run: 1772-123-074, Well: G05, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066456	ID: 6029744
+
+21: CAGE_6_G04
+Identifiers: BioSample: SAMD00066455
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G04, Run: 1772-123-074, Well: G04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066455	ID: 6029743
+
+22: CAGE_6_G03
+Identifiers: BioSample: SAMD00066454
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G03, Run: 1772-123-074, Well: G03, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066454	ID: 6029742
+
+23: CAGE_6_G02
+Identifiers: BioSample: SAMD00066453
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G02, Run: 1772-123-074, Well: G02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066453	ID: 6029741
+
+24: CAGE_6_G01
+Identifiers: BioSample: SAMD00066452
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_G01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_G01, Run: 1772-123-074, Well: G01, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066452	ID: 6029740
+
+25: CAGE_6_F12
+Identifiers: BioSample: SAMD00066451
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F12, Run: 1772-123-074, Well: F12, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066451	ID: 6029739
+
+26: CAGE_6_F11
+Identifiers: BioSample: SAMD00066450
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F11, Run: 1772-123-074, Well: F11, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066450	ID: 6029738
+
+27: CAGE_6_F10
+Identifiers: BioSample: SAMD00066449
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F10, Run: 1772-123-074, Well: F10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066449	ID: 6029737
+
+28: CAGE_6_F09
+Identifiers: BioSample: SAMD00066448
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F09, Run: 1772-123-074, Well: F09, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066448	ID: 6029736
+
+29: CAGE_6_F08
+Identifiers: BioSample: SAMD00066447
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F08, Run: 1772-123-074, Well: F08, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066447	ID: 6029735
+
+30: CAGE_6_F07
+Identifiers: BioSample: SAMD00066446
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F07, Run: 1772-123-074, Well: F07, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066446	ID: 6029734
+
+31: CAGE_6_F06
+Identifiers: BioSample: SAMD00066445
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F06, Run: 1772-123-074, Well: F06, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066445	ID: 6029733
+
+32: CAGE_6_F05
+Identifiers: BioSample: SAMD00066444
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F05, Run: 1772-123-074, Well: F05, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066444	ID: 6029732
+
+33: CAGE_6_F04
+Identifiers: BioSample: SAMD00066443
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F04, Run: 1772-123-074, Well: F04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066443	ID: 6029731
+
+34: CAGE_6_F03
+Identifiers: BioSample: SAMD00066442
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F03, Run: 1772-123-074, Well: F03, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066442	ID: 6029730
+
+35: CAGE_6_F02
+Identifiers: BioSample: SAMD00066441
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F02, Run: 1772-123-074, Well: F02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066441	ID: 6029729
+
+36: CAGE_6_F01
+Identifiers: BioSample: SAMD00066440
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_F01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_F01, Run: 1772-123-074, Well: F01, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066440	ID: 6029728
+
+37: CAGE_6_E12
+Identifiers: BioSample: SAMD00066439
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E12, Run: 1772-123-074, Well: E12, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066439	ID: 6029727
+
+38: CAGE_6_E11
+Identifiers: BioSample: SAMD00066438
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E11, Run: 1772-123-074, Well: E11, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066438	ID: 6029726
+
+39: CAGE_6_E10
+Identifiers: BioSample: SAMD00066437
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E10, Run: 1772-123-074, Well: E10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066437	ID: 6029725
+
+40: CAGE_6_E09
+Identifiers: BioSample: SAMD00066436
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E09, Run: 1772-123-074, Well: E09, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066436	ID: 6029724
+
+41: CAGE_6_E08
+Identifiers: BioSample: SAMD00066435
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E08, Run: 1772-123-074, Well: E08, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066435	ID: 6029723
+
+42: CAGE_6_E07
+Identifiers: BioSample: SAMD00066434
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E07, Run: 1772-123-074, Well: E07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066434	ID: 6029722
+
+43: CAGE_6_E06
+Identifiers: BioSample: SAMD00066433
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E06, Run: 1772-123-074, Well: E06, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066433	ID: 6029721
+
+44: CAGE_6_E05
+Identifiers: BioSample: SAMD00066432
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E05, Run: 1772-123-074, Well: E05, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066432	ID: 6029720
+
+45: CAGE_6_E04
+Identifiers: BioSample: SAMD00066431
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E04, Run: 1772-123-074, Well: E04, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066431	ID: 6029719
+
+46: CAGE_6_E03
+Identifiers: BioSample: SAMD00066430
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E03, Run: 1772-123-074, Well: E03, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066430	ID: 6029718
+
+47: CAGE_6_E02
+Identifiers: BioSample: SAMD00066429
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E02, Run: 1772-123-074, Well: E02, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066429	ID: 6029717
+
+48: CAGE_6_E01
+Identifiers: BioSample: SAMD00066428
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_E01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_E01, Run: 1772-123-074, Well: E01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066428	ID: 6029716
+
+49: CAGE_6_D12
+Identifiers: BioSample: SAMD00066427
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D12, Run: 1772-123-074, Well: D12, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066427	ID: 6029715
+
+50: CAGE_6_D11
+Identifiers: BioSample: SAMD00066426
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D11, Run: 1772-123-074, Well: D11, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066426	ID: 6029714
+
+
+51: CAGE_6_D10
+Identifiers: BioSample: SAMD00066425
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D10, Run: 1772-123-074, Well: D10, Cell curation: Debris, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066425	ID: 6029713
+
+52: CAGE_6_D09
+Identifiers: BioSample: SAMD00066424
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D09, Run: 1772-123-074, Well: D09, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066424	ID: 6029712
+
+53: CAGE_6_D08
+Identifiers: BioSample: SAMD00066423
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D08, Run: 1772-123-074, Well: D08, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066423	ID: 6029711
+
+54: CAGE_6_D07
+Identifiers: BioSample: SAMD00066422
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D07, Run: 1772-123-074, Well: D07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066422	ID: 6029710
+
+55: CAGE_6_D06
+Identifiers: BioSample: SAMD00066421
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D06, Run: 1772-123-074, Well: D06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066421	ID: 6029709
+
+56: CAGE_6_D05
+Identifiers: BioSample: SAMD00066420
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D05, Run: 1772-123-074, Well: D05, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066420	ID: 6029708
+
+57: CAGE_6_D04
+Identifiers: BioSample: SAMD00066419
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D04, Run: 1772-123-074, Well: D04, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066419	ID: 6029707
+
+58: CAGE_6_D03
+Identifiers: BioSample: SAMD00066418
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D03, Run: 1772-123-074, Well: D03, Cell curation: Red, Timepoint: t00, QC pass: TRUE, Lane7
+Accession: SAMD00066418	ID: 6029706
+
+59: CAGE_6_D02
+Identifiers: BioSample: SAMD00066417
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D02, Run: 1772-123-074, Well: D02, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066417	ID: 6029705
+
+60: CAGE_6_D01
+Identifiers: BioSample: SAMD00066416
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_D01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_D01, Run: 1772-123-074, Well: D01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066416	ID: 6029704
+
+61: CAGE_6_C12
+Identifiers: BioSample: SAMD00066415
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C12, Run: 1772-123-074, Well: C12, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066415	ID: 6029703
+
+62: CAGE_6_C11
+Identifiers: BioSample: SAMD00066414
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C11, Run: 1772-123-074, Well: C11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066414	ID: 6029702
+
+63: CAGE_6_C10
+Identifiers: BioSample: SAMD00066413
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C10, Run: 1772-123-074, Well: C10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066413	ID: 6029701
+
+64: CAGE_6_C09
+Identifiers: BioSample: SAMD00066412
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C09, Run: 1772-123-074, Well: C09, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066412	ID: 6029700
+
+65: CAGE_6_C08
+Identifiers: BioSample: SAMD00066411
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C08, Run: 1772-123-074, Well: C08, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066411	ID: 6029699
+
+66: CAGE_6_C07
+Identifiers: BioSample: SAMD00066410
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C07, Run: 1772-123-074, Well: C07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066410	ID: 6029698
+
+67: CAGE_6_C06
+Identifiers: BioSample: SAMD00066409
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C06, Run: 1772-123-074, Well: C06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066409	ID: 6029697
+
+68: CAGE_6_C05
+Identifiers: BioSample: SAMD00066408
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C05, Run: 1772-123-074, Well: C05, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066408	ID: 6029696
+
+69: CAGE_6_C04
+Identifiers: BioSample: SAMD00066407
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C04, Run: 1772-123-074, Well: C04, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066407	ID: 6029695
+
+70: CAGE_6_C03
+Identifiers: BioSample: SAMD00066406
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C03, Run: 1772-123-074, Well: C03, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066406	ID: 6029694
+
+71: CAGE_6_C02
+Identifiers: BioSample: SAMD00066405
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C02, Run: 1772-123-074, Well: C02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066405	ID: 6029693
+
+72: CAGE_6_C01
+Identifiers: BioSample: SAMD00066404
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_C01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_C01, Run: 1772-123-074, Well: C01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066404	ID: 6029692
+
+73: CAGE_6_B12
+Identifiers: BioSample: SAMD00066403
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B12, Run: 1772-123-074, Well: B12, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066403	ID: 6029691
+
+74: CAGE_6_B11
+Identifiers: BioSample: SAMD00066402
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B11, Run: 1772-123-074, Well: B11, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066402	ID: 6029690
+
+75: CAGE_6_B10
+Identifiers: BioSample: SAMD00066401
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B10, Run: 1772-123-074, Well: B10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066401	ID: 6029689
+
+76: CAGE_6_B09
+Identifiers: BioSample: SAMD00066400
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B09, Run: 1772-123-074, Well: B09, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066400	ID: 6029688
+
+77: CAGE_6_B08
+Identifiers: BioSample: SAMD00066399
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B08, Run: 1772-123-074, Well: B08, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066399	ID: 6029687
+
+78: CAGE_6_B07
+Identifiers: BioSample: SAMD00066398
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B07, Run: 1772-123-074, Well: B07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066398	ID: 6029686
+
+79: CAGE_6_B06
+Identifiers: BioSample: SAMD00066397
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B06, Run: 1772-123-074, Well: B06, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066397	ID: 6029685
+
+80: CAGE_6_B05
+Identifiers: BioSample: SAMD00066396
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B05, Run: 1772-123-074, Well: B05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066396	ID: 6029684
+
+81: CAGE_6_B04
+Identifiers: BioSample: SAMD00066395
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B04, Run: 1772-123-074, Well: B04, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066395	ID: 6029683
+
+82: CAGE_6_B03
+Identifiers: BioSample: SAMD00066394
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B03, Run: 1772-123-074, Well: B03, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066394	ID: 6029682
+
+83: CAGE_6_B02
+Identifiers: BioSample: SAMD00066393
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B02, Run: 1772-123-074, Well: B02, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066393	ID: 6029681
+
+84: CAGE_6_B01
+Identifiers: BioSample: SAMD00066392
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_B01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_B01, Run: 1772-123-074, Well: B01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066392	ID: 6029680
+
+85: CAGE_6_A12
+Identifiers: BioSample: SAMD00066391
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A12, Run: 1772-123-074, Well: A12, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066391	ID: 6029679
+
+86: CAGE_6_A11
+Identifiers: BioSample: SAMD00066390
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A11, Run: 1772-123-074, Well: A11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066390	ID: 6029678
+
+87: CAGE_6_A10
+Identifiers: BioSample: SAMD00066389
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A10, Run: 1772-123-074, Well: A10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066389	ID: 6029677
+
+88: CAGE_6_A09
+Identifiers: BioSample: SAMD00066388
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A09, Run: 1772-123-074, Well: A09, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066388	ID: 6029676
+
+89: CAGE_6_A08
+Identifiers: BioSample: SAMD00066387
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A08, Run: 1772-123-074, Well: A08, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066387	ID: 6029675
+
+90: CAGE_6_A07
+Identifiers: BioSample: SAMD00066386
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A07, Run: 1772-123-074, Well: A07, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066386	ID: 6029674
+
+91: CAGE_6_A06
+Identifiers: BioSample: SAMD00066385
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A06, Run: 1772-123-074, Well: A06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066385	ID: 6029673
+
+92: CAGE_6_A05
+Identifiers: BioSample: SAMD00066384
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A05, Run: 1772-123-074, Well: A05, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066384	ID: 6029672
+
+93: CAGE_6_A04
+Identifiers: BioSample: SAMD00066383
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A04, Run: 1772-123-074, Well: A04, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066383	ID: 6029671
+
+94: CAGE_6_A03
+Identifiers: BioSample: SAMD00066382
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A03, Run: 1772-123-074, Well: A03, Cell curation: G/R, Timepoint: t06, QC pass: TRUE, Lane7
+Accession: SAMD00066382	ID: 6029670
+
+95: CAGE_6_A02
+Identifiers: BioSample: SAMD00066381
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A02, Run: 1772-123-074, Well: A02, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane7
+Accession: SAMD00066381	ID: 6029669
+
+96: CAGE_6_A01
+Identifiers: BioSample: SAMD00066380
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_6_A01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_6_A01, Run: 1772-123-074, Well: A01, Cell curation: Green, Timepoint: t24, QC pass: TRUE, Lane7
+Accession: SAMD00066380	ID: 6029668
+
+97: CAGE_5_H12
+Identifiers: BioSample: SAMD00066379
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H12, Run: 1772-123-073, Well: H12, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066379	ID: 6029667
+
+98: CAGE_5_H11
+Identifiers: BioSample: SAMD00066378
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H11, Run: 1772-123-073, Well: H11, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066378	ID: 6029666
+
+99: CAGE_5_H10
+Identifiers: BioSample: SAMD00066377
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H10, Run: 1772-123-073, Well: H10, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066377	ID: 6029665
+
+100: CAGE_5_H09
+Identifiers: BioSample: SAMD00066376
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H09, Run: 1772-123-073, Well: H09, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066376	ID: 6029664
+
+
+101: CAGE_5_H08
+Identifiers: BioSample: SAMD00066375
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H08, Run: 1772-123-073, Well: H08, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066375	ID: 6029663
+
+102: CAGE_5_H07
+Identifiers: BioSample: SAMD00066374
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H07, Run: 1772-123-073, Well: H07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066374	ID: 6029662
+
+103: CAGE_5_H06
+Identifiers: BioSample: SAMD00066373
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H06, Run: 1772-123-073, Well: H06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066373	ID: 6029661
+
+104: CAGE_5_H05
+Identifiers: BioSample: SAMD00066372
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H05, Run: 1772-123-073, Well: H05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066372	ID: 6029660
+
+105: CAGE_5_H04
+Identifiers: BioSample: SAMD00066371
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H04, Run: 1772-123-073, Well: H04, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066371	ID: 6029659
+
+106: CAGE_5_H03
+Identifiers: BioSample: SAMD00066370
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H03, Run: 1772-123-073, Well: H03, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066370	ID: 6029658
+
+107: CAGE_5_H02
+Identifiers: BioSample: SAMD00066369
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H02, Run: 1772-123-073, Well: H02, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066369	ID: 6029657
+
+108: CAGE_5_H01
+Identifiers: BioSample: SAMD00066368
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_H01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_H01, Run: 1772-123-073, Well: H01, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066368	ID: 6029656
+
+109: CAGE_5_G12
+Identifiers: BioSample: SAMD00066367
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G12, Run: 1772-123-073, Well: G12, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066367	ID: 6029655
+
+110: CAGE_5_G11
+Identifiers: BioSample: SAMD00066366
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G11, Run: 1772-123-073, Well: G11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066366	ID: 6029654
+
+111: CAGE_5_G10
+Identifiers: BioSample: SAMD00066365
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G10, Run: 1772-123-073, Well: G10, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066365	ID: 6029653
+
+112: CAGE_5_G09
+Identifiers: BioSample: SAMD00066364
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G09, Run: 1772-123-073, Well: G09, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066364	ID: 6029652
+
+113: CAGE_5_G08
+Identifiers: BioSample: SAMD00066363
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G08, Run: 1772-123-073, Well: G08, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066363	ID: 6029651
+
+114: CAGE_5_G07
+Identifiers: BioSample: SAMD00066362
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G07, Run: 1772-123-073, Well: G07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066362	ID: 6029650
+
+115: CAGE_5_G06
+Identifiers: BioSample: SAMD00066361
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G06, Run: 1772-123-073, Well: G06, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066361	ID: 6029649
+
+116: CAGE_5_G05
+Identifiers: BioSample: SAMD00066360
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G05, Run: 1772-123-073, Well: G05, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066360	ID: 6029648
+
+117: CAGE_5_G04
+Identifiers: BioSample: SAMD00066359
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G04, Run: 1772-123-073, Well: G04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066359	ID: 6029647
+
+118: CAGE_5_G03
+Identifiers: BioSample: SAMD00066358
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G03, Run: 1772-123-073, Well: G03, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066358	ID: 6029646
+
+119: CAGE_5_G02
+Identifiers: BioSample: SAMD00066357
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G02, Run: 1772-123-073, Well: G02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066357	ID: 6029645
+
+120: CAGE_5_G01
+Identifiers: BioSample: SAMD00066356
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_G01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_G01, Run: 1772-123-073, Well: G01, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066356	ID: 6029644
+
+121: CAGE_5_F12
+Identifiers: BioSample: SAMD00066355
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F12, Run: 1772-123-073, Well: F12, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066355	ID: 6029643
+
+122: CAGE_5_F11
+Identifiers: BioSample: SAMD00066354
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F11, Run: 1772-123-073, Well: F11, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066354	ID: 6029642
+
+123: CAGE_5_F10
+Identifiers: BioSample: SAMD00066353
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F10, Run: 1772-123-073, Well: F10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066353	ID: 6029641
+
+124: CAGE_5_F09
+Identifiers: BioSample: SAMD00066352
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F09, Run: 1772-123-073, Well: F09, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066352	ID: 6029640
+
+125: CAGE_5_F08
+Identifiers: BioSample: SAMD00066351
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F08, Run: 1772-123-073, Well: F08, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066351	ID: 6029639
+
+126: CAGE_5_F07
+Identifiers: BioSample: SAMD00066350
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F07, Run: 1772-123-073, Well: F07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066350	ID: 6029638
+
+127: CAGE_5_F06
+Identifiers: BioSample: SAMD00066349
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F06, Run: 1772-123-073, Well: F06, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066349	ID: 6029637
+
+128: CAGE_5_F05
+Identifiers: BioSample: SAMD00066348
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F05, Run: 1772-123-073, Well: F05, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066348	ID: 6029636
+
+129: CAGE_5_F04
+Identifiers: BioSample: SAMD00066347
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F04, Run: 1772-123-073, Well: F04, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066347	ID: 6029635
+
+130: CAGE_5_F03
+Identifiers: BioSample: SAMD00066346
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F03, Run: 1772-123-073, Well: F03, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066346	ID: 6029634
+
+131: CAGE_5_F02
+Identifiers: BioSample: SAMD00066345
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F02, Run: 1772-123-073, Well: F02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066345	ID: 6029633
+
+132: CAGE_5_F01
+Identifiers: BioSample: SAMD00066344
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_F01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_F01, Run: 1772-123-073, Well: F01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066344	ID: 6029632
+
+133: CAGE_5_E12
+Identifiers: BioSample: SAMD00066343
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E12, Run: 1772-123-073, Well: E12, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066343	ID: 6029631
+
+134: CAGE_5_E11
+Identifiers: BioSample: SAMD00066342
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E11, Run: 1772-123-073, Well: E11, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066342	ID: 6029630
+
+135: CAGE_5_E10
+Identifiers: BioSample: SAMD00066341
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E10, Run: 1772-123-073, Well: E10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066341	ID: 6029629
+
+136: CAGE_5_E09
+Identifiers: BioSample: SAMD00066340
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E09, Run: 1772-123-073, Well: E09, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066340	ID: 6029628
+
+137: CAGE_5_E08
+Identifiers: BioSample: SAMD00066339
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E08, Run: 1772-123-073, Well: E08, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066339	ID: 6029627
+
+138: CAGE_5_E07
+Identifiers: BioSample: SAMD00066338
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E07, Run: 1772-123-073, Well: E07, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066338	ID: 6029626
+
+139: CAGE_5_E06
+Identifiers: BioSample: SAMD00066337
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E06, Run: 1772-123-073, Well: E06, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066337	ID: 6029625
+
+140: CAGE_5_E05
+Identifiers: BioSample: SAMD00066336
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E05, Run: 1772-123-073, Well: E05, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066336	ID: 6029624
+
+141: CAGE_5_E04
+Identifiers: BioSample: SAMD00066335
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E04, Run: 1772-123-073, Well: E04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066335	ID: 6029623
+
+142: CAGE_5_E03
+Identifiers: BioSample: SAMD00066334
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E03, Run: 1772-123-073, Well: E03, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066334	ID: 6029622
+
+143: CAGE_5_E02
+Identifiers: BioSample: SAMD00066333
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E02, Run: 1772-123-073, Well: E02, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066333	ID: 6029621
+
+144: CAGE_5_E01
+Identifiers: BioSample: SAMD00066332
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_E01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_E01, Run: 1772-123-073, Well: E01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066332	ID: 6029620
+
+145: CAGE_5_D12
+Identifiers: BioSample: SAMD00066331
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D12, Run: 1772-123-073, Well: D12, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066331	ID: 6029619
+
+146: CAGE_5_D11
+Identifiers: BioSample: SAMD00066330
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D11, Run: 1772-123-073, Well: D11, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066330	ID: 6029618
+
+147: CAGE_5_D10
+Identifiers: BioSample: SAMD00066329
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D10, Run: 1772-123-073, Well: D10, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066329	ID: 6029617
+
+148: CAGE_5_D09
+Identifiers: BioSample: SAMD00066328
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D09, Run: 1772-123-073, Well: D09, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066328	ID: 6029616
+
+149: CAGE_5_D08
+Identifiers: BioSample: SAMD00066327
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D08, Run: 1772-123-073, Well: D08, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066327	ID: 6029615
+
+150: CAGE_5_D07
+Identifiers: BioSample: SAMD00066326
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D07, Run: 1772-123-073, Well: D07, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066326	ID: 6029614
+
+
+151: CAGE_5_D06
+Identifiers: BioSample: SAMD00066325
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D06, Run: 1772-123-073, Well: D06, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066325	ID: 6029613
+
+152: CAGE_5_D05
+Identifiers: BioSample: SAMD00066324
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D05, Run: 1772-123-073, Well: D05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066324	ID: 6029612
+
+153: CAGE_5_D04
+Identifiers: BioSample: SAMD00066323
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D04, Run: 1772-123-073, Well: D04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066323	ID: 6029611
+
+154: CAGE_5_D03
+Identifiers: BioSample: SAMD00066322
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D03, Run: 1772-123-073, Well: D03, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066322	ID: 6029610
+
+155: CAGE_5_D02
+Identifiers: BioSample: SAMD00066321
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D02, Run: 1772-123-073, Well: D02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066321	ID: 6029609
+
+156: CAGE_5_D01
+Identifiers: BioSample: SAMD00066320
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_D01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_D01, Run: 1772-123-073, Well: D01, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066320	ID: 6029608
+
+157: CAGE_5_C12
+Identifiers: BioSample: SAMD00066319
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C12, Run: 1772-123-073, Well: C12, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066319	ID: 6029607
+
+158: CAGE_5_C11
+Identifiers: BioSample: SAMD00066318
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C11, Run: 1772-123-073, Well: C11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066318	ID: 6029606
+
+159: CAGE_5_C10
+Identifiers: BioSample: SAMD00066317
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C10, Run: 1772-123-073, Well: C10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066317	ID: 6029605
+
+160: CAGE_5_C09
+Identifiers: BioSample: SAMD00066316
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C09, Run: 1772-123-073, Well: C09, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066316	ID: 6029604
+
+161: CAGE_5_C08
+Identifiers: BioSample: SAMD00066315
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C08, Run: 1772-123-073, Well: C08, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066315	ID: 6029603
+
+162: CAGE_5_C07
+Identifiers: BioSample: SAMD00066314
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C07, Run: 1772-123-073, Well: C07, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066314	ID: 6029602
+
+163: CAGE_5_C06
+Identifiers: BioSample: SAMD00066313
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C06, Run: 1772-123-073, Well: C06, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066313	ID: 6029601
+
+164: CAGE_5_C05
+Identifiers: BioSample: SAMD00066312
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C05, Run: 1772-123-073, Well: C05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066312	ID: 6029600
+
+165: CAGE_5_C04
+Identifiers: BioSample: SAMD00066311
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C04, Run: 1772-123-073, Well: C04, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066311	ID: 6029599
+
+166: CAGE_5_C03
+Identifiers: BioSample: SAMD00066310
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C03, Run: 1772-123-073, Well: C03, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066310	ID: 6029598
+
+167: CAGE_5_C02
+Identifiers: BioSample: SAMD00066309
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C02, Run: 1772-123-073, Well: C02, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066309	ID: 6029597
+
+168: CAGE_5_C01
+Identifiers: BioSample: SAMD00066308
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_C01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_C01, Run: 1772-123-073, Well: C01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066308	ID: 6029596
+
+169: CAGE_5_B12
+Identifiers: BioSample: SAMD00066307
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B12, Run: 1772-123-073, Well: B12, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066307	ID: 6029595
+
+170: CAGE_5_B11
+Identifiers: BioSample: SAMD00066306
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B11, Run: 1772-123-073, Well: B11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066306	ID: 6029594
+
+171: CAGE_5_B10
+Identifiers: BioSample: SAMD00066305
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B10, Run: 1772-123-073, Well: B10, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066305	ID: 6029593
+
+172: CAGE_5_B09
+Identifiers: BioSample: SAMD00066304
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B09, Run: 1772-123-073, Well: B09, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066304	ID: 6029592
+
+173: CAGE_5_B08
+Identifiers: BioSample: SAMD00066303
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B08, Run: 1772-123-073, Well: B08, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066303	ID: 6029591
+
+174: CAGE_5_B07
+Identifiers: BioSample: SAMD00066302
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B07, Run: 1772-123-073, Well: B07, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066302	ID: 6029590
+
+175: CAGE_5_B06
+Identifiers: BioSample: SAMD00066301
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B06, Run: 1772-123-073, Well: B06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066301	ID: 6029589
+
+176: CAGE_5_B05
+Identifiers: BioSample: SAMD00066300
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B05, Run: 1772-123-073, Well: B05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066300	ID: 6029588
+
+177: CAGE_5_B04
+Identifiers: BioSample: SAMD00066299
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B04, Run: 1772-123-073, Well: B04, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066299	ID: 6029587
+
+178: CAGE_5_B03
+Identifiers: BioSample: SAMD00066298
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B03, Run: 1772-123-073, Well: B03, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066298	ID: 6029586
+
+179: CAGE_5_B02
+Identifiers: BioSample: SAMD00066297
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B02, Run: 1772-123-073, Well: B02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066297	ID: 6029585
+
+180: CAGE_5_B01
+Identifiers: BioSample: SAMD00066296
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_B01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_B01, Run: 1772-123-073, Well: B01, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066296	ID: 6029584
+
+181: CAGE_5_A12
+Identifiers: BioSample: SAMD00066295
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A12, Run: 1772-123-073, Well: A12, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066295	ID: 6029583
+
+182: CAGE_5_A11
+Identifiers: BioSample: SAMD00066294
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A11, Run: 1772-123-073, Well: A11, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066294	ID: 6029582
+
+183: CAGE_5_A10
+Identifiers: BioSample: SAMD00066293
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A10, Run: 1772-123-073, Well: A10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066293	ID: 6029581
+
+184: CAGE_5_A09
+Identifiers: BioSample: SAMD00066292
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A09, Run: 1772-123-073, Well: A09, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066292	ID: 6029580
+
+185: CAGE_5_A08
+Identifiers: BioSample: SAMD00066291
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A08, Run: 1772-123-073, Well: A08, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066291	ID: 6029579
+
+186: CAGE_5_A07
+Identifiers: BioSample: SAMD00066290
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A07, Run: 1772-123-073, Well: A07, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066290	ID: 6029578
+
+187: CAGE_5_A06
+Identifiers: BioSample: SAMD00066289
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A06, Run: 1772-123-073, Well: A06, Cell curation: Red, Timepoint: t06, QC pass: TRUE, Lane6
+Accession: SAMD00066289	ID: 6029577
+
+188: CAGE_5_A05
+Identifiers: BioSample: SAMD00066288
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A05, Run: 1772-123-073, Well: A05, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066288	ID: 6029576
+
+189: CAGE_5_A04
+Identifiers: BioSample: SAMD00066287
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A04, Run: 1772-123-073, Well: A04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066287	ID: 6029575
+
+190: CAGE_5_A03
+Identifiers: BioSample: SAMD00066286
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A03, Run: 1772-123-073, Well: A03, Cell curation: G/R, Timepoint: t24, QC pass: TRUE, Lane6
+Accession: SAMD00066286	ID: 6029574
+
+191: CAGE_5_A02
+Identifiers: BioSample: SAMD00066285
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A02, Run: 1772-123-073, Well: A02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane6
+Accession: SAMD00066285	ID: 6029573
+
+192: CAGE_5_A01
+Identifiers: BioSample: SAMD00066284
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_5_A01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_5_A01, Run: 1772-123-073, Well: A01, Cell curation: Green, Timepoint: t00, QC pass: TRUE, Lane6
+Accession: SAMD00066284	ID: 6029572
+
+193: CAGE_4_H12
+Identifiers: BioSample: SAMD00066283
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H12, Run: 1772-123-072, Well: H12, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066283	ID: 6029571
+
+194: CAGE_4_H11
+Identifiers: BioSample: SAMD00066282
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H11, Run: 1772-123-072, Well: H11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066282	ID: 6029570
+
+195: CAGE_4_H10
+Identifiers: BioSample: SAMD00066281
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H10, Run: 1772-123-072, Well: H10, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066281	ID: 6029569
+
+196: CAGE_4_H09
+Identifiers: BioSample: SAMD00066280
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H09, Run: 1772-123-072, Well: H09, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066280	ID: 6029568
+
+197: CAGE_4_H08
+Identifiers: BioSample: SAMD00066279
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H08, Run: 1772-123-072, Well: H08, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066279	ID: 6029567
+
+198: CAGE_4_H07
+Identifiers: BioSample: SAMD00066278
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H07, Run: 1772-123-072, Well: H07, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066278	ID: 6029566
+
+199: CAGE_4_H06
+Identifiers: BioSample: SAMD00066277
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H06, Run: 1772-123-072, Well: H06, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066277	ID: 6029565
+
+200: CAGE_4_H05
+Identifiers: BioSample: SAMD00066276
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H05, Run: 1772-123-072, Well: H05, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066276	ID: 6029564
+
+
+201: CAGE_4_H04
+Identifiers: BioSample: SAMD00066275
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H04, Run: 1772-123-072, Well: H04, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066275	ID: 6029563
+
+202: CAGE_4_H03
+Identifiers: BioSample: SAMD00066274
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H03, Run: 1772-123-072, Well: H03, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066274	ID: 6029562
+
+203: CAGE_4_H02
+Identifiers: BioSample: SAMD00066273
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H02, Run: 1772-123-072, Well: H02, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066273	ID: 6029561
+
+204: CAGE_4_H01
+Identifiers: BioSample: SAMD00066272
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_H01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_H01, Run: 1772-123-072, Well: H01, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066272	ID: 6029560
+
+205: CAGE_4_G12
+Identifiers: BioSample: SAMD00066271
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G12, Run: 1772-123-072, Well: G12, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066271	ID: 6029559
+
+206: CAGE_4_G11
+Identifiers: BioSample: SAMD00066270
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G11, Run: 1772-123-072, Well: G11, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066270	ID: 6029558
+
+207: CAGE_4_G10
+Identifiers: BioSample: SAMD00066269
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G10, Run: 1772-123-072, Well: G10, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066269	ID: 6029557
+
+208: CAGE_4_G09
+Identifiers: BioSample: SAMD00066268
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G09, Run: 1772-123-072, Well: G09, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066268	ID: 6029556
+
+209: CAGE_4_G08
+Identifiers: BioSample: SAMD00066267
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G08, Run: 1772-123-072, Well: G08, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066267	ID: 6029555
+
+210: CAGE_4_G07
+Identifiers: BioSample: SAMD00066266
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G07, Run: 1772-123-072, Well: G07, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066266	ID: 6029554
+
+211: CAGE_4_G06
+Identifiers: BioSample: SAMD00066265
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G06, Run: 1772-123-072, Well: G06, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066265	ID: 6029553
+
+212: CAGE_4_G05
+Identifiers: BioSample: SAMD00066264
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G05, Run: 1772-123-072, Well: G05, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066264	ID: 6029552
+
+213: CAGE_4_G04
+Identifiers: BioSample: SAMD00066263
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G04, Run: 1772-123-072, Well: G04, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066263	ID: 6029551
+
+214: CAGE_4_G03
+Identifiers: BioSample: SAMD00066262
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G03, Run: 1772-123-072, Well: G03, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066262	ID: 6029550
+
+215: CAGE_4_G02
+Identifiers: BioSample: SAMD00066261
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G02, Run: 1772-123-072, Well: G02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066261	ID: 6029549
+
+216: CAGE_4_G01
+Identifiers: BioSample: SAMD00066260
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_G01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_G01, Run: 1772-123-072, Well: G01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066260	ID: 6029548
+
+217: CAGE_4_F12
+Identifiers: BioSample: SAMD00066259
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F12, Run: 1772-123-072, Well: F12, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066259	ID: 6029547
+
+218: CAGE_4_F11
+Identifiers: BioSample: SAMD00066258
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F11, Run: 1772-123-072, Well: F11, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066258	ID: 6029546
+
+219: CAGE_4_F10
+Identifiers: BioSample: SAMD00066257
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F10, Run: 1772-123-072, Well: F10, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066257	ID: 6029545
+
+220: CAGE_4_F09
+Identifiers: BioSample: SAMD00066256
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F09, Run: 1772-123-072, Well: F09, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066256	ID: 6029544
+
+221: CAGE_4_F08
+Identifiers: BioSample: SAMD00066255
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F08, Run: 1772-123-072, Well: F08, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066255	ID: 6029543
+
+222: CAGE_4_F07
+Identifiers: BioSample: SAMD00066254
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F07, Run: 1772-123-072, Well: F07, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066254	ID: 6029542
+
+223: CAGE_4_F06
+Identifiers: BioSample: SAMD00066253
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F06, Run: 1772-123-072, Well: F06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066253	ID: 6029541
+
+224: CAGE_4_F05
+Identifiers: BioSample: SAMD00066252
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F05, Run: 1772-123-072, Well: F05, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066252	ID: 6029540
+
+225: CAGE_4_F04
+Identifiers: BioSample: SAMD00066251
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F04, Run: 1772-123-072, Well: F04, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066251	ID: 6029539
+
+226: CAGE_4_F03
+Identifiers: BioSample: SAMD00066250
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F03, Run: 1772-123-072, Well: F03, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066250	ID: 6029538
+
+227: CAGE_4_F02
+Identifiers: BioSample: SAMD00066249
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F02, Run: 1772-123-072, Well: F02, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066249	ID: 6029537
+
+228: CAGE_4_F01
+Identifiers: BioSample: SAMD00066248
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_F01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_F01, Run: 1772-123-072, Well: F01, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066248	ID: 6029536
+
+229: CAGE_4_E12
+Identifiers: BioSample: SAMD00066247
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E12, Run: 1772-123-072, Well: E12, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066247	ID: 6029535
+
+230: CAGE_4_E11
+Identifiers: BioSample: SAMD00066246
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E11, Run: 1772-123-072, Well: E11, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066246	ID: 6029534
+
+231: CAGE_4_E10
+Identifiers: BioSample: SAMD00066245
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E10, Run: 1772-123-072, Well: E10, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066245	ID: 6029533
+
+232: CAGE_4_E09
+Identifiers: BioSample: SAMD00066244
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E09, Run: 1772-123-072, Well: E09, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066244	ID: 6029532
+
+233: CAGE_4_E08
+Identifiers: BioSample: SAMD00066243
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E08, Run: 1772-123-072, Well: E08, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066243	ID: 6029531
+
+234: CAGE_4_E07
+Identifiers: BioSample: SAMD00066242
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E07, Run: 1772-123-072, Well: E07, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066242	ID: 6029530
+
+235: CAGE_4_E06
+Identifiers: BioSample: SAMD00066241
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E06, Run: 1772-123-072, Well: E06, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066241	ID: 6029529
+
+236: CAGE_4_E05
+Identifiers: BioSample: SAMD00066240
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E05, Run: 1772-123-072, Well: E05, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066240	ID: 6029528
+
+237: CAGE_4_E04
+Identifiers: BioSample: SAMD00066239
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E04, Run: 1772-123-072, Well: E04, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066239	ID: 6029527
+
+238: CAGE_4_E03
+Identifiers: BioSample: SAMD00066238
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E03, Run: 1772-123-072, Well: E03, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066238	ID: 6029526
+
+239: CAGE_4_E02
+Identifiers: BioSample: SAMD00066237
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E02, Run: 1772-123-072, Well: E02, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066237	ID: 6029525
+
+240: CAGE_4_E01
+Identifiers: BioSample: SAMD00066236
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_E01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_E01, Run: 1772-123-072, Well: E01, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066236	ID: 6029524
+
+241: CAGE_4_D12
+Identifiers: BioSample: SAMD00066235
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D12, Run: 1772-123-072, Well: D12, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066235	ID: 6029523
+
+242: CAGE_4_D11
+Identifiers: BioSample: SAMD00066234
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D11, Run: 1772-123-072, Well: D11, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066234	ID: 6029522
+
+243: CAGE_4_D10
+Identifiers: BioSample: SAMD00066233
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D10, Run: 1772-123-072, Well: D10, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066233	ID: 6029521
+
+244: CAGE_4_D09
+Identifiers: BioSample: SAMD00066232
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D09, Run: 1772-123-072, Well: D09, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066232	ID: 6029520
+
+245: CAGE_4_D08
+Identifiers: BioSample: SAMD00066231
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D08, Run: 1772-123-072, Well: D08, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066231	ID: 6029519
+
+246: CAGE_4_D07
+Identifiers: BioSample: SAMD00066230
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D07, Run: 1772-123-072, Well: D07, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066230	ID: 6029518
+
+247: CAGE_4_D06
+Identifiers: BioSample: SAMD00066229
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D06, Run: 1772-123-072, Well: D06, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066229	ID: 6029517
+
+248: CAGE_4_D05
+Identifiers: BioSample: SAMD00066228
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D05, Run: 1772-123-072, Well: D05, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066228	ID: 6029516
+
+249: CAGE_4_D04
+Identifiers: BioSample: SAMD00066227
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D04, Run: 1772-123-072, Well: D04, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066227	ID: 6029515
+
+250: CAGE_4_D03
+Identifiers: BioSample: SAMD00066226
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D03, Run: 1772-123-072, Well: D03, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066226	ID: 6029514
+
+
+251: CAGE_4_D02
+Identifiers: BioSample: SAMD00066225
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D02, Run: 1772-123-072, Well: D02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066225	ID: 6029513
+
+252: CAGE_4_D01
+Identifiers: BioSample: SAMD00066224
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_D01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_D01, Run: 1772-123-072, Well: D01, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066224	ID: 6029512
+
+253: CAGE_4_C12
+Identifiers: BioSample: SAMD00066223
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C12, Run: 1772-123-072, Well: C12, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066223	ID: 6029511
+
+254: CAGE_4_C11
+Identifiers: BioSample: SAMD00066222
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C11, Run: 1772-123-072, Well: C11, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066222	ID: 6029510
+
+255: CAGE_4_C10
+Identifiers: BioSample: SAMD00066221
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C10, Run: 1772-123-072, Well: C10, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066221	ID: 6029509
+
+256: CAGE_4_C09
+Identifiers: BioSample: SAMD00066220
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C09, Run: 1772-123-072, Well: C09, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066220	ID: 6029508
+
+257: CAGE_4_C08
+Identifiers: BioSample: SAMD00066219
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C08, Run: 1772-123-072, Well: C08, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066219	ID: 6029507
+
+258: CAGE_4_C07
+Identifiers: BioSample: SAMD00066218
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C07, Run: 1772-123-072, Well: C07, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066218	ID: 6029506
+
+259: CAGE_4_C06
+Identifiers: BioSample: SAMD00066217
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C06, Run: 1772-123-072, Well: C06, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066217	ID: 6029505
+
+260: CAGE_4_C05
+Identifiers: BioSample: SAMD00066216
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C05, Run: 1772-123-072, Well: C05, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066216	ID: 6029504
+
+261: CAGE_4_C04
+Identifiers: BioSample: SAMD00066215
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C04, Run: 1772-123-072, Well: C04, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066215	ID: 6029503
+
+262: CAGE_4_C03
+Identifiers: BioSample: SAMD00066214
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C03, Run: 1772-123-072, Well: C03, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066214	ID: 6029502
+
+263: CAGE_4_C02
+Identifiers: BioSample: SAMD00066213
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C02, Run: 1772-123-072, Well: C02, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066213	ID: 6029501
+
+264: CAGE_4_C01
+Identifiers: BioSample: SAMD00066212
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_C01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_C01, Run: 1772-123-072, Well: C01, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066212	ID: 6029500
+
+265: CAGE_4_B12
+Identifiers: BioSample: SAMD00066211
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B12, Run: 1772-123-072, Well: B12, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066211	ID: 6029499
+
+266: CAGE_4_B11
+Identifiers: BioSample: SAMD00066210
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B11, Run: 1772-123-072, Well: B11, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066210	ID: 6029498
+
+267: CAGE_4_B10
+Identifiers: BioSample: SAMD00066209
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B10, Run: 1772-123-072, Well: B10, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066209	ID: 6029497
+
+268: CAGE_4_B09
+Identifiers: BioSample: SAMD00066208
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B09, Run: 1772-123-072, Well: B09, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066208	ID: 6029496
+
+269: CAGE_4_B08
+Identifiers: BioSample: SAMD00066207
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B08, Run: 1772-123-072, Well: B08, Cell curation: Dead, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066207	ID: 6029495
+
+270: CAGE_4_B07
+Identifiers: BioSample: SAMD00066206
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B07, Run: 1772-123-072, Well: B07, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066206	ID: 6029494
+
+271: CAGE_4_B06
+Identifiers: BioSample: SAMD00066205
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B06, Run: 1772-123-072, Well: B06, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066205	ID: 6029493
+
+272: CAGE_4_B05
+Identifiers: BioSample: SAMD00066204
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B05, Run: 1772-123-072, Well: B05, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066204	ID: 6029492
+
+273: CAGE_4_B04
+Identifiers: BioSample: SAMD00066203
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B04, Run: 1772-123-072, Well: B04, Cell curation: Green, Timepoint: t06, QC pass: TRUE, Lane4
+Accession: SAMD00066203	ID: 6029491
+
+274: CAGE_4_B03
+Identifiers: BioSample: SAMD00066202
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B03, Run: 1772-123-072, Well: B03, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066202	ID: 6029490
+
+275: CAGE_4_B02
+Identifiers: BioSample: SAMD00066201
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B02, Run: 1772-123-072, Well: B02, Cell curation: No, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066201	ID: 6029489
+
+276: CAGE_4_B01
+Identifiers: BioSample: SAMD00066200
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_B01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_B01, Run: 1772-123-072, Well: B01, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066200	ID: 6029488
+
+277: CAGE_4_A12
+Identifiers: BioSample: SAMD00066199
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A12"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A12, Run: 1772-123-072, Well: A12, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066199	ID: 6029487
+
+278: CAGE_4_A11
+Identifiers: BioSample: SAMD00066198
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A11"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A11, Run: 1772-123-072, Well: A11, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066198	ID: 6029486
+
+279: CAGE_4_A10
+Identifiers: BioSample: SAMD00066197
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A10"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A10, Run: 1772-123-072, Well: A10, Cell curation: Double, Timepoint: NA, QC pass: FALSE, Lane4
+Accession: SAMD00066197	ID: 6029485
+
+280: CAGE_4_A09
+Identifiers: BioSample: SAMD00066196
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A09"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A09, Run: 1772-123-072, Well: A09, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066196	ID: 6029484
+
+281: CAGE_4_A08
+Identifiers: BioSample: SAMD00066195
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A08"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A08, Run: 1772-123-072, Well: A08, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066195	ID: 6029483
+
+282: CAGE_4_A07
+Identifiers: BioSample: SAMD00066194
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A07"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A07, Run: 1772-123-072, Well: A07, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066194	ID: 6029482
+
+283: CAGE_4_A06
+Identifiers: BioSample: SAMD00066193
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A06"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A06, Run: 1772-123-072, Well: A06, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066193	ID: 6029481
+
+284: CAGE_4_A05
+Identifiers: BioSample: SAMD00066192
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A05"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A05, Run: 1772-123-072, Well: A05, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066192	ID: 6029480
+
+285: CAGE_4_A04
+Identifiers: BioSample: SAMD00066191
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A04"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A04, Run: 1772-123-072, Well: A04, Cell curation: G/R, Timepoint: t00, QC pass: TRUE, Lane4
+Accession: SAMD00066191	ID: 6029479
+
+286: CAGE_4_A03
+Identifiers: BioSample: SAMD00066190
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A03"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A03, Run: 1772-123-072, Well: A03, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066190	ID: 6029478
+
+287: CAGE_4_A02
+Identifiers: BioSample: SAMD00066189
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A02"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A02, Run: 1772-123-072, Well: A02, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066189	ID: 6029477
+
+288: CAGE_4_A01
+Identifiers: BioSample: SAMD00066188
+Organism: Homo sapiens
+Attributes:
+    /sample name="CAGE_4_A01"
+    /biomaterial provider="ATCC"
+    /cell line="A549"
+    /cell type="epithelial"
+    /development stage="58 years old"
+    /disease="carcinoma"
+    /sex="male"
+    /tissue="lung"
+Description:
+Sample ID: CAGE_4_A01, Run: 1772-123-072, Well: A01, Cell curation: Red, Timepoint: t24, QC pass: TRUE, Lane4
+Accession: SAMD00066188	ID: 6029476
+
+

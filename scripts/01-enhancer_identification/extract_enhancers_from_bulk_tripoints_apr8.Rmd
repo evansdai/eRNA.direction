@@ -1,0 +1,1103 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(ggseqlogo)
+library(tidyverse)
+library(CAGEfightR)
+library(factoextra)
+library(ggsignif)
+# library(tidyquant)
+
+library(BSgenome.Hsapiens.UCSC.hg19)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+```
+
+```{r}
+bsg <- BSgenome.Hsapiens.UCSC.hg19
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene 
+
+# Script wide settings 
+register(SnowParam(3))
+# register(MulticoreParam(3)) # Parallel execution when possible
+theme_set(theme_light()) # White theme for ggplot2 figures
+```
+
+
+## input data from bulk bw files
+```{r}
+bw_bulk_summary <- read.csv("~/albin_lab/single cell cage/data/bw_bulk_summary.csv", row.names = 'id')
+
+# Setup paths to file on hard drive 
+bw_plus <- as.character(bw_bulk_summary$BigWigPlus)
+bw_minus <- as.character(bw_bulk_summary$BigWigMinus)
+# Save as named BigWigFileList 
+bw_plus <- BigWigFileList(bw_plus) 
+bw_minus <- BigWigFileList(bw_minus) 
+names(bw_plus) <- names(bw_minus) <- rownames(bw_bulk_summary)
+```
+
+
+```{r}
+CTSSs_bulk <- suppressWarnings(quantifyCTSSs(plusStrand = bw_plus, minusStrand = bw_minus, genome = seqinfo(bsg), design = bw_bulk_summary))
+CTSSs_bulk <- CTSSs_bulk %>% calcTPM() %>% calcPooled()
+```
+
+```{r}
+CTSSs_bulk_t0 = CTSSs_bulk[,1:3]
+CTSSs_bulk_t0 <- CTSSs_bulk_t0 %>% calcTPM() %>% calcPooled()
+CTSSs_bulk_t6 = CTSSs_bulk[,4:6]
+CTSSs_bulk_t6 <- CTSSs_bulk_t6 %>% calcTPM() %>% calcPooled()
+CTSSs_bulk_t24 = CTSSs_bulk[,7:9]
+CTSSs_bulk_t24 <- CTSSs_bulk_t24 %>% calcTPM() %>% calcPooled()
+```
+
+## Input single cell bw files
+```{r}
+bw_summary_single_cell <- read.csv("~/albin_lab/single cell cage/data/bw_singlecell_summary.csv", row.names = 'id')
+
+# Setup paths to file on hard drive 
+bw_plus <- as.character(bw_summary_single_cell$BigWigPlus)
+bw_minus <- as.character(bw_summary_single_cell$BigWigMinus)
+# Save as named BigWigFileList 
+bw_plus <- BigWigFileList(bw_plus) 
+bw_minus <- BigWigFileList(bw_minus) 
+names(bw_plus) <- names(bw_minus) <- rownames(bw_summary_single_cell)
+
+```
+
+## Quantify CTSS_singlecell
+```{r}
+CTSSs_singlecell <- suppressWarnings(quantifyCTSSs(plusStrand = bw_plus, minusStrand = bw_minus, genome = seqinfo(bsg), design = bw_summary_single_cell))
+CTSSs_singlecell <- CTSSs_singlecell %>% calcTPM() %>% calcPooled()
+```
+```{r}
+CTSSs_singlecell_t0 = CTSSs_singlecell[,CTSSs_singlecell %>% colData() %>% .[,'timepoint'] == 0]
+CTSSs_singlecell_t0 <- CTSSs_singlecell_t0 %>% calcTPM() %>% calcPooled()
+
+CTSSs_singlecell_t6 = CTSSs_singlecell[,CTSSs_singlecell %>% colData() %>% .[,'timepoint'] == 6]
+CTSSs_singlecell_t6 <- CTSSs_singlecell_t6 %>% calcTPM() %>% calcPooled()
+
+CTSSs_singlecell_t24 = CTSSs_singlecell[,CTSSs_singlecell %>% colData() %>% .[,'timepoint'] == 24]
+CTSSs_singlecell_t24 <- CTSSs_singlecell_t24 %>% calcTPM() %>% calcPooled()
+
+```
+
+```{r}
+my_preprocessing<-function(CTSSs_object, minSamples = 2){
+  TCs_object <- quickTSSs(CTSSs_object)
+  TSSs_object <- TCs_object %>%
+    calcTPM() %>%
+    subsetBySupport(inputAssay="TPM", unexpressed=1, minSamples=minSamples)
+  BCs_object <- quickEnhancers(CTSSs_object) %>%
+    subsetBySupport(inputAssay="counts", unexpressed=0, minSamples=minSamples)
+  
+  TSSs_object <- assignTxID(TSSs_object, txModels = txdb, swap="thick")
+  TSSs_object <- assignTxType(TSSs_object, txModels = txdb, swap="thick")
+  BCs_object <- assignTxType(BCs_object, txModels = txdb, swap='thick')
+  Enhancers_object <- subset(BCs_object, txType %in% c("intergenic", "intron"))
+  # Clean colData 
+  # TSSs_bulk$totalTags <- NULL
+  # Enhancers_bulk$totalTags <- NULL
+  # Clean rowData 
+  # rowData(TSSs_bulk)$balance <- NA 
+  # rowData(TSSs_bulk)$bidirectionality <- NA 
+  # rowData(Enhancers_bulk)$txID <- NA
+  # Add labels for making later retrieval easy 
+  # rowData(TSSs_bulk)$clusterType <- "TSS" 
+  # rowData(Enhancers_bulk)$clusterType <- "Enhancer"
+  # RSE_bulk <- combineClusters(object1=TSSs_bulk, object2 = Enhancers_bulk, removeIfOverlapping="object1")
+  # RSE_bulk <- calcTPM(RSE_bulk)
+  return(list(TCs = TCs_object, TSSs = TSSs_object, BCs = BCs_object, 
+              Enhancers = Enhancers_object))
+}
+```
+
+```{r}
+
+info_bulk_t0 = my_preprocessing(CTSSs_bulk_t0)
+info_bulk_t6 = my_preprocessing(CTSSs_bulk_t6)
+info_bulk_t24 = my_preprocessing(CTSSs_bulk_t24)
+```
+
+```{r}
+info_bulk_t_all = my_preprocessing(CTSSs_bulk, minSamples = 8)
+info_bulk_t_all$Enhancers %>% rowRanges()
+```
+```{r}
+info_bulk_at_least_3 = my_preprocessing(CTSSs_bulk, minSamples = 2)
+info_bulk_at_least_3$Enhancers %>% rowRanges()
+```
+
+
+```{r}
+my_draw_3timepoints<-function(ctss_sc_t0, ctss_sc_t6, ctss_sc_t24, ctss_bk_t0, ctss_bk_t6, ctss_bk_t24, enhancer_object, folder){
+  # Genome track 
+  axis_track <- GenomeAxisTrack()
+  # Annotation track
+  tx_track <- GeneRegionTrack(txdb, name = "Gene Models", col = NA, fill = "bisque4", shape = "arrow", showId = TRUE)
+    
+plot_once<-function(i){
+    # Make plotting region 
+    plot_region <- enhancer_object %>% 
+      rowRanges %>% 
+      .[i] #%>% 
+      # add(100) %>% 
+      #unstrand()
+    
+    ctss_track_singlecell_t0 <- ctss_sc_t0 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_singlecell_t0")
+
+    ctss_track_t0 <- ctss_bk_t0 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t0")
+
+    ctss_track_singlecell_t6 <- ctss_sc_t6 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_singlecell_t6")
+
+    ctss_track_t6 <- ctss_bk_t6 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t6")
+    
+    ctss_track_singlecell_t24 <- ctss_sc_t24 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_singlecell_t24")
+
+    ctss_track_t24 <- ctss_bk_t24 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t24")
+  
+    # Cluster track 
+    cluster_track <- enhancer_object %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>% 
+      trackClusters(name = "Clusters", col = NA, showId=TRUE)
+  
+    png(paste(folder,i,".png", sep = ''),  width     = 25, height    = 35, units     = "cm", res       = 100,)
+  
+  
+    plotTracks(list(axis_track, ctss_track_singlecell_t0, ctss_track_t0,  ctss_track_singlecell_t6, ctss_track_t6,  ctss_track_singlecell_t24, ctss_track_t24, cluster_track, tx_track),
+             from = start(plot_region), to=end(plot_region),
+             chromosome = as.character(seqnames(plot_region)))
+    dev.off() 
+}
+
+  for(i in 1:100){
+    plot_once(i)
+  }
+}
+```
+
+```{r}
+my_draw_3timepoints<-function(ctss_sc_t0, ctss_sc_t6, ctss_sc_t24, ctss_bk_t0, ctss_bk_t6, ctss_bk_t24, enhancer_object, folder){
+  # Genome track 
+  axis_track <- GenomeAxisTrack()
+  # Annotation track
+  tx_track <- GeneRegionTrack(txdb, name = "Gene Models", col = NA, fill = "bisque4", shape = "arrow", showId = TRUE)
+
+  for(i in 1:100){
+    # Make plotting region 
+    plot_region <- enhancer_object %>% 
+      rowRanges %>% 
+      .[i] #%>% 
+      # add(100) %>% 
+      #unstrand()
+    
+    #ctss_track_singlecell_t0 <- ctss_sc_t0 %>% 
+    #  rowRanges %>% 
+    #  subsetByOverlaps(plot_region) %>%
+    #  trackCTSS(name = "CTSSs_singlecell_t0")
+
+    ctss_track_t0 <- ctss_bk_t0 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t0")
+
+    #ctss_track_singlecell_t6 <- ctss_sc_t6 %>% 
+    #  rowRanges %>% 
+    #  subsetByOverlaps(plot_region) %>%
+    #  trackCTSS(name = "CTSSs_singlecell_t6")
+
+    ctss_track_t6 <- ctss_bk_t6 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t6")
+    
+    #ctss_track_singlecell_t24 <- ctss_sc_t24 %>% 
+    #  rowRanges %>% 
+    #  subsetByOverlaps(plot_region) %>%
+    #  trackCTSS(name = "CTSSs_singlecell_t24")
+
+    ctss_track_t24 <- ctss_bk_t24 %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk_t24")
+  
+    # Cluster track 
+    cluster_track <- enhancer_object %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>% 
+      trackClusters(name = "Clusters", col = NA, showId=TRUE)
+  
+    png(paste(folder,i,".png", sep = ''),  width     = 25, height    = 35, units     = "cm", res = 100,)
+  
+  
+    plotTracks(list(axis_track, ctss_track_t0,ctss_track_t6,ctss_track_t24, cluster_track, tx_track),
+             from = start(plot_region), to=end(plot_region),
+             chromosome = as.character(seqnames(plot_region)))
+    dev.off() 
+  }
+}
+```
+
+```{r}
+my_draw_3timepoints(ctss_sc_t0 = CTSSs_singlecell_t0, ctss_sc_t6 = CTSSs_singlecell_t6, ctss_sc_t24 = CTSSs_singlecell_t24, ctss_bk_t0 = CTSSs_bulk_t0, ctss_bk_t6 = CTSSs_bulk_t6, ctss_bk_t24 = CTSSs_bulk_t24, enhancer_object = info_bulk_t_all$Enhancers, folder =  'C:/Users/evans/Documents/albin_lab/Notes/tracks/tri-timepoints/')
+```
+
+
+```{r}
+my_draw_singlevsbulk<-function(enhancers_object, CTSS_singlecell_object, CTSSs_bulk_object, folder){
+  # Genome track 
+  axis_track <- GenomeAxisTrack()
+  # Annotation track
+  tx_track <- GeneRegionTrack(txdb, name = "Gene Models", col = NA, fill = "bisque4", shape = "arrow", showId = TRUE)
+    
+  for(i in 1:100){
+  
+    # Make plotting region 
+    plot_region <- enhancers_object %>% 
+      rowRanges %>% 
+      .[i] #%>% 
+      # add(100) %>% 
+      #unstrand()
+    
+    ctss_track_singlecell <- CTSS_singlecell_object %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_singlecell")
+  
+    # CTSSs track
+    ctss_track <- CTSSs_bulk_object %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>%
+      trackCTSS(name = "CTSSs_bulk")
+  
+    # Cluster track 
+    cluster_track <- enhancers_object %>% 
+      rowRanges %>% 
+      subsetByOverlaps(plot_region) %>% 
+      trackClusters(name = "Clusters", col = NA, showId=TRUE)
+  
+    png(paste(folder,i,".png", sep = ''),  width     = 15, height    = 15, units     = "cm", res       = 100,)
+  
+  
+    plotTracks(list(axis_track, ctss_track_singlecell, ctss_track, cluster_track, tx_track),
+             from = start(plot_region), to=end(plot_region),
+             chromosome = as.character(seqnames(plot_region)))
+    dev.off() 
+  
+  }
+}
+
+```
+
+
+```{r}
+calc_balance_for_each_enhancer <- function(enhancer, re_temp, chr_temp, start_temp, end_temp, avg_peak_plus, avg_peak_minus){
+  
+  PU = subsetByOverlaps(re_temp, GRanges(seqnames=chr_temp, ranges=start_temp:((avg_peak_plus+avg_peak_minus)/2),strand='+')) %>% assay %>% sum()
+  
+  PD = subsetByOverlaps(re_temp, GRanges(seqnames=chr_temp, ranges=(1+(avg_peak_plus+avg_peak_minus)/2):end_temp,strand='+')) %>% assay %>% sum()
+  
+  
+  MD = subsetByOverlaps(re_temp, GRanges(seqnames=chr_temp, ranges=start_temp:((avg_peak_plus+avg_peak_minus)/2),strand='-')) %>% assay %>% sum()
+  
+  MU = subsetByOverlaps(re_temp, GRanges(seqnames=chr_temp, ranges=(1+(avg_peak_plus+avg_peak_minus)/2):end_temp,strand='-')) %>% assay %>% sum()
+  
+  balanceBC(PD = PD,MD = MD,PU = PU,MU = MU)
+}
+
+
+calc_bidirectproportion_cell_for_each_enhancers<-function(enhancers, CTSSs_singlecell, CTSSs_bulk){
+  
+  #CTSSs_singlecell = subsetByOverlaps(CTSSs_singlecell,enhancers)
+  CTSSs_singlecell = CTSSs_singlecell %>% calcTPM() %>% calcPooled()
+  
+  #CTSSs_bulk = subsetByOverlaps(CTSSs_bulk,enhancers)
+  CTSSs_bulk = CTSSs_bulk %>% calcTPM() %>% calcPooled()
+  
+  bidirect_cell_num = c()
+  plus_cell_num = c()
+  minus_cell_num = c()
+  bidirect_cell_sumcount = c()
+  plus_cell_sumcount = c()
+  minus_cell_sumcount = c()
+  
+  bidirect_cell_sumTPM = c()
+  plus_cell_sumTPM = c()
+  minus_cell_sumTPM = c()
+  
+  max_peaks_plus = c()
+  max_peaks_minus = c()
+  avg_peaks_plus = c()
+  avg_peaks_minus = c()
+  max_peak_mid_pos = c()
+  BCs_pooled = c()
+  BCs_bulk = c()
+  print(paste("loop over",length(enhancers),"enhancers."))
+  for(i in 1:length(enhancers)){
+    if(mod(i,10) == 0){
+      print(i)
+    }
+    start_temp = start(rowRanges(enhancers))[i]
+    end_temp = end(rowRanges(enhancers))[i]
+    chr_temp = as.vector(seqnames(rowRanges(enhancers)))[i]
+    roi_temp = GRanges(seqnames=chr_temp,
+               ranges=start_temp:end_temp)
+    re_temp = subsetByOverlaps(CTSSs_singlecell, roi_temp)
+    en_temp = subsetByOverlaps(CTSSs_bulk, roi_temp)
+    plus_temp = re_temp[strand(re_temp) == '+']
+    minus_temp = re_temp[strand(re_temp) == '-']
+    en_plus_temp = en_temp[strand(en_temp) == '+']
+    en_minus_temp = en_temp[strand(en_temp) == '-']
+    
+    plus_sumofpeaks_temp = plus_temp %>% assay(.,'TPM') %>% colSums
+    #plus_sumofpeaks_temp = plus_temp %>% score
+    plus_cells_temp = plus_sumofpeaks_temp[plus_sumofpeaks_temp>0] %>% names
+    
+    minus_sumofpeaks_temp = minus_temp %>% assay(.,'TPM') %>% colSums
+    #minus_sumofpeaks_temp = minus_temp %>% score
+    minus_cells_temp = minus_sumofpeaks_temp[minus_sumofpeaks_temp>0] %>% names
+    #print(paste(plus_cells_temp, minus_cells_temp))
+    bidirect_cells_temp = intersect(plus_cells_temp, minus_cells_temp)
+    plus_cells_temp = setdiff(plus_cells_temp, bidirect_cells_temp)
+    minus_cells_temp = setdiff(minus_cells_temp, bidirect_cells_temp)
+    
+    bidirect_cell_num = c(bidirect_cell_num, length(bidirect_cells_temp))
+    plus_cell_num = c(plus_cell_num, length(plus_cells_temp))
+    minus_cell_num = c(minus_cell_num, length(minus_cells_temp))
+    
+    bidirect_cell_sumcount = c(bidirect_cell_sumcount, re_temp %>% assay() %>% colSums %>% .[bidirect_cells_temp] %>% sum)
+    plus_cell_sumcount = c(plus_cell_sumcount, re_temp %>% assay() %>% colSums %>% .[plus_cells_temp] %>% sum)
+    minus_cell_sumcount = c(minus_cell_sumcount, re_temp %>% assay() %>% colSums %>% .[minus_cells_temp] %>% sum)
+    
+    bidirect_cell_sumTPM = c(bidirect_cell_sumTPM, re_temp %>% assay(.,'TPM') %>% colSums %>% .[bidirect_cells_temp] %>% sum)
+    plus_cell_sumTPM = c(plus_cell_sumTPM, re_temp %>% assay(.,'TPM') %>% colSums %>% .[plus_cells_temp] %>% sum)
+    minus_cell_sumTPM = c(minus_cell_sumTPM, re_temp %>% assay(.,'TPM') %>% colSums %>% .[minus_cells_temp] %>% sum)
+    
+    # browser()
+    max_peak_plus = rowRanges(en_plus_temp)[en_plus_temp %>% rowData %>% .[,'score'] %>% which.max,] %>% pos
+    max_peak_minus = rowRanges(en_minus_temp)[en_minus_temp %>% rowData %>% .[,'score'] %>% which.max,] %>% pos
+    
+    
+    
+    avg_peak_plus = floor(sum(en_plus_temp %>% rowData %>% .[,'score'] * en_plus_temp %>% rowRanges %>% pos) / sum(en_plus_temp %>% rowData %>% .[,'score']))
+    
+    avg_peak_minus = floor(sum(en_minus_temp %>% rowData %>% .[,'score'] * en_minus_temp %>% rowRanges %>% pos) / sum(en_minus_temp %>% rowData %>% .[,'score']))
+    
+    bc_pooled = calc_balance_for_each_enhancer(enhancer = enhancers[i], re_temp = re_temp, chr_temp = chr_temp, start_temp = start_temp, end_temp = end_temp, avg_peak_plus = avg_peak_plus, avg_peak_minus = avg_peak_minus)
+    
+    bc_bulk = calc_balance_for_each_enhancer(enhancer = enhancers[i], re_temp = en_temp, chr_temp = chr_temp, start_temp = start_temp, end_temp = end_temp, avg_peak_plus = avg_peak_plus, avg_peak_minus = avg_peak_minus)
+    
+    max_peaks_plus = c(max_peaks_plus , max_peak_plus)
+    max_peaks_minus = c(max_peaks_minus, max_peak_minus)
+    avg_peaks_plus = c(avg_peaks_plus, avg_peak_plus)
+    avg_peaks_minus = c(avg_peaks_minus, avg_peak_minus)
+    BCs_pooled = c(BCs_pooled, bc_pooled)
+    BCs_bulk = c(BCs_bulk, bc_bulk)
+  }
+  
+  max_peak_mid_pos = floor((max_peaks_plus + max_peaks_minus)/2)
+  
+  avg_peak_mid_pos = floor((avg_peaks_plus + avg_peaks_minus)/2)
+
+  rowRanges(enhancers)$plus_peak = max_peaks_plus
+  rowRanges(enhancers)$minus_peak = max_peaks_minus
+  rowRanges(enhancers)$plus_avg_peak = avg_peaks_plus
+  rowRanges(enhancers)$minus_avg_peak = avg_peaks_minus
+  rowRanges(enhancers)$peak_mid_points = max_peak_mid_pos
+  rowRanges(enhancers)$avg_peak_mid_points = avg_peak_mid_pos
+  rowRanges(enhancers)$bidirect_cell_num = bidirect_cell_num
+  rowRanges(enhancers)$plus_cell_num = plus_cell_num
+  rowRanges(enhancers)$minus_cell_num = minus_cell_num
+  rowRanges(enhancers)$bidirect_cell_sumcount = bidirect_cell_sumcount
+  rowRanges(enhancers)$plus_cell_sumcount = plus_cell_sumcount
+  rowRanges(enhancers)$minus_cell_sumcount = minus_cell_sumcount
+  
+  rowRanges(enhancers)$bidirect_cell_sumTPM = bidirect_cell_sumTPM
+  rowRanges(enhancers)$plus_cell_sumTPM = plus_cell_sumTPM
+  rowRanges(enhancers)$minus_cell_sumTPM = minus_cell_sumTPM
+  
+  rowRanges(enhancers)$BCs_bulk = BCs_bulk
+  rowRanges(enhancers)$BCs_pooled = BCs_pooled
+  
+  return(enhancers)
+}
+
+#test = calc_bidirectproportion_cell_for_each_enhancers(Enhancers_bulk[1:10], CTSSs_singlecell, CTSSs_bulk)
+
+
+#rowRanges(test)
+
+```
+
+```{r}
+#enhancers_based_on_bulk = calc_bidirectproportion_cell_for_each_enhancers(Enhancers_bulk, CTSSs_singlecell, CTSSs_bulk)
+
+enhancers_based_on_bulk_t0 = calc_bidirectproportion_cell_for_each_enhancers(enhancers = info_bulk_t0$Enhancers, CTSSs_singlecell = CTSSs_singlecell_t0, CTSSs_bulk = CTSSs_bulk_t0)
+
+
+enhancers_based_on_bulk_t6 = calc_bidirectproportion_cell_for_each_enhancers(enhancers = info_bulk_t6$Enhancers, CTSSs_singlecell = CTSSs_singlecell_t6, CTSSs_bulk = CTSSs_bulk_t6)
+
+
+enhancers_based_on_bulk_t24 = calc_bidirectproportion_cell_for_each_enhancers(enhancers = info_bulk_t24$Enhancers, CTSSs_singlecell = CTSSs_singlecell_t24, CTSSs_bulk = CTSSs_bulk_t24)
+
+```
+
+```{r}
+subset_with_and_without_sc <- function(enhancers){
+  
+  enhancers_based_on_bulk_withsinglecell = subset(enhancers, (bidirect_cell_num + plus_cell_num > 0)|(bidirect_cell_num + minus_cell_num > 0 ))
+
+  enhancers_based_on_bulk_withoutsinglecell = subset(enhancers, (bidirect_cell_num + plus_cell_num  + minus_cell_num == 0 ))
+
+  return(list(with_sc = enhancers_based_on_bulk_withsinglecell, without_sc = enhancers_based_on_bulk_withoutsinglecell))
+}
+
+
+```
+
+```{r}
+subset_with_and_without_sc(enhancers_based_on_bulk_t24)
+```
+
+```{r}
+
+
+rowRanges(enhancers_based_on_bulk_t0)$distance_max_peak = rowRanges(enhancers_based_on_bulk_t0)$plus_peak - rowRanges(enhancers_based_on_bulk_t0)$minus_peak
+
+rowRanges(enhancers_based_on_bulk_t0)$distance_avg_peak = rowRanges(enhancers_based_on_bulk_t0)$plus_avg_peak - rowRanges(enhancers_based_on_bulk_t0)$minus_avg_peak
+
+rowRanges(enhancers_based_on_bulk_t6)$distance_max_peak = rowRanges(enhancers_based_on_bulk_t6)$plus_peak - rowRanges(enhancers_based_on_bulk_t6)$minus_peak
+
+rowRanges(enhancers_based_on_bulk_t6)$distance_avg_peak = rowRanges(enhancers_based_on_bulk_t6)$plus_avg_peak - rowRanges(enhancers_based_on_bulk_t6)$minus_avg_peak
+
+rowRanges(enhancers_based_on_bulk_t24)$distance_max_peak = rowRanges(enhancers_based_on_bulk_t24)$plus_peak - rowRanges(enhancers_based_on_bulk_t24)$minus_peak
+
+rowRanges(enhancers_based_on_bulk_t24)$distance_avg_peak = rowRanges(enhancers_based_on_bulk_t24)$plus_avg_peak - rowRanges(enhancers_based_on_bulk_t24)$minus_avg_peak
+
+info_bulk_t0$Detailed_Enhancers = enhancers_based_on_bulk_t0
+info_bulk_t6$Detailed_Enhancers = enhancers_based_on_bulk_t6
+info_bulk_t24$Detailed_Enhancers = enhancers_based_on_bulk_t24
+
+
+info_bulk_t0$SC_Validated_Enhancers = subset_with_and_without_sc(enhancers_based_on_bulk_t0)
+info_bulk_t6$SC_Validated_Enhancers = subset_with_and_without_sc(enhancers_based_on_bulk_t6)
+info_bulk_t24$SC_Validated_Enhancers = subset_with_and_without_sc(enhancers_based_on_bulk_t24)
+```
+
+
+```{r}
+library('annotatr')
+fantom_enhancers = build_annotations(genome='hg19', annotations = c('hg19_enhancers_fantom'))
+
+hacer_enhancers_brief <- read.csv("~/albin_lab/single cell cage/data/hacer_enhancers_brief.csv")
+hacer_enhancers = makeGRangesFromDataFrame(hacer_enhancers_brief)
+```
+
+```{r}
+count_in_type<-function(enhancers,typeset){
+  validate_enhancers = countOverlaps(rowRanges(enhancers), typeset, )
+  return(length(validate_enhancers[validate_enhancers>0]))
+}
+
+subset_in_type<-function(enhancers,typeset){
+  validate_enhancers = countOverlaps(rowRanges(enhancers), typeset, )
+  return(validate_enhancers[validate_enhancers>0])
+}
+
+```
+
+```{r}
+count_in_type(enhancers_based_on_bulk_t0, fantom_enhancers)
+count_in_type(enhancers_based_on_bulk_t6, fantom_enhancers)
+count_in_type(enhancers_based_on_bulk_t24, fantom_enhancers)
+```
+
+
+```{r}
+count_in_type(enhancers_based_on_bulk_t0, hacer_enhancers)
+count_in_type(enhancers_based_on_bulk_t6, hacer_enhancers)
+count_in_type(enhancers_based_on_bulk_t24, hacer_enhancers)
+```
+
+```{r}
+#count_in_type(enhancers_based_on_bulk, fantom_enhancers)
+
+#count_in_type(enhancers_based_on_bulk, hacer_enhancers)
+
+#count_in_type(enhancers_based_on_bulk_withsinglecell, fantom_enhancers)
+
+#count_in_type(enhancers_based_on_bulk_withsinglecell, hacer_enhancers)
+
+#count_in_type(enhancers_based_on_bulk, fantom_enhancers)
+
+#count_in_type(enhancers_based_on_bulk, hacer_enhancers)
+
+#count_in_type(Enhancers_pooled, fantom_enhancers)
+
+#count_in_type(enhancers_based_on_bulk, hacer_enhancers)
+
+```
+
+
+
+
+
+```{r}
+
+
+#rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$distance_max_peak = rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$plus_peak - rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$minus_peak
+
+#rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$distance_avg_peak = rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$plus_avg_peak - rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$minus_avg_peak
+
+
+#rowRanges(enhancers_based_on_bulk_withsinglecell)$distance_max_peak = rowRanges(enhancers_based_on_bulk_withsinglecell)$plus_peak - rowRanges(enhancers_based_on_bulk_withsinglecell)$minus_peak
+
+#rowRanges(enhancers_based_on_bulk_withsinglecell)$distance_avg_peak = rowRanges(enhancers_based_on_bulk_withsinglecell)$plus_avg_peak - rowRanges(enhancers_based_on_bulk_withsinglecell)$minus_avg_peak
+```
+
+
+```{r}
+#end(enhancers_based_on_bulk_withsinglecell_fantom_labeled) - rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$peak_mid_points
+```
+
+
+```{r}
+extract_enhancer_seqs<-function(enhancers, upstream = 1000, downstream = 1000){
+  start(enhancers) = rowRanges(enhancers)$avg_peak_mid_points 
+  # start(enhancers) = rowRanges(enhancers)$avg_peak_mid_points
+  end(enhancers) = rowRanges(enhancers)$avg_peak_mid_points 
+  seq_enhancers = enhancers %>% rowRanges %>% promoters(upstream=upstream, downstream=downstream) %>% getSeq(bsg, .)
+  return(seq_enhancers)
+}
+
+
+
+info_bulk_t0$Seqs_enhancers_1000 = extract_enhancer_seqs(info_bulk_t0$Detailed_Enhancers)
+
+info_bulk_t6$Seqs_enhancers_1000 = extract_enhancer_seqs(info_bulk_t6$Detailed_Enhancers)
+
+info_bulk_t24$Seqs_enhancers_1000 = extract_enhancer_seqs(info_bulk_t24$Detailed_Enhancers)
+
+
+
+#seqs_enhancers_based_on_bulk_withsinglecell_fantom_labeled =  extract_enhancer_seqs(enhancers_based_on_bulk_withsinglecell_fantom_labeled)
+
+#seqs_enhancers_based_on_bulk_withsinglecell =  extract_enhancer_seqs(enhancers_based_on_bulk_withsinglecell)
+
+#seqs_enhancers_based_on_bulk_withoutsinglecell =  extract_enhancer_seqs(enhancers_based_on_bulk_withoutsinglecell)
+
+#seqs_enhancers_based_on_bulk =  extract_enhancer_seqs(enhancers_based_on_bulk)
+
+```
+
+
+promoters()
+The full range is defined as, (start(x) - upstream) to (start(x) + downstream - 1). For documentation for using promoters on a GRanges object see ?`promoters,GenomicRanges-method` in the GenomicRanges package.
+
+
+```{r}
+
+calc_gc_by_pos <- function(seqs_enhancers){
+  gc_ratios = c()
+  for(i in 1:width(seqs_enhancers)){
+    gc_i = as.character(as.character(subseq(seqs_enhancers, start=i,end=i)))
+    gc_ratio = sum(str_count(gc_i, 'C') + str_count(gc_i, 'G'))/length(seqs_enhancers)
+    gc_ratios = c(gc_ratios, gc_ratio)
+  }
+  return(gc_ratios)
+}
+
+```
+
+
+
+
+
+```{r}
+
+plot_gc <- function(seqs_enhancers, title){
+  
+df_gc = data.frame(pos = (-width(seqs_enhancers)/2+1):(width(seqs_enhancers)/2), gc = calc_gc_by_pos(seqs_enhancers))
+
+ggplot(df_gc, aes(pos, gc))+
+  geom_point() +
+  geom_line(method='lm', formula= y~x)+
+  geom_smooth(method='loess', formula= y~x)+
+  ylab('GC content')+
+  xlab('Position (bp)')+
+  ylim(c(0.45,0.6))+
+  ggtitle(paste(title," (",length(seqs_enhancers),")", sep = ''))
+}
+```
+
+```{r}
+plot_gc(info_bulk_t0$Seqs_enhancers_1000, title = 'GC% when time = 0')
+plot_gc(info_bulk_t6$Seqs_enhancers_1000, title = 'GC% when time = 6')
+plot_gc(info_bulk_t24$Seqs_enhancers_1000, title = 'GC% when time = 24')
+
+```
+
+```{r}
+plot_gc(info_bulk_t0$Seqs_enhancers_1000, title = 'GC% when time = 0')
+plot_gc(info_bulk_t6$Seqs_enhancers_1000, title = 'GC% when time = 6')
+plot_gc(info_bulk_t24$Seqs_enhancers_1000, title = 'GC% when time = 24')
+
+
+```
+
+```{r}
+
+plot_gc(seqs_enhancers_based_on_bulk)
+
+ggsave('Mar18_gc_by_pos.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 6, height=4, limitsize = FALSE)
+
+plot_gc(seqs_enhancers_based_on_bulk_withsinglecell)
+
+ggsave('Mar18_gc_by_pos_singlecell.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 6, height=4, limitsize = FALSE)
+
+plot_gc(seqs_enhancers_based_on_bulk_withoutsinglecell)
+
+ggsave('Mar18_gc_by_pos_nosinglecell.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 6, height=4, limitsize = FALSE)
+```
+
+
+
+```{r}
+
+distance_max = rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$distance_max_peak
+
+distance_avg = rowRanges(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$distance_avg_peak
+
+```
+
+```{r}
+calc_gc_by_chunk <- function(seqs_enhancers, chunk_width = 500){
+  gc_ratios = data.frame(row.names = names(seqs_enhancers))
+  for(i in seq(1,nchar(seqs_enhancers)[1],chunk_width)){
+    seq_i = as.character(subseq(seqs_enhancers, start=i,end=i+chunk_width-1))
+    gc_ratio_i = sapply(seq_i, function(x){sum(str_count(x, 'C') + str_count(x, 'G'))/chunk_width})
+    #browser()
+    #gc_ratios[paste('pos',i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+    gc_ratios[paste(i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+  }
+  return(gc_ratios)
+}
+
+
+calc_gc_by_moving_window <- function(seqs_enhancers, window_width = 5){
+  gc_ratios = data.frame(row.names = names(seqs_enhancers))
+  for(i in (1+ceiling(window_width/2)):(nchar(seqs_enhancers)[1]-ceiling(window_width/2))){
+    start_i = i-ceiling(window_width/2)
+    end_i = i+window_width-1-ceiling(window_width/2)
+    seq_i = as.character(subseq(seqs_enhancers, start=start_i,end=end_i))
+    gc_ratio_i = sapply(seq_i, function(x){sum(str_count(x, 'C') + str_count(x, 'G'))/window_width})
+    #browser()
+    #gc_ratios[paste('pos',i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+    gc_ratios[paste(i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+  }
+  return(gc_ratios)
+}
+
+calc_gc_for_seqs <- function(seqs_enhancers, start=NA, end=NA){
+  if(!is.numeric(start)){
+    start = 1
+  }
+  if(!is.numeric(end)){
+    end = length(seqs_enhancers[[1]])
+  }
+  seqs = as.character(seqs_enhancers)
+  gc_ratios = sapply(seqs, function(x){x = substr(x,start, end);sum(str_count(x, 'C') + str_count(x, 'G'))/nchar(x)})
+    #browser()
+  return(gc_ratios)
+}
+
+calc_word_for_seqs <- function(seqs_enhancers, word, start=1, end=2000){
+  seqs = as.character(seqs_enhancers)
+  word_count = sapply(seqs, function(x){x = substr(x,start, end);sum(str_count(x, word))})
+    #browser()
+  return(word_count)
+}
+
+calc_word_for_seqs <- function(seqs_enhancers, word, start=NA, end=NA){
+  if(!is.numeric(start)){
+    start = 1
+  }
+  if(!is.numeric(end)){
+    end = length(seqs_enhancers[[1]])
+  }
+  seqs = as.character(seqs_enhancers)
+  word_count = sapply(seqs, function(x){x = substr(x,start, end);sum(str_count(x, word))})
+    #browser()
+  return(word_count)
+}
+
+```
+
+
+```{r}
+plot_gc_heatmap_rank_by_distance <- function(seqs, window_width, orderby, normalization = FALSE, ylabel = ''){
+  window_gc = calc_gc_by_moving_window(seqs, window_width  = window_width)
+  
+  if(normalization == TRUE){
+      window_gc = as.data.frame(t(apply(window_gc, MARGIN = 1, FUN = function(x){(x-min(x))/(max(x)-min(x))})))
+  }
+  window_gc$orderby = orderby
+  
+  window_gc$id = row.names(window_gc)
+  window_gc_ordered = window_gc[order(window_gc$orderby),]
+  window_gc_ordered_melt = melt(window_gc_ordered, id.vars = c('id','orderby'))
+  
+  if(normalization == TRUE){
+    p = ggplot(window_gc_ordered_melt, aes(variable, id, fill= cut(value,c( 0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1))))
+  }else{
+    p = ggplot(window_gc_ordered_melt, aes(variable, id, fill= cut(value,c(-Inf, 0,0.35,0.4,0.45,0.5,0.55,0.6,0.65,1, Inf))))
+  }
+
+  
+  p = p+
+    geom_tile(aes(x = variable, y = reorder(id, orderby)))+
+    scale_x_discrete(breaks = colnames(window_gc)[c(1,round(ncol(window_gc)/4),round(ncol(window_gc)/2),round(ncol(window_gc)/4*3),ncol(window_gc)-2)])+
+    xlab('pos (bp)')+
+    ylab(ylabel)+
+    theme(axis.text.y = element_blank())
+  
+  if(normalization == TRUE){
+    p = p+
+    labs(fill = 'Normalized GC%')+
+    scale_fill_brewer(type="seq",palette = "Greens")
+  }else{
+    p = p+
+    labs(fill = 'GC%')+
+    scale_fill_brewer(type="seq",palette = "Greens")
+    
+  }
+  
+  #p = ggplot(window_gc_ordered_melt, aes(variable, id, fill= value)) + 
+  #  geom_tile(aes(x = variable, y = reorder(id, orderby)))+
+  #  theme(axis.text.y = element_blank())
+  print(p)
+  return(list(p = p, window_gc_ordered = window_gc_ordered))
+}
+```
+
+```{r}
+gc_avg = calc_gc_for_seqs(info_bulk_t0$Seqs_enhancers_1000)
+
+```
+
+
+```{r}
+# positive control
+#gc_avg = calc_gc_for_seqs(seqs_enhancers_based_on_bulk_withsinglecell_fantom_labeled)
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers_based_on_bulk_withsinglecell_fantom_labeled[1:50], window_width = 50, orderby = gc_avg[1:50], normalization = FALSE, ylabel = 'Enhancers ordered by average gc% (decreasing)')
+```
+
+```{r}
+ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers_based_on_bulk_withsinglecell_fantom_labeled, window_width = 20, orderby = distance_max, normalization = TRUE, ylabel = 'Enhancers ordered by average gc% (decreasing)')
+```
+
+```{r}
+ordered_gc = plot_gc_heatmap_rank_by_distance(info_bulk_t0$Seqs_enhancers_1000, window_width = 50, orderby = rowRanges(info_bulk_t0$Detailed_Enhancers)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t0.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t0$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t0$SC_Validated_Enhancers$with_sc)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t0_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t0$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t0$SC_Validated_Enhancers$with_sc)$distance_avg_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_avgdistance_window50_norm_t0_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+ordered_gc = plot_gc_heatmap_rank_by_distance(info_bulk_t6$Seqs_enhancers_1000, window_width = 50, orderby = rowRanges(info_bulk_t6$Detailed_Enhancers)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t6.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t6$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t6$SC_Validated_Enhancers$with_sc)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t6_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t6$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t6$SC_Validated_Enhancers$with_sc)$distance_avg_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_avgdistance_window50_norm_t6_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+```{r}
+ordered_gc = plot_gc_heatmap_rank_by_distance(info_bulk_t6$Seqs_enhancers_1000, window_width = 50, orderby = rowRanges(info_bulk_t24$Detailed_Enhancers)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t24.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t24$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t24$SC_Validated_Enhancers$with_sc)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t24_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(extract_enhancer_seqs(info_bulk_t24$SC_Validated_Enhancers$with_sc), window_width = 50, orderby = rowRanges(info_bulk_t24$SC_Validated_Enhancers$with_sc)$distance_avg_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_avgdistance_window50_norm_t24_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+
+```{r}
+ordered_gc = plot_gc_heatmap_rank_by_distance(info_bulk_t6$Seqs_enhancers_1000, window_width = 50, orderby = rowRanges(info_bulk_t6$Detailed_Enhancers)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t6.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+
+ordered_gc = plot_gc_heatmap_rank_by_distance(info_bulk_t24$Seqs_enhancers_1000, window_width = 50, orderby = rowRanges(info_bulk_t24$Detailed_Enhancers)$distance_max_peak, normalization = TRUE, ylabel = 'Enhancers ordered by distance (decreasing)')
+ggsave('Apr8_gc_heatmap_ordered_distance_window50_norm_t24.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+#enhancers = enhancers_based_on_bulk
+
+#rowRanges(enhancers_based_on_bulk)$distance_max_peak = rowRanges(enhancers_based_on_bulk)$plus_peak - rowRanges(enhancers_based_on_bulk)$minus_peak
+
+#rowRanges(enhancers_based_on_bulk)$distance_avg_peak = rowRanges(enhancers_based_on_bulk)$plus_avg_peak - rowRanges(enhancers_based_on_bulk)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers_based_on_bulk)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers_based_on_bulk)$distance_avg_peak
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers_based_on_bulk, window_width = 50, orderby = distance_max, normalization = TRUE, ylabel = 'Enhancers ordered by peak distance')
+
+#ggsave('Mar18_gc_heatmap_ordered_distance_window50_norm.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+```{r}
+#enhancers = enhancers_based_on_bulk
+
+#rowRanges(enhancers_based_on_bulk)$distance_max_peak = rowRanges(enhancers_based_on_bulk)$plus_peak - rowRanges(enhancers_based_on_bulk)$minus_peak
+
+#rowRanges(enhancers_based_on_bulk)$distance_avg_peak = rowRanges(enhancers_based_on_bulk)$plus_avg_peak - rowRanges(enhancers_based_on_bulk)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers_based_on_bulk)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers_based_on_bulk)$distance_avg_peak
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers_based_on_bulk, window_width = 50, orderby = distance_avg, normalization = TRUE, ylabel = 'Enhancers ordered by peak distance')
+
+#ggsave('Mar18_gc_heatmap_ordered_avgdistance_window50_norm.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+#enhancers = enhancers_based_on_bulk_withsinglecell
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers, window_width = 50, orderby = distance_avg, normalization = TRUE, ylabel = 'Enhancers ordered by weighted distance')
+
+#ggsave('Mar18_gc_heatmap_ordered_avgdistance_window50_norm_withsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+#enhancers = enhancers_based_on_bulk_withoutsinglecell
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers, window_width = 50, orderby = distance_avg, normalization = TRUE, ylabel = 'Enhancers ordered by peak distance')
+
+#ggsave('Mar18_gc_heatmap_ordered_avgdistance_window50_norm_withoutsc.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+
+#ordered_gc = plot_gc_heatmap_rank_by_distance(seqs_enhancers_based_on_bulk_withsinglecell_fantom_labeled, window_width = 50, orderby = distance_max, normalization = FALSE, ylabel = 'Enhancers ordered by peak distance')
+
+#ggsave('Mar13_gc_heatmap_ordered_distance_window50_raw.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+
+draw_distance_barplot<-function(enhancers, title){
+  
+  distance_max = rowRanges(enhancers)$distance_max_peak
+
+  # distance_avg = rowRanges(info_object$Detailed_Enhancers)$distance_avg_peak
+
+  df_distance = as.data.frame(list(id = names(extract_enhancer_seqs(enhancers)),distance_max = distance_max))
+
+  ggplot(df_distance, aes(id, distance_max)) +
+    geom_bar(aes(x = reorder(id, distance_max), y = distance_max), stat = "identity", legend = FALSE)+
+    theme(axis.title.y=element_blank(),
+        axis.text.y =element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        panel.grid.minor = element_blank())+
+    labs(y = 'Peak distance (bp)')+
+    coord_flip()
+
+
+  ggsave(paste0(title,'.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+
+
+}
+#enhancers = enhancers_based_on_bulk_withsinglecell
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#df_distance = as.data.frame(list(id = names(seqs_enhancers),distance_max = distance_max))
+
+#ggplot(df_distance, aes(id, distance_max)) +
+#  geom_bar(aes(x = reorder(id, distance_max), y = distance_max), stat = "identity", legend = FALSE)+
+#  theme(axis.title.y=element_blank(),
+#        axis.text.y =element_blank(),
+#        axis.ticks.y=element_blank(),
+#        panel.grid.major = element_blank(),
+#        panel.background = element_blank(),
+#        panel.grid.minor = element_blank())+
+#  labs(y = 'Peak distance (bp)')+
+#  coord_flip()
+
+
+#ggsave('Mar18_distance_max_barplot.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+
+```
+
+```{r}
+#enhancers = enhancers_based_on_bulk_withsinglecell
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#ggplot(data = data.frame(distance_max = distance_max, distance_avg = distance_avg), aes(x = log(distance_max), y = log(distance_avg)))+
+#  geom_point()+
+#  geom_smooth(method = 'lm')
+
+#summary(lm(log(distance_avg)~log(distance_max), data = data.frame(distance_max = distance_max, distance_avg = distance_avg)))
+  
+#ggsave('Mar18_plot_max_avg.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 4, height=4, limitsize = FALSE)
+```
+
+
+
+```{r}
+#enhancers = enhancers_based_on_bulk_withsinglecell
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#df_distance = as.data.frame(list(id = names(seqs_enhancers),distance_avg = distance_avg))
+
+#ggplot(df_distance, aes(id, distance_avg)) +
+#  geom_bar(aes(x = reorder(id, distance_avg), y = distance_avg), stat = "identity", #legend = FALSE)+
+#  theme(axis.title.y=element_blank(),
+#        axis.text.y =element_blank(),
+#        axis.ticks.y=element_blank(),
+#        panel.grid.major = element_blank(),
+#        panel.background = element_blank(),
+#        panel.grid.minor = element_blank())+
+#  labs(y = 'Weighted distance (bp)')+
+#  coord_flip()
+
+
+#ggsave('Mar18_distance_avg_barplot.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+```
+
+
+
+```{r}
+
+#enhancers = enhancers_based_on_bulk
+
+#seqs_enhancers = extract_enhancer_seqs(enhancers)
+
+#rowRanges(enhancers)$distance_max_peak = rowRanges(enhancers)$plus_peak - rowRanges(enhancers)$minus_peak
+
+#rowRanges(enhancers)$distance_avg_peak = rowRanges(enhancers)$plus_avg_peak - rowRanges(enhancers)$minus_avg_peak
+
+#distance_max = rowRanges(enhancers)$distance_max_peak
+
+#distance_avg = rowRanges(enhancers)$distance_avg_peak
+
+#df_distance = as.data.frame(list(id = names(seqs_enhancers),distance_avg = distance_avg))
+
+#ggplot(df_distance_ordered, aes(id, distance_avg)) +
+#  geom_bar(aes(x = reorder(id, distance_avg), y = distance_avg), stat = "identity", legend = FALSE)+
+#  theme(axis.title.y=element_blank(),
+#        axis.text.y =element_blank(),
+#        axis.ticks.y=element_blank(),
+#        panel.grid.major = element_blank(),
+#        panel.background = element_blank(),
+#        panel.grid.minor = element_blank())+
+#  labs(y = 'Weighted distance (bp)')+
+#  coord_flip()
+
+
+#ggsave('Mar13_distance_avg_barplot.png', plot = last_plot(), path = 'C:/Users/evans/Documents/albin_lab/Notes/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+
+```
+```{r}
+#hist(rowData(enhancers_based_on_bulk_withsinglecell)$BCs_pooled,breaks = 10)
+```
+
+```{r}
+#hist(rowData(enhancers_based_on_bulk_withsinglecell_fantom_labeled)$plus_cell_num,breaks = 100)
+```
+

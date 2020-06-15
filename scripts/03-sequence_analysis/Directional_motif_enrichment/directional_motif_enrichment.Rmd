@@ -1,0 +1,158 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+extract_CTSS_seqs(CTSSs = CTSSs_bulk_t0, enhancers_object =info_bulk_t0$Classified_SC_Enhancers$plus,upstream = 1000,downstream = 100,repeat_n_times_by_score = 1,random_slide = 0,separate_plus_minus = T) 
+```
+
+```{r}
+info_bulk_t0$Classified_SC_Enhancers$plus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t0 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_plus_t0
+
+info_bulk_t0$Classified_SC_Enhancers$minus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t0 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_minus_t0
+
+
+
+temp_plus_t0[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_plus_t0.fa")
+
+temp_plus_t0[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_minus_t0.fa")
+
+
+temp_minus_t0[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_plus_t0.fa")
+
+temp_minus_t0[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_minus_t0.fa")
+
+```
+
+```{r}
+info_bulk_t6$Classified_SC_Enhancers$plus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t6 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_plus_t6
+
+info_bulk_t6$Classified_SC_Enhancers$minus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t6 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_minus_t6
+
+
+
+temp_plus_t6[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_plus_t6.fa")
+
+temp_plus_t6[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_minus_t6.fa")
+
+
+temp_minus_t6[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_plus_t6.fa")
+
+temp_minus_t6[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_minus_t6.fa")
+```
+
+
+```{r}
+info_bulk_t24$Classified_SC_Enhancers$plus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t24 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_plus_t24
+
+info_bulk_t24$Classified_SC_Enhancers$minus %>% 
+  extract_CTSS_seqs(CTSSs = CTSSs_bulk_t24 %>% subset(score>0) %>% calcTPM() %>% calcPooled(),
+                    enhancers_object = .,
+                    upstream = 1000, downstream = 1000,
+                    repeat_n_times_by_score = 1, separate_plus_minus = T) ->
+  temp_minus_t24
+
+
+
+temp_plus_t24[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_plus_t24.fa")
+
+temp_plus_t24[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_plusenhancer_minus_t24.fa")
+
+
+temp_minus_t24[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_plus_t24.fa")
+
+temp_minus_t24[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minusenhancer_minus_t24.fa")
+```
+
+```{r}
+
+batch_extract_seqs
+
+temp_t0 = test_bulk_t0 %>% classify_direction()
+temp_t6 = test_bulk_t6 %>% classify_direction()
+temp_t24 = test_bulk_t24 %>% classify_direction()
+
+s_t0 = list('bias_plus' = temp_t0%>%filter(bias=='plus'),
+     'bias_minus' = temp_t0%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t0 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 100,
+                     downstream = 100,
+                     byTSSs = T,separate_plus_minus = T)
+  
+
+s_t6 = list('bias_plus' = temp_t6%>%filter(bias=='plus'),
+     'bias_minus' = temp_t6%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t6 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 100,
+                     downstream = 100,
+                     byTSSs = T,separate_plus_minus = T)
+
+s_t24 = list('bias_plus' = temp_t24%>%filter(bias=='plus'),
+     'bias_minus' = temp_t24%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t24 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 100,
+                     downstream = 100,
+                     byTSSs = T,separate_plus_minus = T)
+
+
+s_main = c(s_t0$bias_plus$`bias_plus_strand_plus (174)`,
+         s_t0$bias_minus$`bias_minus_strand_minus (161)`,
+         s_t6$bias_plus$`bias_plus_strand_plus (184)`,
+         s_t6$bias_minus$`bias_minus_strand_minus (191)`,
+         s_t24$bias_plus$`bias_plus_strand_plus (291)`,
+         s_t24$bias_minus$`bias_minus_strand_minus (270)`)
+
+s_minor = c(s_t0$bias_plus$`bias_plus_strand_minus (174)`,
+         s_t0$bias_minus$`bias_minus_strand_plus (161)`,
+         s_t6$bias_plus$`bias_plus_strand_minus (184)`,
+         s_t6$bias_minus$`bias_minus_strand_plus (191)`,
+         s_t24$bias_plus$`bias_plus_strand_minus (291)`,
+         s_t24$bias_minus$`bias_minus_strand_plus (270)`)
+
+s_main %>%
+  writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_main.fa") 
+
+s_minor %>%
+  writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_minor.fa") 
+```
+
+```{r}
+
+
+```
+

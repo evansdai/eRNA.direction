@@ -1,0 +1,246 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+# library("VennDiagram") 
+library(eulerr)
+library(gridExtra)
+```
+
+
+```{r}
+
+venn_by_overlap_2<-function(enhancers1,enhancers2){
+  overlap = sum(countOverlaps(enhancers1, enhancers2))
+  a = nrow(enhancers1) - overlap
+  b = nrow(enhancers2) - overlap
+  print(c(a, overlap, b))
+}
+
+
+venn_by_overlap<-function(enhancers1, enhancers2, enhancers3, category = c('T0','T6','T24')){
+  # a_or_b = append(rowRanges(enhancers1), rowRanges(enhancers2))
+  ab = subsetByOverlaps(enhancers1, enhancers2)
+  bc = subsetByOverlaps(enhancers2, enhancers3)
+  ca = subsetByOverlaps(enhancers3, enhancers1)
+  abc = subsetByOverlaps(ab, enhancers3)
+  
+  grid.newpage()
+  # Move to new plotting page
+  draw.triple.venn(area1 = nrow(enhancers1),
+                  area2 = nrow(enhancers2),
+                 area3 = nrow(enhancers3),
+                 n12 = nrow(ab),
+                 n23 = nrow(bc),
+                 n13 = nrow(ca),
+                 n123 = nrow(abc),
+                 category = category,
+                 fill = c("#e41749", "#ff8a5c", "#2694ab"),
+                 lty = "blank",
+                 euler.d = F,
+                 scaled = F,
+                 alpha = 0.5)
+}
+
+
+venn_by_overlap_new<-function(enhancers1, enhancers2, enhancers3, category = c('T0','T6','T24'), fill = c('lightblue','lightgrey','white'), alpha = 1, lwd = 1){
+  # a_or_b = append(rowRanges(enhancers1), rowRanges(enhancers2))
+
+  set.seed(0)
+  
+  listtodraw = list()
+  listtodraw[[category[2]]] = enhancers2 %>% names
+  listtodraw[[category[3]]] = enhancers3 %>% names  
+  listtodraw[[category[1]]] = enhancers1 %>% names
+  
+  VennDiag <- euler(listtodraw,shape = "ellipse")
+
+
+  plot(VennDiag,
+    quantities = T,
+     fills=list(fill = fill),
+      alpha= alpha,
+    lwd = lwd) 
+  
+  # plot(VennDiag, 
+  #      labels = list(fontsize =17),
+  #      quantities = list(fontsize = 15),
+  #      edges = list(lwd=2),
+  #      fills=list(fill = c('lightblue','lightgrey','white')))
+  
+}
+
+```
+
+```{r}
+
+
+a = venn_by_overlap_new(enhancers1 = info_bulk_t0$Classified_SC_Enhancers$plus, 
+  enhancers2 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t6$Classified_SC_Enhancers$minus,
+  category = c('T0+','T6+','T6-'))
+
+b = venn_by_overlap_new(enhancers1 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+  enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+  category = c('T6+','T24+','T24-'))
+
+c = venn_by_overlap_new(enhancers1 = info_bulk_t0$Classified_SC_Enhancers$plus, 
+  enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+  category = c('T0+','T24+','T24-'))
+
+a2 = venn_by_overlap_new(enhancers1 = info_bulk_t0$Classified_SC_Enhancers$minus, 
+  enhancers2 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t6$Classified_SC_Enhancers$minus,
+  category = c('T0-','T6+','T6-'),
+  fill = c('lightgrey','lightblue','white'))
+
+b2 = venn_by_overlap_new(enhancers1 = info_bulk_t6$Classified_SC_Enhancers$minus, 
+  enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+  category = c('T6-','T24+','T24-'),
+  fill = c('lightgrey','lightblue','white'))
+
+c2 = venn_by_overlap_new(enhancers1 = info_bulk_t0$Classified_SC_Enhancers$minus, 
+  enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+  enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+  category = c('T0-','T24+','T24-'),
+  fill = c('lightgrey','lightblue','white'))
+
+ga = grid.arrange(a,b,c,a2,b2,c2, ncol =3)
+
+
+pl = list(a,b,c,a2,b2,c2)
+
+col.titles = c('T0 vs T6','T6 vs T24','T0 vs T24')
+row.titles = c('Plus','Minus')
+
+pl[1:3] = lapply(1:3, function(i) arrangeGrob(pl[[i]], top=col.titles[i]))
+
+ppl = lapply(c(1,4), function(i) {
+  arrangeGrob(grobs=pl[i:(i+2)], left=row.titles[i/3 + 1], ncol=3)
+})
+
+# Add column titles and lay out plots
+ga = grid.arrange(grobs=ppl, ncol=1)
+
+ggsave('Jun8_venn.png', plot = ga, path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 11, height=5, limitsize = FALSE)
+```
+
+```{r}
+venn_by_overlap_new(enhancers1 = info_bulk_t0$Classified_SC_Enhancers$mixed, 
+  enhancers2 = info_bulk_t6$Classified_SC_Enhancers$mixed, 
+  enhancers3 = info_bulk_t6$Classified_SC_Enhancers$bidirectional,
+  category = c('T0+','T6+','T6-'))
+
+venn_by_overlap_new(enhancers1 = info_bulk_t6$Classified_SC_Enhancers$mixed, 
+  enhancers2 = info_bulk_t24$Classified_SC_Enhancers$mixed, 
+  enhancers3 = info_bulk_t24$Classified_SC_Enhancers$bidirectional,
+  category = c('T0+','T6+','T6-'))
+```
+
+
+```{r}
+a = venn_by_overlap_new(enhancers1 = info_bulk_t0$SC_Validated_Enhancers$with_sc, 
+  enhancers2 = info_bulk_t24$SC_Validated_Enhancers$with_sc, 
+  enhancers3 = info_bulk_t6$SC_Validated_Enhancers$with_sc,
+  category = c('T0','T24','T6'),
+  fill = c("#2694ab", "#ff8a5c","#e41749"), alpha = 0.6, lwd = 3)
+
+
+ggsave('Jun8_venn_timecourse.png', plot = a, path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 6, height=5, limitsize = FALSE)
+```
+
+```{r}
+venn_by_overlap_new(enhancers1 = info_bulk_t0$SC_Validated_Enhancers$with_sc, 
+  enhancers2 = info_bulk_t24$SC_Validated_Enhancers$with_sc, 
+  enhancers3 = info_bulk_t6$SC_Validated_Enhancers$with_sc,
+  category = c('T0','T24','T6'))
+
+
+test_sc_t24 %>% classify_direction() %>% filter(group == 'bidirectional')
+```
+
+
+```{r}
+
+
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Detailed_Enhancers, 
+#   enhancers2 = info_bulk_t6$Detailed_Enhancers, 
+#   enhancers3 = info_bulk_t24$Detailed_Enhancers)
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Validated_Enhancers$without_sc, 
+#   enhancers2 = info_bulk_t6$Validated_Enhancers$without_sc, 
+#   enhancers3 = info_bulk_t24$Validated_Enhancers$without_sc)
+# 
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$bidirect, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$bidirect, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$bidirect)
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$minus, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$minus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus)
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$plus, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$plus)
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$others, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$others, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$others)
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$plus, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+#   enhancers3 = info_bulk_t6$Classified_SC_Enhancers$minus,
+#   category = c('T0+','T6+','T6-'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$plus, 
+#   enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+#   category = c('T0+','T24+','T24-'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t6$Classified_SC_Enhancers$plus, 
+#   enhancers2 = info_bulk_t24$Classified_SC_Enhancers$plus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$minus,
+#   category = c('T6+','T24+','T24-'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$minus, 
+#   enhancers2 = info_bulk_t6$Classified_SC_Enhancers$minus, 
+#   enhancers3 = info_bulk_t6$Classified_SC_Enhancers$plus,
+#   category = c('T0-','T6-','T6+'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t0$Classified_SC_Enhancers$minus, 
+#   enhancers2 = info_bulk_t24$Classified_SC_Enhancers$minus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$plus,
+#   category = c('T0-','T24-','T24+'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t6$Classified_SC_Enhancers$minus, 
+#   enhancers2 = info_bulk_t24$Classified_SC_Enhancers$minus, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$plus,
+#   category = c('T6-','T24-','T24+'))
+# 
+# venn_by_overlap(
+#   enhancers1 = info_bulk_t6$Classified_SC_Enhancers$minus, 
+#   enhancers2 = info_bulk_t24$Classified_SC_Enhancers$others, 
+#   enhancers3 = info_bulk_t24$Classified_SC_Enhancers$plus,
+#   category = c('T6-','T24|','T24+'))
+```
+
+
+

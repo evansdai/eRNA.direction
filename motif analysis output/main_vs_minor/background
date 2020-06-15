@@ -1,0 +1,24 @@
+# 1-order Markov frequencies from file motif analysis output/main_vs_minor/tss_main.fa.masked
+# seqs: 1271    min: 200    max: 200    avg: 200.0    sum: 254200    alph: DNA
+# order 0
+A 2.206e-01
+C 2.794e-01
+G 2.794e-01
+T 2.206e-01
+# order 1
+AA 5.543e-02
+AC 4.842e-02
+AG 7.696e-02
+AT 3.972e-02
+CA 7.195e-02
+CC 9.144e-02
+CG 3.923e-02
+CT 7.696e-02
+GA 6.380e-02
+GC 7.574e-02
+GG 9.144e-02
+GT 4.842e-02
+TA 2.931e-02
+TC 6.380e-02
+TG 7.195e-02
+TT 5.543e-02

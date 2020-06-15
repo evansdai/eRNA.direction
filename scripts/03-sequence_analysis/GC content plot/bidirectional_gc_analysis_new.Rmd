@@ -1,0 +1,415 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyquant)
+```
+
+
+
+```{r}
+draw_gc_by_direction <- function(info_object, geom_ma_window = 200){
+  
+info_object$Classified_SC_Enhancers$bidirectional %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_bidirect
+
+info_object$Classified_SC_Enhancers$plus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_plus
+
+info_object$Classified_SC_Enhancers$minus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_minus
+
+info_object$Classified_SC_Enhancers$mixed %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_mixed
+
+info_object$SC_Validated_Enhancers$with_sc %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_all
+  
+ggplot(df_all, aes(x = pos-geom_ma_window/2, gc))+
+  #geom_point() +
+  #geom_line(method='lm', formula= y~x)+
+  #geom_smooth(method='loess', formula= y~x)+
+
+  geom_ma(aes(color = 'all'),n = geom_ma_window)+
+  geom_ma(aes(color = 'minus'), data = df_minus, n = geom_ma_window)+
+  geom_ma(aes(color = 'plus'), data = df_plus, n = geom_ma_window)+
+  geom_ma(aes(color = 'mixed'), data = df_mixed, n = geom_ma_window)+
+  # geom_ma(data = df_others, color = 'grey', n = geom_ma_window)+
+  geom_ma(aes(color = 'bidirectional'), data = df_bidirect, n = geom_ma_window)+
+  ylab(paste0('Moving average GC content (window = ',geom_ma_window,')'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  lims(x = c(-1000,1000))+
+  scale_colour_manual(values=c("black","green","blue","purple","red"))+
+  # ylim(0.45,1.0)+
+  theme_bw()
+
+}
+```
+
+
+```{r}
+draw_gc_by_direction(info_object = info_bulk_t0, geom_ma_window = 100)
+```
+
+```{r}
+draw_gc_by_direction(info_object = info_bulk_t6, geom_ma_window = 100)
+```
+
+```{r}
+draw_gc_by_direction(info_object = info_bulk_t24, geom_ma_window = 100)
+```
+```{r}
+draw_gc_by_direction_3all <- function(info_object1, info_object2, info_object3, geom_ma_window = 200){
+  
+c(info_object1$Classified_SC_Enhancers$bidirectional %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object2$Classified_SC_Enhancers$bidirectional %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object3$Classified_SC_Enhancers$bidirectional %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000)) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_bidirect
+
+
+c(info_object1$Classified_SC_Enhancers$plus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object2$Classified_SC_Enhancers$plus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object3$Classified_SC_Enhancers$plus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000)) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_plus
+
+c(info_object1$Classified_SC_Enhancers$minus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object2$Classified_SC_Enhancers$minus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object3$Classified_SC_Enhancers$minus %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000)) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_minus
+
+c(info_object1$Classified_SC_Enhancers$mixed %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object2$Classified_SC_Enhancers$mixed %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object3$Classified_SC_Enhancers$mixed %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000)) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_mixed
+
+c(info_object1$SC_Validated_Enhancers$with_sc %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object2$SC_Validated_Enhancers$with_sc %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000),
+  info_object3$SC_Validated_Enhancers$with_sc %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000)) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_all
+  
+ggplot(df_all, aes(x = pos-geom_ma_window/2, gc))+
+  #geom_point() +
+  #geom_line(method='lm', formula= y~x)+
+  #geom_smooth(method='loess', formula= y~x)+
+
+  geom_ma(aes(color = 'all'),n = geom_ma_window)+
+  geom_ma(aes(color = 'minus'), data = df_minus, n = geom_ma_window)+
+  geom_ma(aes(color = 'plus'), data = df_plus, n = geom_ma_window)+
+  geom_ma(aes(color = 'mixed'), data = df_mixed, n = geom_ma_window)+
+  # geom_ma(data = df_others, color = 'grey', n = geom_ma_window)+
+  geom_ma(aes(color = 'bidirectional'), data = df_bidirect, n = geom_ma_window)+
+  ylab(paste0('Moving average GC content (window = ',geom_ma_window,')'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  lims(x = c(-1000,1000))+
+  scale_colour_manual(values=c("black","green","blue","purple","red"))+
+  # ylim(0.45,1.0)+
+  theme_bw()
+
+}
+```
+
+```{r}
+draw_gc_by_direction_3all(info_object1 = info_bulk_t0,
+                          info_object2 = info_bulk_t6,
+                          info_object3 = info_bulk_t24,
+                          geom_ma_window = 100)
+
+ggsave(paste0('Jun8_gc_runningmean_all3.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=5, limitsize = FALSE)
+```
+
+
+```{r}
+change_name <- function(x, add = '.1'){
+  names(x) = paste0(names(x),add)
+  x
+}
+
+calc_gc_by_chunk <- function(seqs_enhancers, chunk_width = 500){
+  gc_ratios = data.frame(row.names = names(seqs_enhancers))
+  for(i in seq(1,nchar(seqs_enhancers)[1],chunk_width)){
+    seq_i = as.character(subseq(seqs_enhancers, start=i,end=i+chunk_width-1))
+    gc_ratio_i = sapply(seq_i, function(x){sum(str_count(x, 'C') + str_count(x, 'G'))/chunk_width})
+    #browser()
+    #gc_ratios[paste('pos',i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+    gc_ratios[paste(i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+  }
+  return(gc_ratios)
+}
+```
+
+
+```{r}
+gc_vs_direction <- function(info_object1, info_object2, info_object3, upstream = 1000, downstream = 1000){
+  
+  
+  temp_bidirectional = c(info_object1$Classified_SC_Enhancers$bidirectional %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream) %>%
+    change_name(.,add = ".1"),
+    info_object2$Classified_SC_Enhancers$bidirectional %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".2"),
+    info_object3$Classified_SC_Enhancers$bidirectional %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".3"))%>%
+  calc_gc_by_chunk(seqs_enhancers = .,chunk_width = (upstream+downstream)/2) %>%
+    rownames_to_column('eid') %>%
+    mutate(group = 'bidirectional')
+  
+    temp_plus = c(info_object1$Classified_SC_Enhancers$plus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream) %>%
+    change_name(.,add = ".4"),
+    info_object2$Classified_SC_Enhancers$plus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".5"),
+    info_object3$Classified_SC_Enhancers$plus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".6")) %>%
+  calc_gc_by_chunk(seqs_enhancers = .,chunk_width = (upstream+downstream)/2)%>%
+    rownames_to_column('eid') %>%
+    mutate(group = 'plus')
+    
+    temp_minus = c(info_object1$Classified_SC_Enhancers$minus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream) %>%
+    change_name(.,add = ".7"),
+    info_object2$Classified_SC_Enhancers$minus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".8"),
+    info_object3$Classified_SC_Enhancers$minus %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".9"))%>%
+  calc_gc_by_chunk(seqs_enhancers = .,chunk_width = (upstream+downstream)/2)%>%
+    rownames_to_column('eid') %>%
+    mutate(group = 'minus')
+        
+    temp_mixed = c(info_object1$Classified_SC_Enhancers$mixed %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream) %>%
+    change_name(.,add = ".10"),
+    info_object2$Classified_SC_Enhancers$mixed %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".11"),
+    info_object3$Classified_SC_Enhancers$mixed %>%
+    extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)%>%
+    change_name(.,add = ".12"))%>%
+  calc_gc_by_chunk(seqs_enhancers = .,chunk_width = (upstream+downstream)/2)%>%
+    rownames_to_column('eid') %>%
+    mutate(group = 'mixed')
+
+  temp = rbind(temp_mixed, temp_bidirectional) %>%
+    rbind(., temp_plus) %>%
+    rbind(., temp_minus) %>%
+    mutate(eid = gsub('\\.\\d','',eid)) %>%
+    unique()
+  # 
+  # for(e in temp$eid){  
+  #   # browser()
+  #   temp[temp$eid == e, c('upstream_gc','downstream_gc')] = temp_gc[row.names(temp_gc)==e,]
+  # }
+  # rbind(temp, temp_gc)
+  colnames(temp) = c('eid','upstream_gc','downstream_gc','group')
+  temp
+}
+
+draw_violin_gc_direction <- function(temp_object, upstream = 1000, downstream = 1000){
+  temp_object %>% 
+    mutate(upstreamgc_downstreamgc = (upstream_gc/downstream_gc))%>%
+    ggplot(aes(x = factor(group, levels = c('plus','minus','bidirectional', 'mixed')), y = upstreamgc_downstreamgc))+
+    # ggplot(aes(x = group, y = upstreamgc_downstreamgc))+
+  geom_violin()+
+  geom_boxplot(width = 0.2)+
+  # geom_signif(comparisons = list(c("minus", "plus")),test = 't.test')+
+  geom_signif(comparisons = list(c("minus", "plus")),test = 't.test')+
+  labs(x = 'Enhancer Direction Class on Single-cell Level', y = paste0( 'Upstream',upstream,'_GC% / Downstream',downstream,'_GC%'))+
+  theme_bw()
+}
+```
+
+
+```{r}
+temp  = gc_vs_direction(info_object1 = info_bulk_t0,
+                info_object2 = info_bulk_t6,
+                info_object3 = info_bulk_t24,
+                upstream = 1000,downstream = 1000)
+
+
+draw_violin_gc_direction(temp)
+
+ggsave(paste0('Jun8_gc_direction_violin_t_all.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+
+```{r}
+extract_enhancer_seqs
+```
+
+
+```{r gc of tss}
+
+
+draw_gc_by_list <- function(list_of_enhancer_seqs, geom_ma_window = 200, pos_range = -999:1000){
+  
+  list_of_df = list()
+  for(name in names(list_of_enhancer_seqs)){
+    list_of_df[[name]] = list_of_enhancer_seqs[[name]] %>% 
+      calc_gc_by_pos(.) %>%
+      data.frame(pos = pos_range, gc = .) %>%
+      mutate(group = name)
+  }
+
+  df = Reduce(function(...) rbind(...), list_of_df) 
+  
+ggplot(df, aes(x = pos-geom_ma_window/2, y = gc, color = group))+
+  geom_ma(n = geom_ma_window)+
+  ylab(paste0('Moving Avg. GC content (window = ',geom_ma_window,'bp)'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  lims(x = c(pos_range[1],pos_range[length(pos_range)]))+
+  theme_bw()
+}
+
+```
+
+```{r}
+
+
+list_of_es = batch_extract_seqs(name_lists = list(
+  'Ncell == 1' = summary_bursting_t24 %>% filter(ncell==1),
+  'Ncell >= 2' = summary_bursting_t24 %>% filter(ncell>=2, ncell<4),
+  'Ncell >= 4' = summary_bursting_t24 %>% filter(ncell>=4)
+  ),enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,CTSS_sc_object = CTSSs_singlecell_t24,upstream = 1000,downstream = 1000,byTSSs = T) 
+draw_gc_by_burstness(list_of_enhancer_seqs = list_of_es,geom_ma_window = 100)
+```
+
+```{r main strand has more GC%}
+draw_gc_by_list(list_of_enhancer_seqs = list(
+  main = s_main,
+  minor = s_minor
+),geom_ma_window = 1,pos_range = -199:200)
+
+
+
+s_main %>%
+  calc_gc_for_seqs() %>% mean()
+
+s_minor %>%
+  calc_gc_for_seqs() %>%
+  mean()
+
+t.test(s_main%>%
+  calc_gc_for_seqs(), s_minor%>%
+  calc_gc_for_seqs(),paired = T)
+
+
+(s_main%>%
+  calc_gc_for_seqs()-s_minor%>%
+  calc_gc_for_seqs()) %>% mean()
+```
+
+
+```{r}
+
+temp_t0 = test_bulk_t0 %>% classify_direction()
+temp_t6 = test_bulk_t6 %>% classify_direction()
+temp_t24 = test_bulk_t24 %>% classify_direction()
+
+s_t0 = list('bias_plus' = temp_t0%>%filter(bias=='plus'),
+     'bias_minus' = temp_t0%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t0 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 200,
+                     downstream = 200,
+                     byTSSs = T,separate_plus_minus = T)
+  
+
+s_t6 = list('bias_plus' = temp_t6%>%filter(bias=='plus'),
+     'bias_minus' = temp_t6%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t6 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 200,
+                     downstream = 200,
+                     byTSSs = T,separate_plus_minus = T)
+
+s_t24 = list('bias_plus' = temp_t24%>%filter(bias=='plus'),
+     'bias_minus' = temp_t24%>%filter(bias=='minus')) %>%
+  batch_extract_seqs(name_lists = .,
+                     enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,
+                     CTSS_sc_object = CTSSs_bulk_t24 %>% calcTPM() %>% 
+                       calcPooled() %>% subset(score>0),
+                     upstream = 200,
+                     downstream = 200,
+                     byTSSs = T,separate_plus_minus = T)
+
+
+s_main = c(s_t0$bias_plus$`bias_plus_strand_plus (174)`,
+         s_t0$bias_minus$`bias_minus_strand_minus (161)`,
+         s_t6$bias_plus$`bias_plus_strand_plus (184)`,
+         s_t6$bias_minus$`bias_minus_strand_minus (191)`,
+         s_t24$bias_plus$`bias_plus_strand_plus (291)`,
+         s_t24$bias_minus$`bias_minus_strand_minus (270)`)
+
+s_minor = c(s_t0$bias_plus$`bias_plus_strand_minus (174)`,
+         s_t0$bias_minus$`bias_minus_strand_plus (161)`,
+         s_t6$bias_plus$`bias_plus_strand_minus (184)`,
+         s_t6$bias_minus$`bias_minus_strand_plus (191)`,
+         s_t24$bias_plus$`bias_plus_strand_minus (291)`,
+         s_t24$bias_minus$`bias_minus_strand_plus (270)`)
+
+
+
+t.test(s_main%>%
+  calc_gc_for_seqs(), s_minor%>%
+  calc_gc_for_seqs(),paired = T)
+
+
+draw_gc_by_list(list_of_enhancer_seqs = list(
+  main = s_main,
+  minor = s_minor
+),geom_ma_window = 20,pos_range = -199:200)
+
+ggsave('Jun12_tss_gc_major_minor.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 6, height=4, limitsize = FALSE)
+```
+

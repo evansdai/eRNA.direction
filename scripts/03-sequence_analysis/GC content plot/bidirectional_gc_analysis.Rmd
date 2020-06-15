@@ -1,0 +1,315 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+```{r}
+library(pheatmap)
+library(tidyquant)
+```
+
+
+```{r}
+test_sc_t24 %>% 
+  filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='micro'))))%>%
+    group_by(eid) %>% summarise(ncells = mean(ncells), nbidirection = sum(direction == 'bidirectional')/ncells, nplus = sum(direction == 'plus')/ncells, nminus = sum(direction == 'minus')/ncells, nmicro = sum(direction == 'micro')/ncells) %>% select(nbidirection, nplus, nminus, nmicro) %>%
+  pheatmap()
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+calc_gc_by_moving_window <- function(seqs_enhancers, window_width = 20){
+  gc_ratios = data.frame(row.names = names(seqs_enhancers))
+  for(i in (1+ceiling(window_width/2)):(nchar(seqs_enhancers)[1]-ceiling(window_width/2))){
+    start_i = i-ceiling(window_width/2)
+    end_i = i+window_width-1-ceiling(window_width/2)
+    seq_i = as.character(subseq(seqs_enhancers, start=start_i,end=end_i))
+    gc_ratio_i = sapply(seq_i, function(x){sum(str_count(x, 'C') + str_count(x, 'G'))/window_width})
+    #browser()
+    #gc_ratios[paste('pos',i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+    gc_ratios[paste(i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+  }
+  return(gc_ratios)
+}
+```
+
+```{r}
+draw_gc_by_direction <- function(burst_events, info_object, geom_ma_window = 200){
+  
+  burst_events %>% 
+  filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='micro'))))%>%
+    group_by(eid) %>% summarise(ncells = mean(ncells), nbidirection = sum(direction == 'bidirectional'), nplus = sum(direction == 'plus'), nminus = sum(direction == 'minus'), nmicro = sum(direction == 'micro')) %>%
+  mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no = ifelse(nplus>0&nminus>0, yes = 'mixed', no = ifelse(nplus>0, yes = 'plus', no = ifelse(nminus>0, yes = 'minus', no = 'others'))))) ->temp
+  
+  temp %>% filter(group == 'bidirectional') %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  # calc_gc_by_moving_window() 
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_bidirect
+
+temp %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_all
+  
+temp %>% filter(group == 'plus') %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_plus
+  
+temp %>% filter(group == 'minus') %>%
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_minus
+
+temp %>% filter(group == 'mixed') %>%
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_mix
+
+temp %>% filter(group == 'others') %>%
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_pos(.) %>%
+  data.frame(pos = -999:1000, gc = .) -> df_others
+  
+  
+ggplot(df_all, aes(x = pos, gc))+
+  #geom_point() +
+  #geom_line(method='lm', formula= y~x)+
+  #geom_smooth(method='loess', formula= y~x)+
+
+  geom_ma(aes(color = 'all'),n = geom_ma_window)+
+  geom_ma(aes(color = 'minus'), data = df_minus, n = geom_ma_window)+
+  geom_ma(aes(color = 'plus'), data = df_plus, n = geom_ma_window)+
+  geom_ma(aes(color = 'mix'), data = df_mix, n = geom_ma_window)+
+  # geom_ma(data = df_others, color = 'grey', n = geom_ma_window)+
+  geom_ma(aes(color = 'bidirectional'), data = df_bidirect, n = geom_ma_window)+
+  ylab(paste0('Moving average GC content (window = ',geom_ma_window,')'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  scale_colour_manual(values=c("black","green","blue","purple","red"))+
+  # ylim(0.45,1.0)+
+  theme_bw()
+
+}
+```
+
+
+```{r}
+
+draw_gc_by_direction(burst_events = test_sc_t0,info_object = info_bulk_t0, geom_ma_window = 100)
+
+ggsave(paste0('Jun4_gc_runningmean_t0.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+
+```{r}
+draw_gc_by_direction(burst_events = test_sc_t6,info_object = info_bulk_t6, geom_ma_window = 100)
+
+ggsave(paste0('Jun4_gc_runningmean_t6.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+
+
+```{r}
+draw_gc_by_direction(burst_events = test_sc_t24,info_object = info_bulk_t24, geom_ma_window = 100)
+
+ggsave(paste0('Jun4_gc_runningmean_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+
+
+
+```{r}
+
+
+temp %>% filter(group == 'bidirectional') %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_bulk_t24$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+  calc_gc_by_moving_window(window_width = 100) %>% rownames_to_column('eid') %>% 
+  gather(key = key, value = value, -eid) %>%
+  ggplot(aes(x = as.numeric(key), y = value, color = eid))+
+  geom_line()+
+  facet_wrap(~eid)
+
+
+temp %>% filter(group == 'minus') %>% filter(eid %in% sample(x = eid, replace= F, size = 18)) %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_bulk_t24$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 2000,downstream = 2000) %>%
+  calc_gc_by_moving_window(window_width = 100) %>% rownames_to_column('eid') %>% 
+  gather(key = key, value = value, -eid) %>%
+  ggplot(aes(x = as.numeric(key), y = value, color = eid))+
+  geom_line()+
+  facet_wrap(~eid)
+
+
+temp %>% filter(group == 'minus') %>% filter(eid %in% sample(x = eid, replace= F, size = 18)) %>% 
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_bulk_t24$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 2000,downstream = 2000) %>%
+  calc_gc_by_moving_window(window_width = 100) %>% rownames_to_column('eid') %>% 
+  gather(key = key, value = value, -eid) %>%
+  ggplot(aes(x = as.numeric(key), y = value))+
+  # geom_line()
+  geom_smooth()
+
+temp %>% filter(group == 'minus') %>%
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_bulk_t24$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = 2000,downstream = 2000) %>%
+  calc_gc_by_moving_window(window_width = 100) %>% rownames_to_column('eid') %>% 
+  gather(key = key, value = value, -eid) %>%
+  ggplot(aes(x = as.numeric(key), y = value))+
+  # geom_line()
+  geom_smooth()
+```
+```{r}
+# window = 100
+# compute the GC content in a sliding window (as a fraction) for a sequence no. 364
+
+# 
+# 
+# gc = rowSums(letterFrequencyInSlidingView(seqs_enhancers[[2]], 20, c("G", "C")))/20
+# plot(gc, type = 'l')
+```
+
+
+```{r}
+
+test2 %>% filter(eid == 'chr1:156472566-156473012',
+                                        cid == 'CAGE_5_H04')
+
+
+
+info_bulk_t24$SC_Validated_Enhancers$with_sc %>% rowRanges %>% as.data.frame() %>% filter(row.names(.) == 'chr1:156472566-156473012')
+
+subsetByOverlaps(CTSSs_singlecell_t24, GRanges('chr1:156472566-156473012')) %>% assay() %>% colSums()
+
+
+
+info_bulk_t24$SC_Validated_Enhancers$with_sc['chr1:156472566-156473012'] %>% assay
+```
+
+```{r}
+calc_gc_by_chunk <- function(seqs_enhancers, chunk_width = 500){
+  gc_ratios = data.frame(row.names = names(seqs_enhancers))
+  for(i in seq(1,nchar(seqs_enhancers)[1],chunk_width)){
+    seq_i = as.character(subseq(seqs_enhancers, start=i,end=i+chunk_width-1))
+    gc_ratio_i = sapply(seq_i, function(x){sum(str_count(x, 'C') + str_count(x, 'G'))/chunk_width})
+    #browser()
+    #gc_ratios[paste('pos',i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+    gc_ratios[paste(i - nchar(seqs_enhancers)[1]/2)] = gc_ratio_i
+  }
+  return(gc_ratios)
+}
+```
+
+
+```{r regress gc vs }
+
+gc_vs_direction <- function(burst_events, info_object, upstream = 1000, downstream = 1000){
+  
+  temp = burst_events %>% 
+  filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='micro'))))%>%
+    group_by(eid) %>% summarise(ncells = mean(ncells), nbidirection = sum(direction == 'bidirectional')/ncells, nplus = sum(direction == 'plus')/ncells, nminus = sum(direction == 'minus')/ncells, nmicro = sum(direction == 'micro')/ncells) %>%
+  mutate(group = ifelse(nbidirection>0, yes = 'bidirectional', no = ifelse(nplus>0&nminus>0, yes = 'mixed', no = ifelse(nplus>0, yes = 'plus', no = ifelse(nminus>0, yes = 'minus', no = 'minimal-active'))))) 
+  
+  # browser()
+  temp_gc = temp %>%
+  .$eid %>%
+  GRanges %>%
+  subsetByOverlaps(x = info_object$SC_Validated_Enhancers$with_sc, ranges = .) %>%
+  extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream) %>% 
+    calc_gc_by_chunk(seqs_enhancers = .,chunk_width = (upstream+downstream)/2)
+
+  for(e in temp$eid){  
+    # browser()
+    temp[temp$eid == e, c('upstream_gc','downstream_gc')] = temp_gc[row.names(temp_gc)==e,]
+  }
+  # rbind(temp, temp_gc)
+  temp
+}
+
+
+draw_violin_gc_direction <- function(temp_object, upstream = 1000, downstream = 1000){
+  temp_object %>% ggplot(aes(x = factor(group, levels = c('plus','minus','bidirectional', 'mixed','minimal-active')), y = log(upstreamgc_downstreamgc )))+
+  geom_violin()+
+  geom_boxplot(width = 0.2)+
+  # geom_signif(comparisons = list(c("minus", "plus")),test = 't.test')+
+  geom_signif(comparisons = list(c("minus", "plus")),test = 't.test')+
+  labs(x = 'Enhancer SC direction preference', y = paste0( 'log(Upstream',upstream,'_GC% / Downstream',downstream,'_GC%)'))+
+  theme_bw()
+}
+
+```
+
+```{r}
+
+```
+
+```{r}
+library(ggsignif)
+
+temp  = gc_vs_direction(burst_events = test_sc_t0,info_object = info_bulk_t0,upstream = 1000, downstream  = 1000) %>% 
+  mutate(upstreamgc_downstreamgc = upstream_gc/downstream_gc)
+
+draw_violin_gc_direction(temp, upstream = 1000, downstream  =1000)
+
+ggsave(paste0('Jun4_gc_direction_violin_t0.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+
+```
+
+```{r}
+temp  = gc_vs_direction(burst_events = test_sc_t6,info_object = info_bulk_t6,upstream = 1000, downstream  = 1000) %>% 
+  mutate(upstreamgc_downstreamgc = upstream_gc/downstream_gc)
+
+draw_violin_gc_direction(temp,upstream = 1000, downstream  = 1000)
+
+ggsave(paste0('Jun4_gc_direction_violin_t6.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+
+
+```{r}
+temp  = gc_vs_direction(burst_events = test_sc_t24,info_object = info_bulk_t24,upstream = 1000, downstream  = 1000) %>% 
+  mutate(upstreamgc_downstreamgc = upstream_gc/downstream_gc)
+
+draw_violin_gc_direction(temp,upstream = 1000, downstream  = 1000)
+
+ggsave(paste0('Jun4_gc_direction_violin_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 7, height=5, limitsize = FALSE)
+```
+

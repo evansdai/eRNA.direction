@@ -1,0 +1,50 @@
+==================================================
+file name: tss_minor.fa             
+sequences:          1271
+total length:     254200 bp  (254200 bp excl N/X-runs)
+GC level:         54.92 %
+bases masked:      34146 bp ( 13.43 %)
+==================================================
+               number of      length   percentage
+               elements*    occupied  of sequence
+--------------------------------------------------
+SINEs:               79         9078 bp    3.57 %
+      ALUs           39         5191 bp    2.04 %
+      MIRs           39         3746 bp    1.47 %
+
+LINEs:               56         7252 bp    2.85 %
+      LINE1          17         2534 bp    1.00 %
+      LINE2          37         4420 bp    1.74 %
+      L3/CR1          1          197 bp    0.08 %
+
+LTR elements:        53         8131 bp    3.20 %
+      ERVL            9         1305 bp    0.51 %
+      ERVL-MaLRs     15         2131 bp    0.84 %
+      ERV_classI     27         4382 bp    1.72 %
+      ERV_classII     1          183 bp    0.07 %
+
+DNA elements:         9          871 bp    0.34 %
+     hAT-Charlie      4          224 bp    0.09 %
+     TcMar-Tigger     2          212 bp    0.08 %
+
+Unclassified:         8          613 bp    0.24 %
+
+Total interspersed repeats:    25945 bp   10.21 %
+
+
+Small RNA:           14         1128 bp    0.44 %
+
+Satellites:           1          152 bp    0.06 %
+Simple repeats:     113         5178 bp    2.04 %
+Low complexity:      22         1743 bp    0.69 %
+==================================================
+
+* most repeats fragmented by insertions or deletions
+  have been counted as one element
+                                                      
+
+The query species was assumed to be homo sapiens  
+RepeatMasker Combined Database: Dfam_3.1
+                                         
+run with rmblastn version 2.10.0+
+

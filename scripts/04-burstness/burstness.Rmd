@@ -1,0 +1,778 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+extract_sc_bursting_events <- function(ctss_sc_object, enhancer_object){
+  
+  ctss_sc_object = ctss_sc_object %>% calcTPM() %>% calcPooled() %>% subsetBySupport(unexpressed = 0, minSamples = 0,inputAssay = "counts")
+  out = list()
+  for(i in 1:nrow(enhancer_object)){
+    temp_sc = subsetByOverlaps(ctss_sc_object,enhancer_object[i])
+    cells = which(colSums(temp_sc %>% assay)>0)
+    for(ci in names(cells)){
+      temp_sc_c_tpm = temp_sc %>% assay('TPM') %>% .[,ci]
+      temp_sc_c = temp_sc %>% assay() %>% .[,ci]
+      summary_plus_minus = temp_sc[which(temp_sc_c>0)] %>% rowRanges() %>% strand %>% as.numeric()
+      summary_pos = temp_sc[which(temp_sc_c>0)] %>% rowRanges() %>% pos %>% as.numeric()
+      summary_tags = temp_sc_c[which(temp_sc_c>0)]
+      summary = (3-2*summary_plus_minus)*summary_tags
+      minus_pos = length(summary[which(summary<0)])
+      plus_pos = length(summary[which(summary>0)])
+      minus_total = -sum(summary[which(summary<0)])
+      plus_total = sum(summary[which(summary>0)])
+      
+      summary_tags = temp_sc_c_tpm[which(temp_sc_c_tpm>0)]
+      summary = (3-2*summary_plus_minus)*summary_tags
+      minus_tpm = -sum(summary[which(summary<0)])
+      plus_tpm = sum(summary[which(summary>0)])
+      
+      ncells = length(cells)
+      out[[length(out)+1]] = c(names(enhancer_object[i]),ci,paste0(summary,"@",summary_pos,collapse = ","),max(abs(summary)), minus_total, plus_total,minus_tpm, plus_tpm, minus_pos, plus_pos, ncells)
+    }
+  }
+
+  df_out = data.frame(t(data.frame(out)))
+  colnames(df_out)= c('eid','cid','tags','maxtag','minus_counts','plus_counts','minus_TPM','plus_TPM','minus_pos','plus_pos','ncells')
+  rownames(df_out) = 1:nrow(df_out)
+  for(j in c('maxtag','minus_counts','plus_counts','minus_pos','plus_pos','ncells')){
+    df_out[,j] = as.numeric(as.character(df_out[,j]))
+  }
+  df_out
+}
+```
+
+```{r}
+
+test_sc_t0 = extract_sc_bursting_events( enhancer_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,ctss_sc_object =CTSSs_singlecell_t0)
+
+test_sc_t6 = extract_sc_bursting_events( enhancer_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,ctss_sc_object =CTSSs_singlecell_t6)
+
+test_sc_t24 = extract_sc_bursting_events( enhancer_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,ctss_sc_object =CTSSs_singlecell_t24)
+
+```
+
+
+
+```{r extract bulk }
+test_bulk_t0 = extract_sc_bursting_events( enhancer_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,ctss_sc_object = CTSSs_bulk_t0)
+
+test_bulk_t6 = extract_sc_bursting_events( enhancer_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,ctss_sc_object =CTSSs_bulk_t6)
+
+test_bulk_t24 = extract_sc_bursting_events( enhancer_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,ctss_sc_object =CTSSs_bulk_t24)
+```
+
+
+
+```{r}
+
+extract_feature_from_info_object <- function(eids, info_object, feature_name = 'distance_avg_peak' ){
+  out = c()
+  for(e in eids){
+    dist = info_object$SC_Validated_Enhancers$with_sc %>% rowData() %>% .[e,feature_name] %>% as.character()
+    out = c(out, dist)
+  }
+  out
+}
+
+summarize_bursting_events <- function(info_object, bursting_events = F, whole_region = T){
+
+  test_sc_object = bursting_events %>% mutate(total_counts = plus_counts + minus_counts, plus_TPM =  as.numeric(as.character(plus_TPM)), minus_TPM =  as.numeric(as.character(minus_TPM)), TPM = plus_TPM+minus_TPM) 
+
+  top_bursting_object = test_sc_object%>% 
+    group_by(eid) %>% 
+    summarise(total_counts_max = max(total_counts),
+              total_counts_sum = sum(total_counts),
+              max_TPM = max(TPM),
+              mean_TPM = mean(TPM),
+              plus_counts_mean = mean(plus_counts), 
+              minus_counts_mean =mean(minus_counts), 
+              ncell = n())
+  
+  top_bursting_object = top_bursting_object %>% 
+     mutate(txType = eid %>% extract_feature_from_info_object(eids = .,info_object =info_object ,feature_name = 'txType'),
+            bulk_score = eid %>% extract_feature_from_info_object(eids = .,info_object =info_object ,feature_name = 'score'))
+  
+  top_bursting_object
+}
+```
+
+
+
+
+```{r}
+summary_bursting_t0 = summarize_bursting_events(info_object=info_bulk_t0, bursting_events = test_sc_t0)
+
+  summary_bursting_t6 = summarize_bursting_events(info_object=info_bulk_t6, bursting_events = test_sc_t6)
+  
+  summary_bursting_t24 = summarize_bursting_events(info_object=info_bulk_t24, bursting_events = test_sc_t24)
+  
+  summary_bursting_t0 %>% 
+    rbind(summary_bursting_t6) %>%
+    rbind(summary_bursting_t24) %>% 
+    .$max_TPM %>% median()
+  
+  summary_bursting_t0 %>% .$ncell %>% 
+    mean()
+  summary_bursting_t6 %>% .$ncell %>% 
+    mean()
+
+  summary_bursting_t24 %>%
+    .$ncell %>% 
+    max(.)
+  
+  test_sc_t0 %>% 
+    rbind(test_sc_t24) %>%
+    rbind(test_sc_t6) %>%
+    mutate(TPM = as.numeric(as.character(plus_TPM))+
+             as.numeric(as.character(minus_TPM)))%>%
+    filter(TPM > 10)
+  
+info_bulk_t24$Enhancers
+
+
+
+wilcox.test(
+ c(summary_bursting_t0$max_TPM, 
+   summary_bursting_t6$max_TPM, 
+   summary_bursting_t24$max_TPM),
+ 
+  
+)
+
+ c(info_bulk_t0$TSSs_sc %>% subset(txType == 'promoter') %>% assay('TPM') %>% rowMaxs,
+info_bulk_t6$TSSs_sc %>% subset(txType == 'promoter') %>% assay('TPM') %>% rowMaxs,
+
+info_bulk_t24$TSSs_sc %>% subset(txType == 'promoter') %>% assay('TPM') %>% rowMaxs) %>% median
+
+info_bulk_t0$SC_Validated_Enhancers$with_sc %>% rowRanges %>% score
+```
+
+
+```{r bulk score of sc and non-sc enhancers}
+scores_with_sc = c(info_bulk_t0$Enhancers %>% subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc) %>% rowRanges() %>% score,
+  info_bulk_t6$Enhancers %>% subsetByOverlaps(info_bulk_t6$SC_Validated_Enhancers$with_sc) %>% rowRanges() %>% score,
+  info_bulk_t24$Enhancers %>% subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc) %>% rowRanges() %>% score)
+
+scores_without_sc = c(info_bulk_t0$SC_Validated_Enhancers$without_sc %>% rowRanges() %>% score,
+                      info_bulk_t6$SC_Validated_Enhancers$without_sc %>% rowRanges() %>% score,
+                      info_bulk_t24$SC_Validated_Enhancers$without_sc %>% rowRanges() %>% score)
+
+t.test(scores_with_sc, scores_without_sc)
+
+median(scores_with_sc)
+
+median(scores_without_sc)
+
+wilcox.test(scores_with_sc, scores_without_sc)
+```
+
+
+```{r}
+
+
+```
+
+
+
+
+
+```{r analyze burstness related with bulk score}
+
+# 
+# summary_bursting_t6 %>% 
+#   mutate(bulk_score = as.numeric(bulk_score)) %>%
+#   ggplot(aes(x = log(ncell), y = log(total_counts_max/ncell)))+
+#   geom_point()+
+#   geom_smooth(method = 'lm')
+# 
+# summary_bursting_t0 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          total_counts_mean = total_counts_sum/ncell) %>%
+#   lm(bulk_score ~ ncell  + total_counts_sum,data = .) %>%
+#   summary()
+# 
+# 
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          Mean_burst_size = total_counts_sum/ncell) %>%
+#     ggplot(aes(x = log(ncell), y = log(Mean_burst_size)))+
+#   geom_point()+
+#   geom_smooth(method = 'lm')+
+#   facet_grid(~txType)+
+#   theme_bw()
+# 
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          total_counts_mean = total_counts_sum/ncell) %>%
+#   lm(log(total_counts_mean) ~ log(ncell),data = .,subset = txType=='intergenic') %>%
+#   summary()
+# 
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          total_counts_mean = total_counts_sum/ncell) %>%
+#   lm(log(total_counts_mean) ~ log(ncell),data = .,subset = txType=='intron') %>%
+#   summary()
+# 
+
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          total_counts_mean = total_counts_sum/ncell) %>%
+#   lm(log(bulk_score) ~ log(total_counts_mean) + log(ncell),data = .) %>%
+#   summary()
+# 
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          Mean_burst_size = total_counts_sum/ncell) %>%
+#   ggplot(aes(x = log(ncell), y = log(bulk_score)))+
+#   geom_point()+
+#   geom_smooth(method = 'lm')+
+#   facet_grid(~txType)+
+#   theme_bw()
+
+
+library(ggpmisc)
+library(gridExtra)
+
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          Mean_burst_size = total_counts_sum/ncell) %>%
+#   lm(., formula = log(bulk_score) ~ log(max_TPM) + log(ncell)) %>% 
+#   summary()
+
+
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          Mean_burst_size = total_counts_sum/ncell) %>%
+#   ggplot(aes(x = log(max_TPM), y = log(bulk_score)))+
+#   geom_point(alpha = 0.1)+
+#   geom_smooth(method = 'lm')+
+#   stat_poly_eq(formula = y ~ x, 
+#                 aes(label = paste(..eq.label.., ..rr.label..,..p.value.label..,sep = "~~~")), 
+#                 parse = T,) +  
+#   theme_bw()
+
+# summary_bursting_t24 %>%
+#   mutate(bulk_score = as.numeric(bulk_score),
+#          Mean_burst_size = total_counts_sum/ncell) %>%
+#   ggplot(aes(x = log(ncell), y = log(bulk_score)))+
+#   geom_point(alpha = 0.1)+
+#   geom_smooth(method = 'lm')+
+#   stat_poly_eq(formula = y ~ x, 
+#                 aes(label = paste(..eq.label.., ..rr.label..,..p.value.label..,sep = "~~~")), 
+#                 parse = T,) +  
+#   theme_bw()
+
+
+
+a = summary_bursting_t24 %>%
+  mutate(bulk_score = as.numeric(bulk_score),
+         Mean_burst_size = total_counts_sum/ncell) %>%
+  ggplot(aes(x = log(ncell), y = log(mean_TPM)))+
+  geom_point(alpha = 0.1)+
+  geom_smooth(method = 'lm')+
+  stat_poly_eq(formula = y ~ x, 
+                aes(label = paste(..eq.label.., ..rr.label..,..p.value.label..,sep = "~~~")), 
+                parse = T,) +  
+  theme_bw()
+
+b = summary_bursting_t24 %>%
+  mutate(bulk_score = as.numeric(bulk_score),
+         Mean_burst_size = total_counts_sum/ncell) %>%
+  ggplot(aes(x = log(Mean_burst_size), y = log(bulk_score)))+
+  geom_point(alpha = 0.1)+
+  geom_smooth(method = 'lm')+
+  stat_poly_eq(formula = y ~ x, 
+                aes(label = paste(..eq.label.., ..rr.label..,..p.value.label.., sep = "~~~")), 
+                parse = TRUE) +  
+  theme_bw()
+
+c = summary_bursting_t24 %>%
+  mutate(bulk_score = as.numeric(bulk_score),
+         Mean_burst_size = total_counts_sum/ncell) %>%
+  ggplot(aes(x = log(ncell), y = log(bulk_score)))+
+  geom_point(alpha = 0.1)+
+  geom_smooth(method = 'lm')+
+  stat_poly_eq(formula = y ~ x, 
+                aes(label = paste(..eq.label.., ..rr.label.., ..p.value.label..,sep = "~~~")), 
+                parse = T,) + 
+  theme_bw()
+
+
+ga = grid.arrange(grobs=list(a,b,c), ncol=3)
+
+ggsave('Jun11_regression_burst_size_freq_bulkscore.png', plot = ga, path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 11, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+
+
+test_sc_t0 %>% 
+  filter(eid %in% (test_sc_t0 %>% classify_direction() %>% filter(group == 'bidirectional') %>% .$eid))
+
+test_sc_t24 %>% classify_direction() %>% filter(group == 'bidirectional') %>% 
+  mutate(ratio_bidirection = nbidirection / ncells) %>%
+  .$nbidirection %>%
+  table()
+
+
+test_sc_t0 %>% classify_direction() %>% filter(group == 'bidirectional') %>%
+  arrange(nbidirection)
+
+test_sc_t6%>% filter(eid == 'chr21:9827341-9827855')
+
+
+test_sc_t0 %>%
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>%
+  filter(eid == 'chr17:79478552-79478972') %>%
+  summarise(medianTPM = median(as.numeric(as.character(plus_TPM))+
+                                 as.numeric(as.character(minus_TPM))))
+
+
+test_sc_t0 %>%
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>%
+  filter(eid == 'chr21:9827341-9827855') %>%
+  summarise(medianTPM = median(as.numeric(as.character(plus_TPM))+
+                                 as.numeric(as.character(minus_TPM))))
+
+test_sc_t0 %>%
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>%
+  filter(eid == 'chr17:79478552-79478972') %>%
+  summarise(medianTPM = median(as.numeric(as.character(plus_TPM))),
+            meadianminsu = 
+                                 median(as.numeric(as.character(minus_TPM))))
+
+test_sc_t0 %>%
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>%
+  filter(eid == 'chr21:9827341-9827855') 
+
+summary_bursting_t0 %>% filter(eid == 'chr17:79478552-79478972')
+
+```
+
+
+```{r}
+
+batch_extract_seqs <- function(name_lists, enhancers_object, CTSS_sc_object, upstream = 200, downstream = 200, byTSSs = T,separate_plus_minus=F){
+  
+  list_seqs = list()
+  for(n in names(name_lists)){
+    # browser()
+     # e = summary_bursting_enhancers %>% filter(eid %in% name_lists[[n]]$eid) %>% .$eid %>% as.character() %>% GRanges %>% subsetByOverlaps(enhancers_object, .) 
+     e = name_lists[[n]]$eid %>% as.character() %>% GRanges %>% subsetByOverlaps(enhancers_object, .) 
+     if(byTSSs==T){
+       if(separate_plus_minus==T){
+         s = e %>% extract_CTSS_seqs(CTSSs = CTSS_sc_object, enhancers_object = .,upstream = upstream,downstream = downstream,repeat_n_times_by_score  = 1, separate_plus_minus = separate_plus_minus, list_names = paste0(n,'_', c('strand_plus','strand_minus')))
+       }else{
+         s = e %>% extract_CTSS_seqs(CTSSs = CTSS_sc_object, enhancers_object = .,upstream = upstream,downstream = downstream,repeat_n_times_by_score  = 1, separate_plus_minus = separate_plus_minus, list_names = c(n))
+       }
+
+     }else{
+      s = e %>% extract_enhancer_seqs(enhancers = .,upstream = upstream,downstream = downstream)
+     }
+
+    list_seqs[[length(list_seqs)+1]] = s
+  }
+  names(list_seqs) = names(name_lists)
+  # draw_logo(list_of_seqs_object = list_seqs, upstream = upstream, interval = interval)+
+  # ggtitle(title)
+  list_seqs
+}
+
+
+```
+
+```{r}
+summary_bursting_t_all = summary_bursting_t24 %>%
+  rbind(summary_bursting_t0) %>%
+  rbind(summary_bursting_t6)
+```
+
+
+```{r}
+temp_t24 = batch_extract_seqs(name_lists = list(
+  'Num cell == 1' = summary_bursting_t24 %>% filter(ncell<=2), # try change this
+  'Num cell >= 2' = summary_bursting_t24 %>% filter(ncell>2)
+  ), 
+  enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t24,
+  upstream = 200, downstream = 200)
+
+temp_t6 = batch_extract_seqs(name_lists = list(
+  'Num cell == 1' = summary_bursting_t6 %>% filter(ncell==1),
+  'Num cell >= 2' = summary_bursting_t6 %>% filter(ncell>4)
+  ), 
+  enhancers_object = info_bulk_t6$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t6,
+  upstream = 200, downstream = 200)
+
+temp_t0 = batch_extract_seqs(name_lists = list(
+  'Num cell == 1' = summary_bursting_t0 %>% filter(ncell==1),
+  'Num cell >= 2' = summary_bursting_t0 %>% filter(ncell>=2)
+  ), 
+  enhancers_object = info_bulk_t0$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t0,
+  upstream = 200, downstream = 200)
+
+```
+
+```{r}
+temp_t0[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcell1_t0.fa")
+
+temp_t0[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcellmore_t0.fa")
+
+temp_t6[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcell1_t6.fa")
+
+temp_t6[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcellmore_t6.fa")
+
+temp_t24[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcell1_t24.fa")
+
+temp_t24[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_numcellmore_t24.fa")
+```
+
+```{r}
+
+temp_t24 = batch_extract_seqs(name_lists = list(
+  'Burst size <= 10' = summary_bursting_t24 %>% filter(total_counts_max<=10),
+  'Burst size > 10' = summary_bursting_t24 %>% filter(total_counts_max>10)
+  ), 
+  enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t24,
+  upstream = 200, downstream = 200)
+
+temp_t6 = batch_extract_seqs(name_lists = list(
+  'Burst size <= 10' = summary_bursting_t6 %>% filter(total_counts_max<=10),
+  'Burst size > 10' = summary_bursting_t6 %>% filter(total_counts_max>10)
+  ), 
+  enhancers_object = info_bulk_t6$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t6,
+  upstream = 200, downstream = 200)
+
+temp_t0 = batch_extract_seqs(name_lists = list(
+  'Burst size <= 10' = summary_bursting_t0 %>% filter(total_counts_max<=10),
+  'Burst size > 10' = summary_bursting_t0 %>% filter(total_counts_max>10)
+  ), 
+  enhancers_object = info_bulk_t0$SC_Validated_Enhancers$with_sc, 
+  CTSS_sc_object = CTSSs_singlecell_t0,
+  upstream = 200, downstream = 200)
+```
+
+
+```{r}
+temp_t0[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsize10_t0.fa")
+
+temp_t0[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsizemore_t0.fa")
+
+temp_t6[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsize10_t6.fa")
+
+temp_t6[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsizemore_t6.fa")
+
+temp_t24[[1]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsize10_t24.fa")
+
+temp_t24[[2]] %>% writeXStringSet("C:/Users/evans/Documents/enhancer_project/report/fasta/tss_burstsizemore_t24.fa")
+```
+
+
+
+
+
+```{r}
+
+```
+
+
+```{r draw gc by burstness}
+
+library(tidyquant)
+
+
+
+
+draw_gc_by_list <- function(list_of_enhancer_seqs, window = 200){
+  
+  list_of_df = list()
+  for(name in names(list_of_enhancer_seqs)){
+    
+    list_of_df[[name]] = list_of_df[[name]] = list_of_enhancer_seqs[[name]] %>% 
+      calc_gc_by_moving_window(., window_width = window) %>%
+      rownames_to_column('ID') %>%
+      gather(key = pos, value = gc, -ID) %>%
+      mutate(group = name)
+    # browser()
+    # list_of_df[[name]] = list_of_enhancer_seqs[[name]] %>% 
+    #   calc_gc_by_pos(.) %>%
+    #   data.frame(pos = -999:1000, gc = .) %>%
+    #   mutate(group = name)
+  }
+  
+  
+  df = Reduce(function(...) rbind(...), list_of_df) 
+  # browser()
+  
+# info_object$Classified_SC_Enhancers$bidirectional %>%
+#   extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+#   # calc_gc_by_moving_window() 
+#   calc_gc_by_pos(.) %>%
+#   data.frame(pos = -999:1000, gc = .) -> df_bidirect
+# 
+# info_object$Classified_SC_Enhancers$plus %>%
+#   extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+#   # calc_gc_by_moving_window() 
+#   calc_gc_by_pos(.) %>%
+#   data.frame(pos = -999:1000, gc = .) -> df_plus
+# 
+# info_object$Classified_SC_Enhancers$minus %>%
+#   extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+#   # calc_gc_by_moving_window() 
+#   calc_gc_by_pos(.) %>%
+#   data.frame(pos = -999:1000, gc = .) -> df_minus
+# 
+# info_object$Classified_SC_Enhancers$mixed %>%
+#   extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+#   # calc_gc_by_moving_window() 
+#   calc_gc_by_pos(.) %>%
+#   data.frame(pos = -999:1000, gc = .) -> df_mixed
+# 
+# info_object$SC_Validated_Enhancers$with_sc %>%
+#   extract_enhancer_seqs(enhancers = .,upstream = 1000,downstream = 1000) %>%
+#   # calc_gc_by_moving_window() 
+#   calc_gc_by_pos(.) %>%
+#   data.frame(pos = -999:1000, gc = .) -> df_all
+  
+ggplot(df, aes(x = pos-window/2, y = gc, color = group))+
+  #geom_point() +
+  #geom_line(method='lm', formula= y~x)+
+  geom_smooth(method='loess')+
+
+  # geom_ma(n = geom_ma_window)+
+  # geom_ma(aes(color = 'minus'), data = df_minus, n = geom_ma_window)+
+  # geom_ma(aes(color = 'plus'), data = df_plus, n = geom_ma_window)+
+  # geom_ma(aes(color = 'mixed'), data = df_mixed, n = geom_ma_window)+
+  # geom_ma(data = df_others, color = 'grey', n = geom_ma_window)+
+  # geom_ma(aes(color = 'bidirectional'), data = df_bidirect, n = geom_ma_window)+
+  ylab(paste0('Moving average GC content (window = ',window,')'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  lims(x = c(-1000,1000))+
+  # scale_colour_manual(values=c("black","green","blue","purple","red"))+
+  # ylim(0.45,1.0)+
+  theme_bw()
+
+return(df)
+}
+
+```
+
+```{r}
+
+list_of_es = batch_extract_seqs(name_lists = list(
+  'Ncell == 1' = summary_bursting_t24 %>% filter(ncell==1),
+  'Ncell >= 2' = summary_bursting_t24 %>% filter(ncell>=2, ncell<4),
+  'Ncell >= 4' = summary_bursting_t24 %>% filter(ncell>=4)
+  ),enhancers_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,CTSS_sc_object = CTSSs_singlecell_t24,upstream = 1000,downstream = 1000,byTSSs = T) 
+
+temp = draw_gc_by_list(list_of_enhancer_seqs = list_of_es,window = 100)
+
+temp[[1]] %>%
+  mutate(pos = as.numeric(pos))%>%
+  ggplot(., aes(x = pos-100/2, y = gc, color = group))+
+  #geom_point() +
+  #geom_line(method='lm', formula= y~x)+
+  geom_smooth(method='loess')+
+  # geom_ma(n = geom_ma_window)+
+  # geom_ma(aes(color = 'minus'), data = df_minus, n = geom_ma_window)+
+  # geom_ma(aes(color = 'plus'), data = df_plus, n = geom_ma_window)+
+  # geom_ma(aes(color = 'mixed'), data = df_mixed, n = geom_ma_window)+
+  # geom_ma(data = df_others, color = 'grey', n = geom_ma_window)+
+  # geom_ma(aes(color = 'bidirectional'), data = df_bidirect, n = geom_ma_window)+
+  ylab(paste0('Moving average GC content (window = ',window,')'))+
+  xlab('Position (bp)')+
+  labs(color='Enhancer type') +
+  # lims(x = c(-1000,1000))+
+  # scale_colour_manual(values=c("black","green","blue","purple","red"))+
+  # ylim(0.45,1.0)+
+  theme_bw()
+```
+
+```{r}
+list_of_es = batch_extract_seqs(name_lists = list(
+  'Burst size < 10' = summary_bursting_t24 %>% filter(total_counts_max<10),
+  'Burst size >= 10' = summary_bursting_t24 %>% filter(total_counts_max>=10, total_counts_max<100),
+  'Burst size >= 100' = summary_bursting_t24 %>% filter(total_counts_max>=100)
+  ),enhancers_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,CTSS_sc_object = CTSSs_singlecell_t6,upstream = 1000,downstream = 1000,byTSSs = F) 
+draw_gc_by_burstness(list_of_enhancer_seqs = list_of_es,geom_ma_window = 100)
+```
+
+
+
+
+```{r}
+test_sc_t0 %>% complete(eid, cid, fill = list(minus_counts = 0,plus_counts = 0)) %>%
+  classify_direction()
+```
+
+
+```{r}
+summary_bursting_t24 %>% arrange(eid) %>% 
+  cbind(classify_direction(test_sc_t24) %>% arrange(eid) %>% transmute(group)) %>%
+  mutate(frequent = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11')))) %>%
+  dplyr::select(frequent, group) %>%
+  mutate(frequent = factor(frequent, levels = c('ncell == 1',
+                                                'ncell 2~4','ncell 5~10',
+                                                'ncell >= 11'))) %>%
+  table()
+  
+
+```
+
+```{r}
+summary_bursting_t6 %>% arrange(eid) %>% 
+  cbind(classify_direction(test_sc_t6) %>% arrange(eid) %>% transmute(group)) %>%
+  mutate(frequent = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11')))) %>%
+  dplyr::select(frequent, group) %>%
+  mutate(frequent = factor(frequent, levels = c('ncell == 1',
+                                                'ncell 2~4','ncell 5~10',
+                                                'ncell >= 11'))) %>%
+  table()
+  
+```
+
+```{r}
+temp_t24 = summary_bursting_t24 %>% arrange(eid) %>% 
+  cbind(classify_direction(test_sc_t24) %>% arrange(eid) %>% transmute(group)) 
+
+temp_t6 = summary_bursting_t6 %>% arrange(eid) %>% 
+  cbind(classify_direction(test_sc_t6) %>% arrange(eid) %>% transmute(group)) 
+
+temp_t0 = summary_bursting_t0 %>% arrange(eid) %>% 
+  cbind(classify_direction(test_sc_t0) %>% arrange(eid) %>% transmute(group)) 
+
+
+
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11'))),
+         frequency = factor(frequency, 
+                            levels= c('ncell == 1','ncell 2~4','ncell 5~10','ncell >= 11')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  labs(x = 'Burst frequency', y = 'Counts', fill = 'Class')+
+  # geom_density()+
+  facet_wrap(~group, scales = 'free_y')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1))
+
+
+
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11'))),
+         frequency = factor(frequency, 
+                            levels= c('ncell == 1','ncell 2~4','ncell 5~10','ncell >= 11')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  labs(x = 'Burst frequency', y = 'Counts', fill = 'Class')+
+  # geom_density()+
+  facet_wrap(~group, scales = 'free_y')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1))
+
+ggsave('Jun12_histogram_direction_vs_freq.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 5, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11'))),
+         frequency = factor(frequency, 
+                            levels=  c('ncell == 1','ncell 2~4','ncell 5~10','ncell >= 11')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'fill', stat = 'identity')+
+  labs(x = 'Burst frequency', y = 'Fraction', fill = 'Class')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+
+ggsave('Jun12_histogram_direction_vs_freq_fractions.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+test_sc_t0 %>% 
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>% filter(minus_pos ==0 | plus_pos == 0) %>%
+  summarise(multi_burst = sum(minus_pos+plus_pos>1), n = n())
+
+test_sc_t0 %>% 
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24) %>% filter(minus_pos ==0 | plus_pos == 0) %>%
+  mutate(TPM = as.numeric(minus_TPM)+as.numeric(plus_TPM)) %>%
+  filter(TPM>100)
+```
+
+```{r}
+test_bulk_t0 %>%
+  rbind(test_bulk_t6) %>%
+  rbind(test_bulk_t24)%>% filter(minus_counts>1 & plus_counts >1)
+```
+```{r}
+test_bulk_t0 %>%
+  rbind(test_bulk_t6) %>%
+  rbind(test_bulk_t24)%>% filter(minus_counts>1 & plus_counts >1)
+```
+
+```{r}
+test_sc_t0 %>%
+  rbind(test_sc_t6) %>%
+  rbind(test_sc_t24)%>% filter(minus_counts>1&plus_counts<=1 | plus_counts >1&minus_counts<=1)
+```
+
+```{r}
+
+
+fisher.test(matrix(data = c(13,193,31,204), nrow=2),)
+```
+
+

@@ -1,0 +1,418 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+extract_CTSS_seqs<-function(CTSSs, enhancers_object, upstream = 50, downstream = 0, repeat_n_times_by_score = F, list_names = c('Plus','Minus'), separate_plus_minus = F, random_slide = 0){
+  
+  CTSSs = CTSSs %>% subsetByOverlaps(enhancers_object)
+  if(repeat_n_times_by_score == F){
+     CTSSs = CTSSs %>% calcPooled() %>% subsetBySupport(minSamples = 0, unexpressed = 0)
+  }
+
+  list_df = list()
+
+  for(i in 1:nrow(enhancers_object)){
+    df_temp = subsetByOverlaps(CTSSs,enhancers_object[i]) %>% rowRanges() %>% as.data.frame()
+    if((nrow(df_temp)>0)&(df_temp$score %>% sum>0)){
+       if(separate_plus_minus==F){
+         child_of_df_temp = list()
+         child_of_df_temp[[list_names[[1]]]] = df_temp
+       }else{
+         child_of_df_temp = list()
+         child_of_df_temp[[list_names[[1]]]] = df_temp[df_temp$strand == '+',]
+         child_of_df_temp[[list_names[[2]]]] = df_temp[df_temp$strand == '-',]
+       }
+      
+        for(child_i in names(child_of_df_temp)){
+          df_temp_child = child_of_df_temp[[child_i]]
+          # browser()
+          if(repeat_n_times_by_score!=F){
+            # if sample
+            if(repeat_n_times_by_score==1){
+              # if take only one
+              # browser()
+              list_df[[length(list_df)+1]] = 
+                    df_temp_child %>% top_n(1,score) %>% head(1) %>%
+                        mutate(group = child_i)
+            }else{
+              list_df[[length(list_df)+1]] =
+                  df_temp[sample.int(nrow(df_temp),
+                                     repeat_n_times_by_score,
+                                     replace = TRUE,
+                                     prob = df_temp$score),]
+            }
+          }else{
+            list_df[[length(list_df)+1]] = df_temp
+          }
+        }
+    }
+  }
+   
+
+  df_ctss = Reduce(function(...) rbind(...), list_df) 
+  # browser()
+  df_ctss = df_ctss %>% mutate(names = paste0(seqnames, ":", pos, ':',strand,'|',rownames(df_ctss)))
+
+  if(random_slide>0){
+    random_pos = sample(x = random_slide, size = nrow(df_ctss), replace = T) - round(random_slide/2)
+    df_ctss$pos = df_ctss$pos + random_pos
+    # browser()
+  }
+
+  
+  # df_ctss = as.data.frame(rowRanges(CTSSs)) %>% mutate(names = paste0(seqnames,':',pos))
+  df_ctss$start = df_ctss$end = df_ctss$pos
+  
+  if(separate_plus_minus==T){
+    
+
+  df_ctss_plus = df_ctss[df_ctss$strand == '+',]
+  df_ctss_minus = df_ctss[df_ctss$strand == '-',]
+  
+  # browser()
+
+  seq_enhancers_plus = makeGRangesFromDataFrame(df_ctss_plus) %>% promoters(upstream=upstream, downstream=downstream) %>% getSeq(bsg, .)
+  names(seq_enhancers_plus) = df_ctss_plus$names
+  # browser()
+  
+  seq_enhancers_minus = makeGRangesFromDataFrame(df_ctss_minus) %>% promoters(upstream=upstream, downstream=downstream) %>% getSeq(bsg, .)
+  names(seq_enhancers_minus) = df_ctss_minus$names
+  
+  
+    out = list('Plus'=seq_enhancers_plus,'Minus'=seq_enhancers_minus)
+    names(out) = paste0(list_names,' (',lapply(FUN = length,X = out), ')')
+  }else{
+    seq_enhancers = makeGRangesFromDataFrame(df_ctss) %>% promoters(upstream=upstream, downstream=downstream) %>% getSeq(bsg, .)
+    # browser()
+    names(seq_enhancers) = df_ctss$names
+    out = seq_enhancers
+  }
+  out
+}
+```
+
+```{r}
+
+find_eid <- function(tss, enhancer_object){
+  out = c()
+  for(t in tss){
+    # browser()
+    temp = subsetByOverlaps(enhancer_object, GRanges(t)) %>% 
+      names() %>%
+      paste0(., collapse = '|')
+      
+    out = c(out, temp)
+  }
+  out
+}
+
+
+pypu_enrich <- function(ctss_object, enhancers_object,upstream = 1,downstream = 2){
+  temp= extract_CTSS_seqs(CTSSs = ctss_object, enhancers_object =enhancers_object,upstream = upstream, downstream = downstream,repeat_n_times_by_score = 1,random_slide = 0,separate_plus_minus = T) 
+  
+  # browser()
+  
+  rbind(temp[[1]]%>%as.data.frame%>%rownames_to_column('tss_id'), temp[[2]]%>%as.data.frame%>%rownames_to_column('tss_id'))  %>% 
+    mutate(
+          # lastletter = x %>% substr(1+shift,1+shift),
+          #  firstletter = x %>% substr(2+shift,2+shift),
+        
+           # pypu = (lastletter %in% c('C','T'))&(firstletter %in% c('G','A')),
+           pypu = x %>% str_detect(.,pattern = '[CT][AG]'),
+           strand = tss_id %>% 
+             str_extract_all(string = tss_id, pattern = "[-+]") %>%
+             sapply(., "[", 1),
+           
+          tss = tss_id %>% 
+             str_extract_all(string = tss_id, pattern = "chr\\w+:\\w+:[-+]") %>%
+             sapply(., "[", 1),
+          eid = find_eid(tss = tss, enhancer_object = enhancers_object))
+}
+
+
+
+
+
+ 
+```
+
+```{r}
+pypu_enrich(ctss_object = CTSSs_bulk_t0 ,enhancers_object = info_bulk_t0$SC_Validated_Enhancers$with_sc[1:10])
+```
+
+```{r}
+# preprocess_directional_for_burstevents <- function(burst_events){
+#   
+#   burst_events %>% 
+#     classify_direction()
+#     ->temp
+#   
+#   temp
+# }
+
+```
+
+```{r}
+#     filter(group == 'plus') %>%
+#     .$eid %>%
+#     GRanges() %>%
+#     subsetByOverlaps(info_object$SC_Validated_Enhancers$with_sc,.) %>%
+#     pypu_enrich(ctss_object = ctss_object ,enhancers_object = .) ->
+#     temp
+
+```
+
+
+
+```{r}
+pipeline_pypu_analysis <- function(burst_events, ctss_object, info_object, upstream = 1, downstream = 1){
+
+# burst_events %>% preprocess_directional_for_burstevents() -> temp
+# burst_events %>%
+#   classify_direction() -> temp
+  
+burst_events %>%
+    classify_direction() -> temp
+  
+temp %>%
+    .$eid %>%
+    GRanges() %>%
+    subsetByOverlaps(info_object$SC_Validated_Enhancers$with_sc,.) %>%
+    pypu_enrich(ctss_object = ctss_object ,enhancers_object = .,upstream = upstream, downstream = downstream) -> temp2
+
+
+temp2 %>% extract_feature_from_df(df_query = .,source = temp, feature = "bias") %>%
+  extract_feature_from_df(df_query = .,source = temp, feature = "group") -> temp3
+
+# temp3 %>% group_by(strand, bias) %>% summarise(n_pypu = sum(pypu==TRUE), n_not_pypu = sum(pypu ==FALSE), ratio_pypu = n_pypu/(n_pypu+n_not_pypu))
+}
+```
+
+
+```{r}
+pipeline_pypu_sequencec <- function(burst_events, ctss_object, info_object, upstream = 5, downstream = 5){
+
+# burst_events %>% preprocess_directional_for_burstevents() -> temp
+# burst_events %>%
+#   classify_direction() -> temp
+  
+burst_events %>%
+    classify_direction() -> temp
+  
+  
+  batch_extract_seqs(name_lists = list(
+    
+  ),enhancers_object = ,CTSS_sc_object = ,upstream = ,downstream = ,byTSSs = T)
+  
+temp %>%
+    .$eid %>%
+    GRanges() %>%
+    subsetByOverlaps(info_object$SC_Validated_Enhancers$with_sc,.) %>%
+    extract_CTSS_seqs(CTSSs = ctss_object, enhancers_object =.,upstream = upstream,downstream = downstream,repeat_n_times_by_score = 1,random_slide = 0,separate_plus_minus = T) 
+}
+
+
+```
+```{r}
+pypu_summary_t0 = pipeline_pypu_analysis(burst_events = test_sc_t0,ctss_object = CTSSs_singlecell_t0 ,info_object = info_bulk_t0)
+
+pypu_summary_t6 = pipeline_pypu_analysis(burst_events = test_sc_t6,ctss_object = CTSSs_singlecell_t6 ,info_object = info_bulk_t6)
+
+pypu_summary_t24 = pipeline_pypu_analysis(burst_events = test_sc_t24,ctss_object = CTSSs_singlecell_t24 ,info_object = info_bulk_t24)
+```
+
+```{r}
+pypu_summary_t0 = pipeline_pypu_analysis(burst_events = test_sc_t0,ctss_object = CTSSs_singlecell_t0 ,info_object = info_bulk_t0)
+
+
+```
+```{r}
+pypu_summary_t0 %>% 
+  ungroup() %>%
+  filter(group == 'plus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) %>%
+  fisher.test()
+
+
+pypu_summary_t0 %>% 
+  ungroup() %>%
+  filter(group == 'minus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) %>%
+  fisher.test()
+
+pypu_summary_t0 %>% 
+  ungroup() %>%
+  filter(group == 'bidirectional') %>% 
+  dplyr::select(n_pypu, n_not_pypu) %>%
+  fisher.test()
+
+pypu_summary_t0 %>% 
+  ungroup() %>%
+  filter(group == 'mixed') %>% 
+  dplyr::select(n_pypu, n_not_pypu) %>%
+  fisher.test()
+
+pypu_summary_t24 %>% 
+  ungroup() %>%
+  filter(group == 'plus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) %>%
+  fisher.test()
+```
+```{r}
+(pypu_summary_t24 %>% ungroup() %>%
+  filter(group == 'plus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t6 %>% ungroup() %>%
+  filter(group == 'plus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t0 %>% ungroup() %>%
+  filter(group == 'plus') %>% 
+  dplyr::select(n_pypu, n_not_pypu)) %>%
+  fisher.test()
+
+
+(pypu_summary_t24 %>% ungroup() %>%
+  filter(group == 'minus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t6 %>% ungroup() %>%
+  filter(group == 'minus') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t0 %>% ungroup() %>%
+  filter(group == 'minus') %>% 
+  dplyr::select(n_pypu, n_not_pypu)) %>%
+  fisher.test()
+
+
+(pypu_summary_t24 %>% ungroup() %>%
+  filter(group == 'bidirectional') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t6 %>% ungroup() %>%
+  filter(group == 'bidirectional') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t0 %>% ungroup() %>%
+  filter(group == 'bidirectional') %>% 
+  dplyr::select(n_pypu, n_not_pypu)) %>%
+  fisher.test()
+
+(pypu_summary_t24 %>% ungroup() %>%
+  filter(group == 'mixed') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t6 %>% ungroup() %>%
+  filter(group == 'mixed') %>% 
+  dplyr::select(n_pypu, n_not_pypu) +
+  pypu_summary_t0 %>% ungroup() %>%
+  filter(group == 'mixed') %>% 
+  dplyr::select(n_pypu, n_not_pypu)) %>%
+  fisher.test()
+
+
+```
+
+```{r}
+pypu_summary_t0_basedonsc = pipeline_pypu_analysis(burst_events = test_bulk_t0, ctss_object = CTSSs_bulk_t0 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t0,upstream = 0,downstream = 2)
+
+pypu_summary_t0_basedonsc %>%
+  filter((bias == 'plus'&strand == '+')|(bias == 'minus'&strand == '-')) %>% 
+  .$pypu %>%
+  table
+
+pypu_summary_t0_basedonsc %>%
+  filter((bias == 'minus'&strand == '+')|(bias == 'plus'&strand == '-')) %>% 
+  .$pypu %>%
+  table 
+
+
+```
+
+```{r}
+pypu_summary_t6_basedonsc = pipeline_pypu_analysis(burst_events = test_bulk_t6, ctss_object = CTSSs_bulk_t6 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t6,upstream = 0,downstream = 2)
+
+pypu_summary_t6_basedonsc %>%
+  filter((bias == 'plus'&strand == '+')|(bias == 'minus'&strand == '-')) %>% 
+  .$pypu %>%
+  table
+
+pypu_summary_t6_basedonsc %>%
+  filter((bias == 'minus'&strand == '+')|(bias == 'plus'&strand == '-')) %>% 
+  .$pypu %>%
+  table 
+```
+
+
+```{r}
+pypu_summary_t24_basedonsc = pipeline_pypu_analysis(burst_events = test_bulk_t24, ctss_object = CTSSs_bulk_t24 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t24,upstream = 0,downstream = 2)
+
+pypu_summary_t24_basedonsc %>%
+  filter((bias == 'plus'&strand == '+')|(bias == 'minus'&strand == '-')) %>% 
+  .$pypu %>%
+  table
+
+pypu_summary_t24_basedonsc %>%
+  filter((bias == 'minus'&strand == '+')|(bias == 'plus'&strand == '-')) %>% 
+  .$pypu %>%
+  table 
+
+
+```
+
+```{r}
+
+c(pypu_summary_t0_basedonsc %>%
+  rbind(pypu_summary_t6_basedonsc) %>%
+  rbind(pypu_summary_t24_basedonsc) %>%
+  filter((bias == 'minus'&strand == '+')|(bias == 'plus'&strand == '-')) %>% 
+  .$pypu %>%
+  table,
+
+pypu_summary_t0_basedonsc %>%
+  rbind(pypu_summary_t6_basedonsc) %>%
+  rbind(pypu_summary_t24_basedonsc) %>%
+  filter((bias == 'plus'&strand == '+')|(bias == 'minus'&strand == '-')) %>% 
+  .$pypu %>%
+  table ) %>%
+  matrix(., nrow = 2) %>%
+  fisher.test()
+
+```
+
+
+```{r}
+# pypu_summary_t0_basedonsc %>%
+#   rbind(pypu_summary_t6_basedonsc) %>%
+#   rbind(pypu_summary_t24_basedonsc) %>% 
+#   mutate(main = (bias == 'plus'&strand == '+')|(bias == 'minus'&strand == '-')) %>%
+#   mutate(motif = x == 'CA') %>%
+#   dplyr::select(motif, main) %>%
+#   table() %>% fisher.test()
+```
+
+
+```{r}
+library(ggseqlogo)
+data(ggseqlogo_sample)
+
+
+temp_t0  = pipeline_pypu_sequencec(burst_events = test_bulk_t0,ctss_object = CTSSs_bulk_t0 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t0,upstream = 4, downstream = 6)
+
+temp_t6  = pipeline_pypu_sequencec(burst_events = test_bulk_t6,ctss_object = CTSSs_bulk_t6 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t6,upstream = 4, downstream = 6)
+
+temp_t24  = pipeline_pypu_sequencec(burst_events = test_bulk_t24,ctss_object = CTSSs_bulk_t24 %>% subset(score>0) %>% calcTPM() %>% calcPooled() ,info_object = info_bulk_t24,upstream = 4, downstream = 6)
+
+c(temp_t0$`Plus (356)`%>%as.character(), temp_t0$`Minus (356)`%>%as.character(),
+  temp_t6$`Plus (409)`%>%as.character(), temp_t6$`Minus (409)`%>%as.character(),
+  temp_t24$`Plus (596)`%>%as.character(), temp_t24$`Minus (596)`%>%as.character()) %>%
+  ggseqlogo()+
+  scale_x_continuous(breaks=1:10, labels = c(-5:-1,1:5))+
+  labs(x = 'Position relative to TSSs')
+
+ggsave('Jun12_pypu_enrichment.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 6, height=3, limitsize = FALSE)
+```
+
+
+
+
+
