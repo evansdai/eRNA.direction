@@ -82,17 +82,17 @@ summarize_bursting_events <- function(info_object, bursting_events = F, whole_re
 
   top_bursting_object = test_sc_object%>% 
     group_by(eid) %>% 
-    summarise(total_counts_max = max(total_counts),
-              total_counts_sum = sum(total_counts),
-              max_TPM = max(TPM),
-              mean_TPM = mean(TPM),
-              plus_counts_mean = mean(plus_counts), 
-              minus_counts_mean =mean(minus_counts), 
-              ncell = n())
+    summarise(total_counts_max = max(total_counts) %>% as.numeric(),
+              total_counts_sum = sum(total_counts)%>% as.numeric(),
+              max_TPM = max(TPM)%>% as.numeric(),
+              mean_TPM = mean(TPM)%>% as.numeric(),
+              plus_counts_mean = mean(plus_counts)%>% as.numeric(), 
+              minus_counts_mean =mean(minus_counts)%>% as.numeric(), 
+              ncell = n()%>% as.numeric())
   
   top_bursting_object = top_bursting_object %>% 
      mutate(txType = eid %>% extract_feature_from_info_object(eids = .,info_object =info_object ,feature_name = 'txType'),
-            bulk_score = eid %>% extract_feature_from_info_object(eids = .,info_object =info_object ,feature_name = 'score'))
+            bulk_score = eid %>% extract_feature_from_info_object(eids = .,info_object =info_object ,feature_name = 'score')%>% as.numeric()) 
   
   top_bursting_object
 }
@@ -269,7 +269,7 @@ library(gridExtra)
 a = summary_bursting_t24 %>%
   mutate(bulk_score = as.numeric(bulk_score),
          Mean_burst_size = total_counts_sum/ncell) %>%
-  ggplot(aes(x = log(ncell), y = log(mean_TPM)))+
+  ggplot(aes(x = log(ncell), y = log(Mean_burst_size)))+
   geom_point(alpha = 0.1)+
   geom_smooth(method = 'lm')+
   stat_poly_eq(formula = y ~ x, 
@@ -301,6 +301,16 @@ c = summary_bursting_t24 %>%
 
 
 ga = grid.arrange(grobs=list(a,b,c), ncol=3)
+
+lm(log(bulk_score) ~ log(ncell)+log(mean_TPM), data = summary_bursting_t24) %>% 
+  summary()
+
+
+lm(log(bulk_score) ~ log(ncell)+log(mean_TPM), data = summary_bursting_t6) %>% 
+  summary()
+
+lm(log(bulk_score) ~ log(ncell)+log(mean_TPM), data = summary_bursting_t0) %>% 
+  summary()
 
 ggsave('Jun11_regression_burst_size_freq_bulkscore.png', plot = ga, path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 11, height=4, limitsize = FALSE)
 ```
@@ -714,6 +724,147 @@ ggsave('Jun12_histogram_direction_vs_freq.png', plot = last_plot(), path = 'C:/U
 
 ```{r}
 temp_t24 %>%
+  # rbind(temp_t6) %>%
+  # rbind(temp_t0) %>%
+  mutate(frequency = ifelse(ncell == 1, yes = 'ncell == 1', no = 
+                                      ifelse(ncell <= 4, yes = 'ncell 2~4', no =
+                                      ifelse(ncell <= 10, yes = 'ncell 5~10',
+                                                      no = 'ncell >= 11'))),
+         frequency = factor(frequency, 
+                            levels=  c('ncell == 1','ncell 2~4','ncell 5~10','ncell >= 11')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'fill', stat = 'identity')+
+  labs(x = 'Burst frequency', y = 'Fraction', fill = 'Class')+
+  labs(title = 't24')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+
+
+ggsave('Jun19_histogram_direction_vs_freq_fractions_t24.png', plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/supplementary\ figures/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+
+```
+
+```{r}
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(max_TPM <= 1, yes = 'maxTPM <= 1', no = 
+                                      ifelse(max_TPM <= 10, yes = 'maxTPM 1~10', no =
+                                      ifelse(max_TPM <= 100, yes = 'max_TPM 10~100',
+                                                      no = 'max_TPM >= 100'))),
+         frequency = factor(frequency, 
+                            levels=  c('maxTPM <= 1','maxTPM 1~10','max_TPM 10~100','max_TPM >= 100')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  facet_wrap(~group, scales = 'free_y')+
+  # theme_bw()+
+  labs(x = 'Max Burst Size', y = 'Counts', fill = 'Class')+
+  # labs(title = '')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+
+ggsave('Jun19_histogram_direction_vs_maxburstsize.png', plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/supplementary\ figures/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
+```
+
+```{r}
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(mean_TPM <= 1, yes = 'mean_TPM <= 1', no = 
+                                   ifelse(mean_TPM <= 10, yes = 'mean_TPM 1~10', no =
+                                   ifelse(mean_TPM <= 100, yes = 'mean_TPM 10~100',
+                                                      no = 'mean_TPM >= 100'))),
+         frequency = factor(frequency, 
+                            levels=  c('mean_TPM <= 1','mean_TPM 1~10','mean_TPM 10~100','mean_TPM >= 100')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  facet_wrap(~group, scales = 'free_y')+
+  # theme_bw()+
+  labs(x = 'Mean Burst Size', y = 'Counts', fill = 'Class')+
+  # labs(title = '')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+
+ggsave('Jun19_histogram_direction_vs_meanburstsize.png', plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/supplementary\ figures/', scale = 1,dpi = 300, width = 5, height=4, limitsize = FALSE)
+
+```
+
+```{r}
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(max_TPM <= 1, yes = 'max_TPM <= 1', no = 
+                                   ifelse(max_TPM <= 10, yes = 'max_TPM 1~10', no =
+                                   ifelse(max_TPM <= 100, yes = 'max_TPM 10~100',
+                                                      no = 'max_TPM >= 100'))),
+         frequency = factor(frequency, 
+                            levels=  c('max_TPM <= 1','max_TPM 1~10','max_TPM 10~100','max_TPM >= 100')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  facet_wrap(~group, scales = 'free_y')+
+  # theme_bw()+
+  labs(x = 'Max Burst Size', y = 'Counts', fill = 'Class')+
+  # labs(title = '')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+
+ggsave('Jun19_histogram_direction_vs_maxburstsize.png', plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/supplementary\ figures/', scale = 1,dpi = 300, width = 5, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+temp_t24 %>%
+  rbind(temp_t6) %>%
+  rbind(temp_t0) %>%
+  mutate(frequency = ifelse(max_TPM <= 1, yes = 'max_TPM <= 1', no = 
+                                   ifelse(max_TPM <= 10, yes = 'max_TPM 1~10', no =
+                                   ifelse(max_TPM <= 100, yes = 'max_TPM 10~100',
+                                                      no = 'max_TPM >= 100'))),
+         frequency = factor(frequency, 
+                            levels=  c('max_TPM <= 1','max_TPM 1~10','max_TPM 10~100','max_TPM >= 100')),
+         group = factor(group, levels = c('plus','minus','basal','mixed','bidirectional'))) %>%
+  group_by(frequency, group) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  filter(group %in% c('bidirectional','mixed','plus','minus')) %>%
+  ggplot(aes(x = frequency,  y = n, fill = group))+
+  geom_histogram(position = 'dodge', stat = 'identity')+
+  facet_wrap(~group, scales = 'free_y')+
+  # theme_bw()+
+  labs(x = 'Max Burst Size', y = 'Counts', fill = 'Class')+
+  # labs(title = '')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        legend.position = "none")
+```
+
+
+```{r}
+temp_t24 %>%
   rbind(temp_t6) %>%
   rbind(temp_t0) %>%
   mutate(frequency = ifelse(ncell == 1, yes = 'ncell == 1', no = 
@@ -733,8 +884,6 @@ temp_t24 %>%
   theme_bw()+
   theme(axis.text.x = element_text(angle=45, hjust=1),
         legend.position = "none")
-
-ggsave('Jun12_histogram_direction_vs_freq_fractions.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 2, height=4, limitsize = FALSE)
 ```
 
 

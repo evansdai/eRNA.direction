@@ -1,0 +1,1440 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(CAGEfightR)
+library(tidyverse)
+library(ggforce)
+```
+
+
+```{r extract all context from }
+
+
+generate_context_ranges <- function(grange_object, range_width = 10000){
+  if(length(grange_object)!=1){
+    throw()
+  }
+  plus_context_range = GRanges(seqnames = grange_object %>% seqnames() %>% as.character(), strand = '*',
+              ranges = IRanges(start = grange_object %>% end, width = range_width))
+  minus_context_range = GRanges(seqnames = grange_object %>% seqnames() %>% as.character(), 
+                                strand = '*',
+                                ranges = IRanges(start = grange_object %>% start - range_width, 
+                                                              width = range_width))
+  out  = list(
+    'minus' = minus_context_range,
+    'plus' = plus_context_range
+  )
+  names(out)= paste0(c('minus_','plus_'), range_width)
+  out
+}
+
+
+is.integer0 <- function(x)
+{
+  is.integer(x) && length(x) == 0L
+}
+
+# extract_sc_context <- function(ctss_sc_object, enhancer_object, range_width = 3, including_non_active = F){
+#   
+#   ctss_sc_object = ctss_sc_object %>% calcTPM() %>% calcPooled() %>% subsetBySupport(unexpressed = 0, minSamples = 0,inputAssay = "counts")
+#   
+#   out = data.frame()
+# 
+#   for(i in 1:nrow(enhancer_object)){
+#     if(i%%100==0){
+#       print(paste0(i,'//',nrow(enhancer_object),'...'))
+#     }
+#     temp_sc = subsetByOverlaps(ctss_sc_object,enhancer_object[i])
+#     list_of_context = generate_context_ranges(enhancer_object[i],range_width = range_width)
+# 
+#     active_cells = which(colSums(temp_sc %>% assay)>0)
+#     
+#     if(including_non_active){
+#       cells = which(colSums(temp_sc %>% assay)>=0)
+#       # browser()
+#     }else{
+#       cells = active_cells
+#     }
+#     
+#     for(ci in names(cells)){
+#       for(context_i in list_of_context){
+#         temp = subsetByOverlaps(ctss_sc_object[,ci],context_i)
+#         tss_j = which(temp %>% assay() %>% as.numeric()>0)
+#         if(!is.integer0(tss_j)){
+#           # TODO append to dataframe
+#           
+#           df_temp = temp[tss_j] %>% rowRanges() %>% as.data.frame()
+#           df_temp$count = temp[tss_j] %>% assay() %>% as.numeric()
+#           df_temp$TPM = temp[tss_j] %>% assay('TPM') %>% as.numeric()
+#           df_temp$eid = names(enhancer_object[i])
+#           df_temp$cid = ci
+#           ## useful in promoter
+#           
+#           # df_temp$myTPM = temp_sc[,ci] %>% assay('TPM') %>% colSums()
+#           df_temp$myplusTPM = temp_sc[,ci] %>% subset(strand=='+') %>% assay('TPM') %>% colSums()
+#           df_temp$myminusTPM = temp_sc[,ci] %>% subset(strand=='-') %>% assay('TPM') %>% colSums()
+#           df_temp$active = ci %in% names(active_cells)
+#           out = rbind(out, df_temp)
+#         }
+#       }
+#       # out[[length(out)+1]] = c(names(enhancer_object[i]),ci)
+#     }
+#   }
+#   out
+# }
+```
+
+```{r}
+extract_sc_context <- function(info_object,  enhancer_object, range_width = 3, including_non_active = F){
+   # temp = info_object$TSSs_sc[,cid] %>% subsetByOverlaps(GRanges(promoter)) %>% subsetByOverlaps(possible_promoter)
+  # todo()
+  # enhancer_object = info_object$SC_Validated_Enhancers$with_sc
+  out = data.frame()
+
+
+  for(i in 1:nrow(enhancer_object)){
+    if(i%%100==0){
+      print(paste0(i,'//',nrow(enhancer_object),'...'))
+    }
+    temp_sc = subsetByOverlaps(info_object$TSSs_sc,enhancer_object[i])
+    list_of_context = generate_context_ranges(enhancer_object[i],range_width = range_width)
+    
+    # browser()
+    active_cells = which(colSums(temp_sc %>% assay)>0)
+    
+    if(including_non_active){
+      cells = which(colSums(temp_sc %>% assay)>=0)
+      # browser()
+    }else{
+      cells = active_cells
+    }
+    
+    for(ci in names(cells)){
+      for(context_i in list_of_context){
+        temp = subsetByOverlaps(info_object$TSSs_sc[,ci],context_i)
+        tss_j = which(temp %>% assay() %>% as.numeric()>0)
+        if(!is.integer0(tss_j)){
+          # TODO append to dataframe
+          
+          df_temp = temp[tss_j] %>% rowRanges() %>% as.data.frame()
+          df_temp$count = temp[tss_j] %>% assay() %>% as.numeric()
+          df_temp$TPM = temp[tss_j] %>% assay('TPM') %>% as.numeric()
+          df_temp$eid = names(enhancer_object[i])
+          df_temp$cid = ci
+          # browser()
+          df_temp$txType = temp[tss_j] %>% rowRanges() %>% .$txType %>% as.character()
+          ## useful in promoter
+          
+          # df_temp$myTPM = temp_sc[,ci] %>% assay('TPM') %>% colSums()
+          df_temp$myplusTPM = temp_sc[,ci] %>% subset(strand=='+') %>% assay('TPM') %>% colSums()
+          df_temp$myminusTPM = temp_sc[,ci] %>% subset(strand=='-') %>% assay('TPM') %>% colSums()
+          df_temp$mypluscounts = temp_sc[,ci] %>% subset(strand=='+') %>% assay('counts') %>% colSums()
+          df_temp$myminuscounts = temp_sc[,ci] %>% subset(strand=='-') %>% assay('counts') %>% colSums()
+          df_temp$mytxType = temp_sc %>% rowRanges() %>% .$txType %>% as.character() %>% unique() %>% paste0(.,collapse = ';')
+          df_temp$active = ci %in% names(active_cells)
+          # browser()
+          out = rbind(out, df_temp)
+        }
+      }
+      # out[[length(out)+1]] = c(names(enhancer_object[i]),ci)
+    }
+  }
+  out
+}
+```
+
+
+```{r}
+test = extract_sc_context(info_object = info_bulk_t0,range_width = 1e06)
+
+# todo()
+
+## at least 2 hours to go for each data set
+
+
+test2 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t24, enhancer_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+
+test_context_t6 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t6, enhancer_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+test_context_t0 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t0, enhancer_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+test_promoterscontext_t24 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t24, enhancer_object = info_bulk_t24$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,range_width = 1e06, including_non_active = T)
+
+test_promoterscontext_t6 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t6, enhancer_object = info_bulk_t6$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500),range_width = 1e06, including_non_active = T)
+
+test_promoterscontext_t0 = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t0, enhancer_object = info_bulk_t0$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500),range_width = 1e06, including_non_active = T)
+
+
+
+test_promoterscontext_t0_test_performance = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t0, enhancer_object = info_bulk_t0$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500),range_width = 1e06, including_non_active = T)
+
+test_promoterscontext_t24_test_performance = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t24, enhancer_object = info_bulk_t24$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,range_width = 1e06, including_non_active = T)
+
+test_promoterscontext_t6_test_performance = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t6, enhancer_object = info_bulk_t6$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500),range_width = 1e06, including_non_active = T)
+
+
+
+# test_promoterscontext_t0_test_performance = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t0, enhancer_object = info_bulk_t0$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(1),range_width = 1e06, including_non_active = F)
+
+```
+```{r only counts promoter}
+
+
+
+test_contextofpromoter_nearenhancer_t24 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t24 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t24$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,
+  range_width = 1e06,
+  including_non_active = T)
+
+test_contextofpromoter_nearenhancer_t6 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t6 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t6$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,
+  range_width = 1e06,
+  including_non_active = T)
+
+test_contextofpromoter_nearenhancer_t0 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t0 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t0$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,
+  range_width = 1e06,
+  including_non_active = T)
+
+
+
+test_contextofpromoter_nearpromoter_t24 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t24 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t24$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t24$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_contextofpromoter_nearpromoter_t6 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t6 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t6$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t6$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_contextofpromoter_nearpromoter_t0 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t0 %>% subsetByOverlaps(x = ., ranges = subset(info_bulk_t0$TSSs, txType == 'promoter'&score>10 )), 
+  enhancer_object = info_bulk_t0$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+
+test_contextofenhancer_nearpromoter_t24 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t24 %>% subsetByOverlaps(x = ., ranges = info_bulk_t24$SC_Validated_Enhancers$with_sc), 
+  enhancer_object = info_bulk_t24$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_contextofenhancer_nearpromoter_t6 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t6 %>% subsetByOverlaps(x = ., ranges = info_bulk_t6$SC_Validated_Enhancers$with_sc), 
+  enhancer_object = info_bulk_t6$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_contextofenhancer_nearpromoter_t0 = extract_sc_context(
+  ctss_sc_object = CTSSs_singlecell_t0 %>% subsetByOverlaps(x = ., ranges = info_bulk_t0$SC_Validated_Enhancers$with_sc), 
+  enhancer_object = info_bulk_t0$TSSs %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+```
+
+
+```{r preparation}
+
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene 
+
+info_bulk_t0$TCs_sc <- quickTSSs(CTSSs_singlecell_t0)
+info_bulk_t0$TSSs_sc = info_bulk_t0$TCs_sc %>%
+  calcTPM() %>%
+  subsetBySupport(inputAssay="counts", unexpressed=0, minSamples=0) %>%
+  assignTxType(., txModels = txdb, swap="thick")
+
+info_bulk_t6$TCs_sc <- quickTSSs(CTSSs_singlecell_t6)
+info_bulk_t6$TSSs_sc = info_bulk_t6$TCs_sc %>%
+  calcTPM() %>%
+  subsetBySupport(inputAssay="counts", unexpressed=0, minSamples=0) %>%
+  assignTxType(., txModels = txdb, swap="thick")
+
+info_bulk_t24$TCs_sc <- quickTSSs(CTSSs_singlecell_t24)
+info_bulk_t24$TSSs_sc = info_bulk_t24$TCs_sc %>%
+  calcTPM() %>%
+  subsetBySupport(inputAssay="counts", unexpressed=0, minSamples=0) %>%
+  assignTxType(., txModels = txdb, swap="thick")
+```
+
+
+```{r counts also txTypes}
+
+
+test_context_t0 = extract_sc_context(info_object = info_bulk_t0, enhancer_object = info_bulk_t0$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+test_context_t6 = extract_sc_context(info_object = info_bulk_t6, enhancer_object = info_bulk_t6$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+test_context_t24 = extract_sc_context(info_object = info_bulk_t24, enhancer_object = info_bulk_t24$SC_Validated_Enhancers$with_sc,range_width = 1e06,including_non_active = T)
+
+
+
+test_context_nearpromoters_t24 = extract_sc_context(info_object = info_bulk_t24,
+  enhancer_object = info_bulk_t24$TSSs_sc %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_context_nearpromoters_t0 = extract_sc_context(info_object = info_bulk_t0,
+  enhancer_object = info_bulk_t0$TSSs_sc %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+test_context_nearpromoters_t6 = extract_sc_context(info_object = info_bulk_t6,
+  enhancer_object = info_bulk_t6$TSSs_sc %>% subset(txType=='promoter'&score>10) %>% sample(500) ,
+  range_width = 1e06, 
+  including_non_active = T)
+
+
+```
+
+
+
+```{r}
+test_background = extract_sc_context(ctss_sc_object = CTSSs_singlecell_t24, enhancer_object = info_bulk_t24$TSSs %>% sample(500),range_width = 1e07)
+```
+
+
+```{r}
+
+
+
+test %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+                end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>% 
+  filter(rela_pos > -1e04 & rela_pos < 1e04) %>%
+  ggplot(aes(x = rela_pos, fill=strand))+
+  labs(x = 'Relative Position (bp)', y = 'Count of TSSs')+
+  geom_histogram(binwidth = 5e01)+
+  facet_wrap(~strand)+
+  facet_zoom(x = rela_pos > -1e03 & rela_pos < 1e03)+
+  theme_bw()
+  
+  # geom_density(aes(y=5e05*..count..))+
+
+
+  ggsave(paste0('May27_context_tss_density.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+
+  
+```
+
+
+```{r}
+# test_background %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+") %>% sapply(., "[", 2) %>% as.numeric(),
+#               end = str_extract_all(string =eid, pattern = "\\d+") %>% sapply(., "[", 3) %>% as.numeric(),
+test_background %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>% 
+  filter(rela_pos > -1e04 & rela_pos < 1e04) %>%
+  ggplot(aes(x = rela_pos, fill=strand))+
+  labs(x = 'Relative Position (bp)', y = 'Count of TSSs')+
+  geom_histogram(binwidth = 5e01)+
+  facet_wrap(~strand)+
+  facet_zoom(x = rela_pos > -1e03 & rela_pos < 1e03)+
+  theme_bw()
+
+ ggsave(paste0('May28_context_tss_density_background.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+```
+
+
+```{r}
+extract_feature_from_burst_events <- function(df_with_eid_cid, source = test_sc_t24, feature = c('maxtag','ncells')){
+  df = df_with_eid_cid %>% mutate(uid = paste0(eid,'|',cid))
+  source = source %>% mutate(uid = paste0(eid,'|',cid))
+  out = c()
+  
+  for(u in unique(df$uid)){
+    # browser()
+    df[df$uid == u, feature] = source[source$uid == u, feature] 
+  }
+  df
+}
+```
+
+
+```{r}
+
+test_sc_comtext_t24 = extract_feature_from_burst_events(test, source = test_sc_t24, feature =  c('maxtag','ncells', 'minus_counts', 'plus_counts'))
+
+
+```
+
+
+
+```{r}
+library(scales)
+asinh_trans <- function(){
+  trans_new(name = 'asinh', transform = function(x) asinh(x), 
+            inverse = function(x) sinh(x))
+}
+```
+
+```{r}
+# test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+") %>% sapply(., "[", 2) %>% as.numeric(),
+#               end = str_extract_all(string =eid, pattern = "\\d+") %>% sapply(., "[", 3) %>% as.numeric(),
+#               rela_pos = pos - (start+end)/2) %>%
+#   filter(ncells<70) %>%
+#   ggplot(aes(x = rela_pos, color = strand))+
+#   geom_density()+
+#   facet_wrap(~minus_counts==0)
+#   # scale_x_continuous(trans = 'asinh')
+  
+```
+```{r}
+# test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+") %>% sapply(., "[", 2) %>% as.numeric(),
+#               end = str_extract_all(string =eid, pattern = "\\d+") %>% sapply(., "[", 3) %>% as.numeric(),
+#               rela_pos = pos - (start+end)/2) %>%
+#   filter(ncells<70,rela_pos<1e06,rela_pos>-1e06) %>%
+#   ggplot(aes(x = rela_pos, color = strand))+
+#   geom_density()+
+#   facet_wrap(~plus_counts<minus_counts)
+#   # facet_wrap(plus_counts==0~minus_counts==0)
+```
+
+
+```{r}
+
+
+ # %>% gsub(pattern = '-','') %>% as.numeric()
+cumulative_count_t24 = test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>%
+  # filter(eid %in% c('chr1:839913-840390','chr1:6661034-6661561')) %>%
+  # group_by(rela_pos)%>%
+  # filter(rela_pos>-1e04, rela_pos<1e04)%>%
+  filter(TPM < quantile(TPM, 0.999)) %>%
+  # filter( rela_pos > -1e06 & rela_pos < -1e02 | rela_pos > 1e02 & rela_pos < 1e06) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM))
+  # filter(cid == 'CAGE_4_A02')%>%
+
+
+cumulative_count_t24 %>% as.data.frame() %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  # geom_point()+
+  geom_line()+
+  facet_zoom(xy = rela_pos > -2e03 & rela_pos < 2e03, horizontal = FALSE)
+
+  ggsave(paste0('May27_context_cumulative_TPM_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+
+# 
+# apply(cumulative_count_t24, 2, function(x) any(is.na(x) | is.infinite(x)))
+
+
+```
+
+```{r}
+cumulative_count_t24 = test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>%
+  # filter(eid %in% c('chr1:839913-840390','chr1:6661034-6661561')) %>%
+  # group_by(rela_pos)%>%
+  # filter(rela_pos>-1e04, rela_pos<1e04)%>%
+  filter(TPM <= quantile(TPM, 0.1)) %>%
+  # filter( rela_pos > -1e06 & rela_pos < -1e02 | rela_pos > 1e02 & rela_pos < 1e06) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM))
+  # filter(cid == 'CAGE_4_A02')%>%
+
+
+cumulative_count_t24 %>% as.data.frame() %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  # geom_point()+
+  geom_line()+
+  facet_zoom(xy = rela_pos > -2e03 & rela_pos < 2e03, horizontal = FALSE)
+
+  ggsave(paste0('May27_context_cumulative_TPM1_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+```
+
+```{r}
+cumulative_count_background_t24 = test_background %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>%
+  # filter(eid %in% c('chr1:839913-840390','chr1:6661034-6661561')) %>%
+  # group_by(rela_pos)%>%
+  # filter(rela_pos>-1e04, rela_pos<1e04)%>%
+  # filter(TPM <= quantile(TPM, 0.1)) %>%
+  # filter( rela_pos > -1e06 & rela_pos < -1e02 | rela_pos > 1e02 & rela_pos < 1e06) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM))
+  # filter(cid == 'CAGE_4_A02')%>%
+
+
+cumulative_count_background_t24 %>% as.data.frame() %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  # geom_point()+
+  geom_line()+
+  facet_zoom(xy = rela_pos > -2e03 & rela_pos < 2e03, horizontal = FALSE)
+
+  ggsave(paste0('May28_context_aroundpromoter_cumulative_TPM_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+```
+
+
+```{r}
+cumulative_count_t24 = test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              rela_pos = pos - (start+end)/2) %>%
+  # filter(eid %in% c('chr1:839913-840390','chr1:6661034-6661561')) %>%
+  # group_by(rela_pos)%>%
+  # filter(rela_pos>-1e04, rela_pos<1e04)%>%
+  # filter( rela_pos > -1e06 & rela_pos < -1e02 | rela_pos > 1e02 & rela_pos < 1e06) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand,uid) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM))
+  # filter(cid == 'CAGE_4_A02')%>%
+```
+
+```{r}
+
+
+
+for(i in 1:100){
+  eid_1 = cumulative_count_t24$eid %>% unique %>%sample(1)
+  
+cumulative_count_t24 %>%  
+  filter(eid == eid_1) %>%
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(direction = ifelse(minus_counts>plus_counts, yes = "-", no = '+')) %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  geom_point()+
+  geom_step()+
+  # geom_path()+
+  facet_grid(direction~cid)+
+  labs(title = eid_1 )
+  # title(main = eid_1)
+
+  ggsave(paste0('May28_context_aroundpromoter_cumulative_TPM_t24_',i,'.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/context/', scale = 1,dpi = 300, width = 10, height=10, limitsize = FALSE)
+}
+
+
+
+
+```
+
+```{r}
+
+
+# str_extract_all(string = "chr20:1350367-1350499;+", pattern = ";[\\+-]") %>% as.character()
+
+for(i in 1:30){
+  eid_1 = test_background$eid %>% unique %>%sample(1)
+  
+test_background %>%  
+  filter(eid == eid_1) %>%
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>%  
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM)) %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  geom_point()+
+  geom_step()+
+  # geom_path()+
+  facet_wrap(~cid)+
+  labs(title = eid_1 )
+  # title(main = eid_1)
+
+  ggsave(paste0('May28_context_aroundpromoter_cumulative_TPM_t24_',i,'.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/context_background/', scale = 1,dpi = 300, width = 10, height=10, limitsize = FALSE)
+}
+```
+
+
+
+```{r}
+cumulative_count_t24 %>%  
+  filter(eid == eid_1) %>%
+  mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  filter(cid == 'CAGE_4_D09') %>%
+  .$plus_counts
+```
+
+
+```{r}
+
+
+cumulative_count_t24 %>%  
+  filter(eid == 'chr17:41392867-41393268') %>%
+  group_by(rela_pos, strand, cid) %>%
+  summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+    ggplot(aes(x = rela_pos, y = meancumTPM, color = strand))+
+  # geom_point()+
+  geom_line()+
+  facet_wrap(~cid)
+```
+
+
+```{r}
+
+for(i in 1:20){
+  
+
+eid_1 = test2$eid %>% unique %>%sample(1)
+  
+test2 %>%  
+  filter(eid == eid_1) %>%
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>%  
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand,cid) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  geom_point()+
+  geom_step()+
+  # geom_path()+
+  facet_wrap(active~cid,scales = 'free_y')+
+  labs(title = eid_1 )
+
+  ggsave(paste0('May28_context_aroundpromoter_cumulative_TPM_t24_',i,'.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/context/', scale = 1,dpi = 300, width = 20, height=20, limitsize = FALSE)
+}
+```
+
+
+```{r}
+
+# test_context_t6 %>%  
+test2 %>%
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2,
+         active = ifelse(active, yes = 'active', no = 'non-active')) %>%  
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand, active) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TPM = cumsum(TPM)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TPM, color = strand))+
+  geom_point()+
+  # geom_step()+
+  # geom_path()+
+  facet_wrap(active~.,scales = 'free_y')
+  # labs(title = eid_1 )
+
+  ggsave(paste0('May28_context_cumulative_TPM_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
+```
+```{r}
+test2 %>%  
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2,
+         active = ifelse(active, yes = 'active', no = 'non-active')) %>%  
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand, active) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM>0)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_point()+
+  geom_step()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(active~.,scales = 'free_y')
+  # labs(title = eid_1 )
+
+  ggsave(paste0('May28_context_cumulative_countpos_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 8, height=5, limitsize = FALSE)
+```
+
+
+```{r}
+
+test2 %>%  
+  # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2,
+         active = ifelse(active, yes = 'active', no = 'non-active')) %>%  
+  filter(rela_pos<2000, rela_pos>-2000)%>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0,strand, active) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM>0)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_point()+
+  geom_step()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(active~.,scales = 'free_y')
+  # labs(title = eid_1 )
+
+
+  ggsave(paste0('May28_context_cumulative_countpos_zoom_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 8, height=5, limitsize = FALSE)
+```
+
+
+
+```{r regress based on single one}
+test_context_t6_sum = test_context_t6 %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2,
+         # active = ifelse(active, yes = 'active', no = 'non-active'),
+         stream = ifelse(rela_pos>0, yes = 'downstream', no = 'upstream'),
+         stream = as.factor(stream),
+         active = as.factor(active),
+         strand = as.factor(as.character(strand))) %>%  
+  filter(abs(rela_pos)<1e05) %>%
+  group_by(stream, strand, cid, eid) %>%
+  summarise(npos = n(), TPM  = sum(TPM)) %>%
+  ungroup() %>%
+  complete(stream, strand, cid, eid,
+             fill = list(npos = 0, TPM = 0))
+```
+
+```{r}
+# test_context_t6 %>% group_by(eid) %>% summarise(n=length(unique(cid))) %>% arrange(n)
+```
+
+
+```{r regress based on single one}
+test_context_t6_sum = extract_feature_from_burst_events(
+                      df_with_eid_cid = test_context_t6_sum,
+                      source = test_context_t6 %>% group_by(eid, cid) %>% summarise(active = first(active)) %>% ungroup() %>% complete(eid, cid, fill = list(active = FALSE)),
+                      feature = 'active')
+
+
+````
+
+
+
+```{r}
+test_context_t6_sum %>% ggplot(aes(x= log(npos), y=log(TPM), color = active)) +
+  geom_point(alpha = 0.1)+
+  geom_smooth(method = 'lm')+
+  facet_grid(stream~strand)
+```
+
+```{r}
+
+
+test_context_t6_sum %>% ggplot(aes(x= active, y=log(TPM))) +
+  geom_violin()+
+  geom_boxplot()
+  # geom_point(alpha = 0.1)+
+  # geom_smooth(method = 'lm')+
+  # facet_grid(stream~strand)
+```
+
+
+```{r}
+test_context_t6_sum %>% filter(cid == 'CAGE_4_B04', eid == 'chr1:106435516-106435964')
+```
+
+```{r}
+
+
+
+test_context_t6_sum %>%
+  ggplot(aes(x = TPM, y = as.numeric(as.factor(active))-1)) +
+  stat_smooth(method="glm", family=binomial, formula=y~x, 
+            alpha=0.2, size=2) +
+  geom_point(aes(color = active),position=position_jitter(height=0.03, width=0), alpha = 0.1)+
+  facet_grid(strand ~ stream)
+
+
+```
+
+
+```{r}
+
+# test_context_t6_sum = extract_feature_from_burst_events(
+#                       df_with_eid_cid = test_context_t6_sum,
+#                       source = test_context_t6 %>% group_by(eid, cid) %>% summarise(active = first(active)) %>% ungroup() %>% complete(eid, cid, fill = list(active = FALSE)),
+#                       feature = 'active')
+
+
+
+test_context_t6_sum = extract_feature_from_burst_events(df_with_eid_cid = test_context_t6_sum, 
+                                  source = test_sc_t6 %>% complete(cid, eid, fill = list('minus_counts' = 0, 'plus_counts' = 0)),
+                                  feature = c('minus_counts','plus_counts'))
+```
+
+```{r}
+test_context_t6_sum %>% 
+  ggplot(aes(x = TPM, y = plus_counts, color = active)) +
+  stat_smooth(method="lm", family=binomial, formula=y~x, 
+            alpha=0.2) +
+  geom_point(position=position_jitter(height=0.03, width=0), alpha = 0.1)+
+  facet_grid(strand ~ stream)
+  
+```
+
+```{r}
+test_context_t6_sum %>% 
+  ggplot(aes(x = TPM, y = minus_counts+plus_counts, color = active)) +
+  stat_smooth(method="lm", family=binomial, formula=y~x, 
+            alpha=0.2) +
+  geom_point(position=position_jitter(height=0.03, width=0), alpha = 0.1)+
+  facet_grid(strand ~ stream)
+```
+
+
+```{r}
+
+
+test_sc_t24 %>%
+  complete(eid, cid, fill = list(maxtag = 0, minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)) %>%
+  extract_feature_from_s4(df_query = ., s4_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, feature = 'txType')
+
+extract_feature_from_s4 <- function(df_query, s4_object, feature){
+  source = s4_object %>% rowRanges() %>% as.data.frame() %>% mutate(eid = row.names(.))
+  # out = c()
+  
+  for(u in unique(df_query$eid)){
+    # browser()
+    df_query[df_query$eid == u, feature] = source[source$eid == u, feature] %>% as.character()
+  }
+  df_query
+}
+
+
+extract_feature_from_df <- function(df_query, source, feature){
+  # source = s4_object %>% rowRanges() %>% as.data.frame() %>% mutate(eid = row.names(.))
+  # out = c()
+  # source %>% group_by(eid) %>% summarise(feature = first(feature))
+  for(u in unique(df_query$eid)){
+    # browser()
+    df_query[df_query$eid == u, feature] = source[source$eid == u, feature] %>% first %>% as.character()
+  }
+  df_query
+}
+
+
+test2 %>%
+  # filter(eid == 'chr1:839913-840390') %>%
+    # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>%
+  filter(abs(rela_pos)<100000,abs(rela_pos)>500) %>%
+extract_feature_from_burst_events(., source = test_sc_t24 %>% complete(eid, cid, fill = list(minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)), feature =  c('minus_counts', 'plus_counts')) %>% 
+  extract_feature_from_df(df_query = ., source = test_sc_t24,feature = 'ncells') %>%
+  extract_feature_from_s4(df_query = ., s4_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, feature = 'txType') %>%
+  mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0, strand, active, txType) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM>0)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_point()+
+  geom_step()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(active~txType,scales = 'free_y')
+```
+```{r}
+
+
+```
+
+
+
+```{r}
+test2 %>%
+  # filter(eid == 'chr1:839913-840390') %>%
+    # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  filter(TPM>10) %>%
+  # filter(eid %in% (subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>%
+  filter(abs(rela_pos)<1e5) %>%
+extract_feature_from_burst_events(., source = test_sc_t24 %>% complete(eid, cid, fill = list(minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)), feature =  c('minus_counts', 'plus_counts')) %>% 
+  extract_feature_from_df(df_query = ., source = test_sc_t24,feature = 'ncells') %>%
+  extract_feature_from_s4(df_query = ., s4_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, feature = 'txType') %>%
+  # mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+  arrange(abs(rela_pos)) %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = '?',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='?')))) %>%
+  # group_by(eid,cid) %>%
+  # mutate(TPM_norm = TPM / sum(TPM) / n()) %>%
+  group_by(eid, cid) %>%
+  mutate(TPM_norm = TPM / sum(TPM)) %>%
+  
+  # mutate(TPM_norm = TPM / n()) %>%
+  ungroup() %>%
+  group_by(eid) %>%
+  mutate(ncid = length(unique(cid))) %>%
+  ungroup() %>%
+  mutate(TPM_norm2 = TPM_norm / ncid) %>%
+  
+  group_by(rela_pos>0, strand, direction, txType) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM_norm2)) %>%
+  # mutate(Cumulative_TSS_pos = TPM_norm) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_point()+
+  geom_step()+
+  # geom_bar()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(direction~txType, scales = 'free_y', ncol=2)
+  # facet_grid(direction~txType)
+```
+
+```{r}
+test_promoterscontext_t0 %>%
+  # filter(eid == 'chr1:839913-840390') %>%
+    # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  filter(TPM>10) %>%
+  # filter(eid %in% (subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         direction = str_extract_all(string =eid, pattern = ";.") %>% sapply(., "[", 1) %>% gsub(';',replacement = '',x=.),
+         rela_pos = pos - (start+end)/2) %>%
+  # filter(abs(rela_pos)<1e5) %>%
+  mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0, strand, active, direction) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM)) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_point()+
+  geom_step()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(active~direction,scales = 'free_y')
+```
+```{r}
+
+library(ggsignif)
+
+test_promoterscontext_t0 %>%
+  # filter(eid == 'chr1:839913-840390') %>%
+    # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  filter(TPM>10) %>%
+  # filter(eid %in% (subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         direction = str_extract_all(string =eid, pattern = ";.") %>% sapply(., "[", 1) %>% gsub(';',replacement = '',x=.),
+         rela_pos = pos - (start+end)/2) %>%
+  # filter(abs(rela_pos)<1e5) %>%
+  mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+  arrange(abs(rela_pos)) %>%
+  group_by(rela_pos>0, strand, active, direction) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos = cumsum(TPM)) %>%
+  as.data.frame() %>%
+  # filter(active =='active') %>%
+  group_by(direction,cid,eid, active) %>%
+  summarise(TPM_up = sum(TPM[rela_pos<0&strand=='+']),
+            TPM_dp = sum(TPM[rela_pos>0&strand=='+']),
+            TPM_un = sum(TPM[rela_pos<0&strand=='-']),
+            TPM_dn = sum(TPM[rela_pos>0&strand=='-'])) %>%
+  
+  mutate(bias_p = ((TPM_up+TPM_dp))/((TPM_up+TPM_dp)+(TPM_un+TPM_dn)),
+         bias_d = ((TPM_dn+TPM_dp))/((TPM_dn+TPM_dp)+(TPM_un+TPM_up)),
+         bias_dp = TPM_dp/(TPM_dn+TPM_dp))%>%
+  
+         # bias_p_2 = balanceBC(PD = TPM_dp,MD = TPM_dn,PU = TPM_up,MU = TPM_un),
+         # bias_p_3 = balanceD(PD = TPM_dp,MD = TPM_dn,PU = TPM_up,MU = TPM_un),
+         # bias_d_3 = balanceD(PD = TPM_dp,MD = TPM_dn,PU = TPM_up,MU = TPM_un),) %>%
+         # bias_d_2 = balanceBC(PD = TPM_dp,MD = TPM_up,PU = TPM_dn,MU = TPM_un)) %>%
+  # aov(bias_p~as.factor(direction)*active,data=.) %>%
+  lm(bias_dp~direction*active+cid+eid,data=.)%>%
+  summary()
+  # ggplot(aes(x = direction, y = bias_d, color = active))+
+  # # ggplot(aes(x = bias_d>0.5, fill = direction))+
+  # #  geom_bar(stat='count', position='dodge')+
+  # # facet_wrap(~active)
+  # geom_violin()+
+  # geom_boxplot(width = 0.05)+
+  # geom_jitter(alpha=0.1)
+  # geom_signif(comparisons = list(c("active", "non-active")), 
+              # map_signif_level=TRUE)
+  
+
+```
+
+```{r}
+
+preprocess_directional_bias_enhancer <- function(test_context_object, burst_events, info_object, interval = 1e5, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf){
+   test_context_object%>%
+    # filter(eid == 'chr1:839913-840390') %>%
+    
+    filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972')),
+              TPM>=TPM_cutoff_lower_limit, TPM<=TPM_cutoff_upper_limit) %>%
+    # filter(eid %in% (subsetByOverlaps(info_object$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
+    mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+           end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+           rela_pos = pos - (start+end)/2) %>%
+    filter(abs(rela_pos)< interval) %>%
+    
+  extract_feature_from_burst_events(., source = burst_events %>% 
+  complete(eid, cid, fill = list(minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)), feature =  c('minus_counts', 'plus_counts')) %>% 
+    extract_feature_from_df(df_query = ., source = burst_events,feature = 'ncells') %>%
+    extract_feature_from_s4(df_query = ., s4_object = info_object$SC_Validated_Enhancers$with_sc, feature = 'txType') %>%
+    # mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+    arrange(abs(rela_pos)) %>%
+    mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='micro')))) -> out
+  out
+}
+
+
+preprocess_directional_bias_promoter <- function(context_object, info_object, interval = 1e5, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf){
+  context_object%>%
+    # filter(eid == 'chr1:839913-840390') %>%
+    filter(TPM>=TPM_cutoff_lower_limit, TPM<=TPM_cutoff_upper_limit) %>%
+    mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         direction = str_extract_all(string =eid, pattern = ";.") %>% sapply(., "[", 1) %>% gsub(';',replacement = '',x=.),
+         rela_pos = pos - (start+end)/2) %>%
+  
+  filter(abs(rela_pos)< interval) %>%
+  mutate(active = ifelse(active, yes = 'active', no = 'non-active')) -> out
+  out
+}
+
+
+sum_directional_bias_enhancer <- function(test_context_object_preprocessed){
+  test_context_object_preprocessed %>%
+    # group_by(eid,cid) %>%
+    # mutate(TPM_norm = TPM / sum(TPM) / n()) %>%
+    group_by(direction,cid,eid, active, txType, plus_counts, minus_counts) %>%
+    summarise(TPM_up = sum(TPM[rela_pos<0&strand=='+']),
+              TPM_dp = sum(TPM[rela_pos>0&strand=='+']),
+              TPM_un = sum(TPM[rela_pos<0&strand=='-']),
+              TPM_dn = sum(TPM[rela_pos>0&strand=='-']),
+              nTPM_up = sum(TPM[rela_pos<0&strand=='+']>0),
+              nTPM_dp = sum(TPM[rela_pos>0&strand=='+']>0),
+              nTPM_un = sum(TPM[rela_pos<0&strand=='-']>0),
+              nTPM_dn = sum(TPM[rela_pos>0&strand=='-']>0)
+              ) %>%
+      mutate(
+        bias_p = ((TPM_up+TPM_dp))/((TPM_up+TPM_dp)+(TPM_un+TPM_dn)),
+        bias_d = ((TPM_dn+TPM_dp))/((TPM_dn+TPM_dp)+(TPM_un+TPM_up)),
+        bias_p2 = ((nTPM_up+nTPM_dp))/((nTPM_up+nTPM_dp)+(nTPM_un+nTPM_dn)),
+        bias_d2 = ((nTPM_dn+nTPM_dp))/((nTPM_dn+nTPM_dp)+(nTPM_un+nTPM_up))
+        ) %>%
+    ungroup() -> out
+  out
+}
+
+
+sum_directional_bias_promoter <- function(context_object_preprocessed){
+  context_object_preprocessed %>%
+  group_by(direction,cid,eid, active) %>%
+    summarise(TPM_up = sum(TPM[rela_pos<0&strand=='+']),
+              TPM_dp = sum(TPM[rela_pos>0&strand=='+']),
+              TPM_un = sum(TPM[rela_pos<0&strand=='-']),
+              TPM_dn = sum(TPM[rela_pos>0&strand=='-']),
+              nTPM_up = sum(TPM[rela_pos<0&strand=='+']>0),
+              nTPM_dp = sum(TPM[rela_pos>0&strand=='+']>0),
+              nTPM_un = sum(TPM[rela_pos<0&strand=='-']>0),
+              nTPM_dn = sum(TPM[rela_pos>0&strand=='-']>0)
+              ) %>%
+      mutate(
+        bias_p = ((TPM_up+TPM_dp))/((TPM_up+TPM_dp)+(TPM_un+TPM_dn)),
+        bias_d = ((TPM_dn+TPM_dp))/((TPM_dn+TPM_dp)+(TPM_un+TPM_up)),
+        bias_p2 = ((nTPM_up+nTPM_dp))/((nTPM_up+nTPM_dp)+(nTPM_un+nTPM_dn)),
+        bias_d2 = ((nTPM_dn+nTPM_dp))/((nTPM_dn+nTPM_dp)+(nTPM_un+nTPM_up))
+        ) %>%
+    ungroup() -> out
+  out
+}
+
+
+regress_bias <- function(context_sum){
+  # out_d = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(bias_d ~ active + txType + eid + A + M,data=.)%>%
+  # summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+  # filter(!str_detect(covariates, "eid"))
+  # 
+  # out_p = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(bias_p ~ active + txType + eid + A + M,data=.)%>%
+  # summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+  # filter(!str_detect(covariates, "eid"))
+  
+  out_new = context_sum%>%
+  mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+    lm(M ~ active + txType + eid + A + bias_p + bias_d + bias_p2 + bias_d2,data=.)%>%
+  summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+  filter(!str_detect(covariates, "eid"))
+  
+  resi = context_sum%>%
+  mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+    lm(M ~ active + txType + eid + A ,data=.)%>%
+  summary() %>% .$residuals %>% as.numeric()
+  
+  
+#     out_new2 = context_sum%>%
+#   mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+#     glm(active ~ txType + eid + A + M + bias_p + bias_d,data=., family = binomial(link = 'logit'))%>%
+#   predict(.,newdata= context_sum%>%
+#   mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)),type='response')
+#     
+#     
+# (ifelse(test = out_new2 > 0.5, yes = 1, no = 0) == context_sum$active) %>%
+#   mean() %>%
+#   print()
+#   
+  
+  p = context_sum %>% mutate(resi = resi) %>% 
+    gather(key = bias, value = value, bias_p, bias_d, bias_p2, bias_d2) %>%
+    ggplot(aes(x = value, y = resi)) +
+    geom_point()+
+    geom_smooth(method = 'lm')+
+    facet_wrap(~bias)
+  print(p)
+  
+  # browser()
+  print(c(out_new[out_new['covariates']=='bias_d','t value'],
+          out_new[out_new['covariates']=='bias_p','t value'],
+        out_new[out_new['covariates']=='bias_d2','t value'],
+        out_new[out_new['covariates']=='bias_p2','t value']))
+  print(c(
+         out_new[out_new['covariates']=='bias_d','Pr(>|t|)'],
+        out_new[out_new['covariates']=='bias_p','Pr(>|t|)'],
+        out_new[out_new['covariates']=='bias_d2','Pr(>|t|)'],
+        out_new[out_new['covariates']=='bias_p2','Pr(>|t|)']))
+  return(out_new)
+}
+
+
+```
+
+```{r t0}
+
+test_context_t0_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t0_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  regress_bias(context_sum = .) -> temp
+
+```
+
+
+
+
+```{r t6}
+
+test_context_t6_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e3,TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t6_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  regress_bias(context_sum = .)
+
+test_context_t24_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test2 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e3,TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t24_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  regress_bias(context_sum = .)
+```
+
+
+```{r t24, but only count for promoter}
+
+
+test_contextofpromoter_nearenhancer_t6 %>%filter(active == TRUE)
+
+test_contextofenhancer_nearpromoter_t24 %>% filter(active  == TRUE)
+
+
+
+
+
+
+test_contextofpromoter_nearpromoter_t0 %>% filter(active == TRUE)
+
+test_contextofpromoter_nearpromoter_t0 %>%filter(active == TRUE)
+
+test_contextofpromoter_nearenhancer_t6 %>% filter(active == FALSE)
+
+
+test_context_t0_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t0_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  regress_bias(context_sum = .) -> temp
+
+```
+
+
+
+```{r summarise context promoters}
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene 
+
+
+info_bulk_t0$TCs_sc <- quickTSSs(CTSSs_singlecell_t0)
+
+info_bulk_t0$TSSs_sc = info_bulk_t0$TCs_sc %>%
+  calcTPM() %>%
+  subsetBySupport(inputAssay="counts", unexpressed=0, minSamples=0) %>%
+  assignTxType(., txModels = txdb, swap="thick")
+
+
+promoter_c_scan <- function(context_object, info_object){
+  
+  
+  # possible_promoter = ctss_object %>% subsetByOverlaps(x = ., ranges = subset(info_object$TSSs, txType == 'promoter'&score>10 ))
+  
+  context_object = context_object %>% mutate(promoters = paste0(seqnames,':',pos,'-',pos,':',strand)) 
+  # assign
+  
+  # ctss_object = assignTxType(ctss_object, txModels = txdb, swap="thick")
+
+  possible_promoter =  context_object %>% .$promoters %>% GRanges() %>% subsetByOverlaps(x = info_object$TSSs_sc, ranges = .)
+
+  # possible_promoter = info_bulk_t0$TSSs
+  # temp %>% rowRanges %>% .$txType %>% table
+
+  for(i in 1:nrow(context_object)){
+    cid  = context_object$cid[i]
+    eid  = context_object$eid[i]
+    promoter = context_object$promoters[i]
+    # temp = info_object$TSSs_sc[,cid] %>% subsetByOverlaps(GRanges(eid)) %>% subsetByOverlaps(possible_promoter)
+    temp = info_object$TSSs_sc[,cid] %>% subsetByOverlaps(GRanges(eid))
+    if(nrow(temp)==0){
+      browser()
+      print(temp %>% rowRanges %>% .$txType)
+    }
+  }
+}
+
+
+promoter_c_scan(context_object = test_context_t0,
+                info_object = info_bulk_t0)
+
+```
+
+```{r}
+
+
+test_context_t24_prod1e5 %>% group_by(eid, cid, direction, minus_counts, plus_counts) %>% summarise() %>% 
+  # filter(direction == 'bidirectional') %>%
+  mutate(A = log2(plus_counts+1)+log2(minus_counts+1), M = log2(plus_counts+1)-log2(minus_counts+1)) %>% 
+  ggplot(aes(x = A, y = M, color = direction))+
+  geom_jitter(position = position_jitter(width = 0.2, height = 0.2), alpha = 0.5)+
+  # geom_point()+
+  labs(x = 'log2(plus_counts+1) + log2(minus_counts+1)',
+       y = 'log2(plus_counts+1) - log2(minus_counts+1)',
+       color = 'Class of enhancer')
+
+ggsave()
+```
+
+
+```{r}
+# test_context_t24_prod1e5_sum%>%
+#     lm(bias_p ~ active + txType + eid,data=.)%>%
+#   summary() -> temp
+
+test_context_t24_prod1e5_sum%>%
+    lm(bias_d ~ eid,data=.)%>%
+  summary() -> temp
+
+
+test_context_t24_prod1e5_sum %>% ungroup() %>% mutate(resi = temp$residuals %>% as.numeric()) %>% ggplot(aes(x = M, y = resi))+
+  geom_point()+
+  geom_smooth()
+
+
+test_context_t24_prod1e5_sum %>% ungroup() %>% mutate(resi = temp$residuals %>% as.numeric()) %>% 
+  lm(resi ~ M+A, data= .) %>%
+  summary()
+
+test_context_t0_prod1e5_sum %>% ungroup() %>% ggplot(aes(x = M, y = A, color = direction))+
+  geom_jitter(alpha = 1)
+
+```
+
+
+```{r}
+test_context_t0_prod1e5_sum %>% ggplot(aes(x = M, y = bias_d ))+
+  geom_point()
+```
+
+```{r}
+test_context_t24_prod1e5_sum
+```
+
+
+```{r}
+temp
+```
+
+
+
+```{r tried to extract TPM from CTSS}
+extract_TPM_from_ctss <- function(df_query, ctss){
+  ctss = ctss %>% calcTPM()
+  df_query = df_query %>% mutate(uid = paste0(eid,'@', cid))
+  for(u in unique(df_query$uid)){
+    # browser()
+    TPM = subsetByOverlaps(ctss, GRanges(gsub(pattern = ';',replacement = ':',x = first(df_query[df_query$uid == u, 'eid'])))) %>% .[, first(df_query[df_query$uid == u, 'cid']) ] %>% assay('TPM') %>% colSums()
+    # count.origin = df_query[df_query$uid == u,'count']
+    df_query[df_query$uid == u, 'MyTPM'] = TPM
+  }
+  df_query
+}
+
+
+
+# 
+# test_promoterscontext_t0[1:1000,] %>% extract_TPM_from_ctss(df_query = ., ctss = CTSSs_singlecell_t0)
+```
+
+
+```{r}
+# temp[temp$direction == '?','direction'] = 'minor'
+
+temp %>% 
+    lm(bias_d~direction+eid,data=.)%>%
+  summary() -> temp2
+
+temp2$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+  filter(str_detect(covariates, "direction"))
+
+
+
+temp %>% mutate(A = log(plus_counts+minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+    lm(bias_p ~ M + A + active + txType + eid,data=.)%>%
+  summary()
+
+temp %>% mutate(A = log(plus_counts+minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+    lm(bias_d ~ M + A + active + txType + eid,data=.)%>%
+  summary()
+
+```
+
+
+```{r}
+test_context_t0 %>%
+  filter(eid %in% (subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names)) %>%
+  filter(eid == .$eid %>% unique %>% sample(1)) %>%
+    # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
+  # filter(TPM>10) %>%
+  # filter(eid %in% (subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>%
+  # filter(abs(rela_pos)<1e5) %>%
+extract_feature_from_burst_events(., source = test_sc_t0 %>% complete(eid, cid, fill = list(minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)), feature =  c('minus_counts', 'plus_counts')) %>% 
+  extract_feature_from_df(df_query = ., source = test_sc_t0,feature = 'ncells') %>%
+  extract_feature_from_s4(df_query = ., s4_object = info_bulk_t0$SC_Validated_Enhancers$with_sc, feature = 'txType') %>%
+  # mutate(active = ifelse(active, yes = 'active', no = 'non-active')) %>%
+  arrange(abs(rela_pos)) %>%
+  mutate(direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = '?',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='?')))) %>%
+  # group_by(eid,cid) %>%
+  # mutate(TPM_norm = TPM / sum(TPM) / n()) %>%
+  group_by(rela_pos>0, strand, direction, cid) %>%
+  # mutate(cc = cumsum(log(count)))
+  # mutate(Cumulative_TSS = cumsum(TPM)) %>%
+  # mutate(Cumulative_TSS_pos = TPM_norm) %>%
+  as.data.frame() %>%
+  # group_by(rela_pos, strand, cid) %>%
+  # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
+  ggplot(aes(x = rela_pos, y = TPM, color = strand))+
+  geom_point()+
+  geom_segment(aes(x = rela_pos, y = 0, xend = rela_pos, yend = TPM, color=strand))+
+  # geom_step()+
+  # geom_bar()+
+  # geom_path()+
+  labs(x = 'Relative Position from Enhancer center (bp)')+
+  facet_wrap(direction~cid, ncol=5)
+
+  ggsave(paste0('May30_test_.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=10, limitsize = FALSE)
+
+```
+
+```{r}
+binning_pos <- function(poss, interval){
+  # browser()
+  out = c()
+  for(p in poss){
+    
+    for(i in 1:(length(interval)-1)){
+      if((p>interval[i])&(p<=interval[i+1])){
+        out = c(out, paste0(interval[i],' ~ ', interval[i+1]))
+      }
+    }
+  }
+  out
+}
+
+
+test_context_t0 %>%
+  filter(eid == test_context_t0$eid %>% unique %>% sample(1)) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2, 
+         rela_pos_bin = binning_pos(rela_pos)) %>% 
+  group_by(rela_pos_bin, cid, eid, active,) %>% summarise(TPM = sum(TPM), npos = n()) %>% ggplot(aes(x = active, y = TPM, color = rela_pos_bin))+
+  geom_point()+
+  geom_violin()
+
+
+```
+```{r}
+test_context_t0 %>%
+  filter(eid == test_context_t0$eid %>% unique %>% sample(1)) %>%
+  mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
+         end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+         rela_pos = pos - (start+end)/2) %>% 
+  # filter(abs(rela_pos)<100000)%>%
+  group_by(cid, eid, active) %>% 
+  summarise(weighted_mean_pos = sum(rela_pos*TPM)/sum(TPM)) %>% 
+  ggplot(aes(x = active, y = weighted_mean_pos)) +
+  geom_point()
+  # geom_violin()
+```
+```{r}
+test_context_t0 %>%
+  filter(eid %in% (subsetByOverlaps(info_bulk_t0$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names)) %>%
+  filter(eid == .$eid %>% unique %>% sample(1)) 
+```
+
+```{r}
+
+```
+
+
