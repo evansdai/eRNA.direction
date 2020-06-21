@@ -408,7 +408,7 @@ asinh_trans <- function(){
 
  # %>% gsub(pattern = '-','') %>% as.numeric()
 cumulative_count_t24 = test_sc_comtext_t24 %>% mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
-              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
+              end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-', replacement = '',x=.) %>% as.numeric(),
               rela_pos = pos - (start+end)/2) %>%
   # filter(eid %in% c('chr1:839913-840390','chr1:6661034-6661561')) %>%
   # group_by(rela_pos)%>%
@@ -646,28 +646,50 @@ test2 %>%
   ggsave(paste0('May28_context_cumulative_TPM_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 10, height=6, limitsize = FALSE)
 ```
 ```{r}
-test2 %>%  
+
+
+
+test_context_t24 %>%  
   # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
   mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
          end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
-         rela_pos = pos - (start+end)/2,
-         active = ifelse(active, yes = 'active', no = 'non-active')) %>%  
+         
+         mainstrand = ifelse(active, 
+                             yes = ifelse(mypluscounts<myminuscounts,
+                                          yes = -1,
+                                          no = 1),
+                             no = 1),
+         strand = as.character(strand),
+         strand = ifelse(mainstrand == -1,
+                         yes = ifelse(strand == '+', yes = 'antisense',no = 'sense'),
+                         no = ifelse(strand == '+', yes = 'sense',no = 'antisense')),
+         rela_pos = mainstrand * (thick.start - (start+end)/2),
+         active = ifelse(active, yes = 'active', no = 'non-active'),
+         ) %>%  
+  filter(abs(rela_pos)>1e3,abs(rela_pos)<1e4) %>%
   arrange(abs(rela_pos)) %>%
   group_by(rela_pos>0,strand, active) %>%
   # mutate(cc = cumsum(log(count)))
   mutate(Cumulative_TSS_pos = cumsum(TPM>0)) %>%
+  ungroup() %>%
+  group_by(rela_pos>0, active) %>%
+  # mutate(cc = cumsum(log(count)))
+  mutate(Cumulative_TSS_pos_regardlessstrand = cumsum(TPM>0)) %>%
+  ungroup() %>%
   as.data.frame() %>%
   # group_by(rela_pos, strand, cid) %>%
   # summarise(meancumTPM = mean(Cumulative_TPM)) %>%
-  ggplot(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  ggplot()+
   # geom_point()+
-  geom_step()+
+  geom_step(aes(x = rela_pos, y = Cumulative_TSS_pos, color = strand))+
+  # geom_step(aes(x = rela_pos, y = Cumulative_TSS_pos_regardlessstrand))+
   # geom_path()+
-  labs(x = 'Relative Position from Enhancer center (bp)')+
-  facet_wrap(active~.,scales = 'free_y')
-  # labs(title = eid_1 )
+  labs(x = 'Relative Position from enhancer center (bp) (sense)',
+       y = 'Cumulative Number of TCs')+
+  facet_wrap(active~.,scales = 'free_y')+
+  theme_bw()
 
-  ggsave(paste0('May28_context_cumulative_countpos_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 8, height=5, limitsize = FALSE)
+  ggsave(paste0('Jun20_context_cumulative_countpos_t24.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/Notes/', scale = 1,dpi = 300, width = 6, height=3, limitsize = FALSE)
 ```
 
 
@@ -701,7 +723,7 @@ test2 %>%
 
 
 
-```{r regress based on single one}
+```{r regress based on single one 1}
 test_context_t6_sum = test_context_t6 %>%
   mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
          end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
@@ -731,7 +753,7 @@ test_context_t6_sum = extract_feature_from_burst_events(
                       feature = 'active')
 
 
-````
+```
 
 
 
@@ -879,7 +901,7 @@ test2 %>%
   mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
          end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
          rela_pos = pos - (start+end)/2) %>%
-  filter(abs(rela_pos)<1e5) %>%
+  filter(abs(rela_pos)<1e4) %>%
 extract_feature_from_burst_events(., source = test_sc_t24 %>% complete(eid, cid, fill = list(minus_counts=0,plus_counts=0,minus_pos=0,plus_pos=0)), feature =  c('minus_counts', 'plus_counts')) %>% 
   extract_feature_from_df(df_query = ., source = test_sc_t24,feature = 'ncells') %>%
   extract_feature_from_s4(df_query = ., s4_object = info_bulk_t24$SC_Validated_Enhancers$with_sc, feature = 'txType') %>%
@@ -916,10 +938,15 @@ extract_feature_from_burst_events(., source = test_sc_t24 %>% complete(eid, cid,
 ```
 
 ```{r}
+
+```
+
+
+```{r}
 test_promoterscontext_t0 %>%
   # filter(eid == 'chr1:839913-840390') %>%
     # mutate(direction = if(minus_counts>plus_counts){"-"}else{"+"}) %>%
-  filter(TPM>10) %>%
+  # filter(TPM>10) %>%
   # filter(eid %in% (subsetByOverlaps(info_bulk_t24$SC_Validated_Enhancers$with_sc, fantom_enhancers) %>% rowRanges %>% as.data.frame %>% row.names))%>%
   mutate(start = str_extract_all(string = eid, pattern = "\\d+-") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),               
          end = str_extract_all(string =eid, pattern = "-\\d+") %>% sapply(., "[", 1) %>% gsub('-',replacement = '',x=.) %>% as.numeric(),
@@ -1050,7 +1077,9 @@ sum_directional_bias_enhancer <- function(test_context_object_preprocessed){
         bias_p = ((TPM_up+TPM_dp))/((TPM_up+TPM_dp)+(TPM_un+TPM_dn)),
         bias_d = ((TPM_dn+TPM_dp))/((TPM_dn+TPM_dp)+(TPM_un+TPM_up)),
         bias_p2 = ((nTPM_up+nTPM_dp))/((nTPM_up+nTPM_dp)+(nTPM_un+nTPM_dn)),
-        bias_d2 = ((nTPM_dn+nTPM_dp))/((nTPM_dn+nTPM_dp)+(nTPM_un+nTPM_up))
+        bias_d2 = ((nTPM_dn+nTPM_dp))/((nTPM_dn+nTPM_dp)+(nTPM_un+nTPM_up)),
+        bias_cros = ((TPM_dn+TPM_up))/((TPM_dn+TPM_dp)+(TPM_un+TPM_up)),
+        bias_cros2 = ((nTPM_dn+nTPM_up))/((nTPM_dn+nTPM_dp)+(nTPM_un+nTPM_up))
         ) %>%
     ungroup() -> out
   out
@@ -1093,16 +1122,39 @@ regress_bias <- function(context_sum){
   # summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
   # filter(!str_detect(covariates, "eid"))
   
-  out_new = context_sum%>%
+  # out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active + txType + eid + A + bias_p + bias_d + bias_p2 + bias_d2,data=.)%>%
+  # summary() 
+  # 
+  # out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active + txType + eid + A + bias_p + bias_d,data=.)%>%
+  # summary()
+  # 
+  #   out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active + txType + eid + A + bias_p2 + bias_d2,data=.)%>%
+  # summary()
+  
+  #   out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active * eid + txType + A + bias_p + bias_d,data=.)%>%
+  # summary()
+    
+    out_new_all = context_sum%>%
   mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
-    lm(M ~ active + txType + eid + A + bias_p + bias_d + bias_p2 + bias_d2,data=.)%>%
-  summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+    lm(M ~ active * eid + txType + A + bias_p2 + bias_d2 + bias_cros2,data=.)%>%
+  summary()
+    
+    
+  out_new = out_new_all %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
   filter(!str_detect(covariates, "eid"))
   
-  resi = context_sum%>%
-  mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
-    lm(M ~ active + txType + eid + A ,data=.)%>%
-  summary() %>% .$residuals %>% as.numeric()
+  # resi = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active + txType + eid + A ,data=.)%>%
+  # summary() %>% .$residuals %>% as.numeric()
   
   
 #     out_new2 = context_sum%>%
@@ -1117,25 +1169,29 @@ regress_bias <- function(context_sum){
 #   print()
 #   
   
-  p = context_sum %>% mutate(resi = resi) %>% 
-    gather(key = bias, value = value, bias_p, bias_d, bias_p2, bias_d2) %>%
-    ggplot(aes(x = value, y = resi)) +
-    geom_point()+
-    geom_smooth(method = 'lm')+
-    facet_wrap(~bias)
-  print(p)
+  # p = context_sum %>% mutate(resi = resi) %>% 
+  #   gather(key = bias, value = value, bias_p, bias_d, bias_p2, bias_d2) %>%
+  #   ggplot(aes(x = value, y = resi)) +
+  #   geom_point()+
+  #   geom_smooth(method = 'lm')+
+  #   facet_wrap(~bias)
+  # print(p)
   
   # browser()
   print(c(out_new[out_new['covariates']=='bias_d','t value'],
           out_new[out_new['covariates']=='bias_p','t value'],
+          out_new[out_new['covariates']=='bias_cros','t value'],
         out_new[out_new['covariates']=='bias_d2','t value'],
-        out_new[out_new['covariates']=='bias_p2','t value']))
+        out_new[out_new['covariates']=='bias_p2','t value'],
+        out_new[out_new['covariates']=='bias_cros2','t value']))
   print(c(
          out_new[out_new['covariates']=='bias_d','Pr(>|t|)'],
         out_new[out_new['covariates']=='bias_p','Pr(>|t|)'],
+        out_new[out_new['covariates']=='bias_cros','Pr(>|t|)'],
         out_new[out_new['covariates']=='bias_d2','Pr(>|t|)'],
-        out_new[out_new['covariates']=='bias_p2','Pr(>|t|)']))
-  return(out_new)
+        out_new[out_new['covariates']=='bias_p2','Pr(>|t|)'],
+        out_new[out_new['covariates']=='bias_cros2','Pr(>|t|)']))
+  return(out_new_all)
 }
 
 
@@ -1143,23 +1199,143 @@ regress_bias <- function(context_sum){
 
 ```{r t0}
 
-test_context_t0_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+test_context_t0_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e5, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
 
 test_context_t0_prod1e5 %>%  
-  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t0_prod1e5_summed
+
+
+test_context_t0_prod1e4 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e4, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t0_prod1e4 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t0_prod1e4_summed
+
+test_context_t0_prod1e3 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e3, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t0_prod1e3 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t0_prod1e3_summed
+
+test_context_t0_prod1e6 = preprocess_directional_bias_enhancer(test_context_object = test_context_t0 ,burst_events = test_sc_t0, info_object = info_bulk_t0,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t0_prod1e6 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t0_prod1e6_summed
+
+test_context_t0_prod1e5_summed %>%
+  ggplot(aes(x = bias_d, y = bias_d2))+
+  geom_point()+
+  geom_smooth(method= 'gam')
+# 
+# test_context_t0_prod1e5_summed %>%
+#   lm(bias_p ~ bias_p2, data = .) %>%
+#   summary()
+# 
+# test_context_t0_prod1e5_summed %>%
+#   lm(bias_d ~ bias_d2, data = .) %>%
+#   summary()
+
+
+
+test_context_t0_prod1e3_summed %>%
   regress_bias(context_sum = .) -> temp
 
+test_context_t0_prod1e4_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t0_prod1e5_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t0_prod1e6_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+
+temp %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
+  filter(!str_detect(covariates, "eid"))
 ```
 
 
+```{r}
+test_context_t6_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e5, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t6_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t6_prod1e5_summed
+
+
+test_context_t6_prod1e4 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e4, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t6_prod1e4 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t6_prod1e4_summed
+
+test_context_t6_prod1e3 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e3, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t6_prod1e3 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t6_prod1e3_summed
+
+test_context_t6_prod1e6 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t6_prod1e6 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t6_prod1e6_summed
+
+
+test_context_t24_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t24 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e5, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t24_prod1e5 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t24_prod1e5_summed
+
+
+test_context_t24_prod1e4 = preprocess_directional_bias_enhancer(test_context_object = test_context_t24 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e4, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t24_prod1e4 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t24_prod1e4_summed
+
+test_context_t24_prod1e3 = preprocess_directional_bias_enhancer(test_context_object = test_context_t24 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e3, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t24_prod1e3 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t24_prod1e3_summed
+
+test_context_t24_prod1e6 = preprocess_directional_bias_enhancer(test_context_object = test_context_t24 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e6, TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+
+test_context_t24_prod1e6 %>%  
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .) -> test_context_t24_prod1e6_summed
+```
+```{r}
+
+test_context_t6_prod1e3_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t6_prod1e4_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t6_prod1e5_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t6_prod1e6_summed %>%
+  regress_bias(context_sum = .) -> temp
+```
+
+```{r}
+test_context_t24_prod1e3_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t24_prod1e4_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t24_prod1e5_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+test_context_t24_prod1e6_summed %>%
+  regress_bias(context_sum = .) -> temp
+
+temp$adj.r.squared
+```
 
 
 ```{r t6}
 
-test_context_t6_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e3,TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
+test_context_t6_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test_context_t6 ,burst_events = test_sc_t6, info_object = info_bulk_t6,interval = 1e5,TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)
 
 test_context_t6_prod1e5 %>%  
-  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  %>%
+  sum_directional_bias_enhancer(test_context_object_preprocessed =  .)  ->
+  test_context_t6_prod1e5_summed
   regress_bias(context_sum = .)
 
 test_context_t24_prod1e5 = preprocess_directional_bias_enhancer(test_context_object = test2 ,burst_events = test_sc_t24, info_object = info_bulk_t24,interval = 1e3,TPM_cutoff_lower_limit = 0, TPM_cutoff_upper_limit = Inf)

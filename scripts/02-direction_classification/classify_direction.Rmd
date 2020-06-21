@@ -307,3 +307,77 @@ a %>%
 ```
 
 
+
+```{r bulk vs single-cell without removing outliers}
+a = test_sc_t0 %>%
+ # filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't0', group2 = 'Single-cell')
+
+c %>% .$Burst_Direction %>% table()
+
+
+b = test_sc_t6 %>%
+ # filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't6', group2 = 'Single-cell')
+
+
+c = test_sc_t24 %>%
+ # filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't24', group2 = 'Single-cell')
+
+d = test_bulk_t0 %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't0', group2 = 'Bulk')
+
+e = test_bulk_t6 %>%
+ # filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't6', group2 = 'Bulk')
+
+
+f = test_bulk_t24 %>%
+ # filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
+  mutate(group = 't24', group2 = 'Bulk')
+
+
+# d %>%
+#   rbind(e) %>%
+#   rbind(f) %>% 
+#   .$Burst_Direction %>%
+#   table()
+
+
+a %>% 
+  rbind(b) %>%
+  rbind(c) %>%
+  rbind(d) %>%
+  rbind(e) %>%
+  rbind(f) %>%
+  mutate(outlier = (eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
+  mutate(outlier = replace(x = outlier, 
+                           list = eid == 'chr21:9827341-9827855',
+                           values = 'chr21:9827341-9827855'),
+         outlier = replace(x = outlier, 
+                           list = eid == 'chr17:79478552-79478972',
+                           values = 'chr17:79478552-79478972')) %>%
+  # filter(Burst_Direction!='basal') %>%
+    ggplot(aes(x = log10(minus_counts+1)+log10(plus_counts+1), 
+             y = log10(plus_counts+1)-log10(minus_counts+1),
+             color = outlier))+
+  geom_jitter(alpha = 0.3, width = 0.1, height=0.1) + 
+  scale_color_manual(values=c("chr17:79478552-79478972" = "coral2",
+                              "chr21:9827341-9827855" = "cyan3",
+                              "FALSE" = "grey"),
+                     breaks = c('FALSE',
+                                "chr17:79478552-79478972",
+                                "chr21:9827341-9827855"))+
+  facet_grid(group2~ factor(group, levels = c('t0','t6','t24')))+
+  theme_bw()
+
+ggsave()
+```
+
