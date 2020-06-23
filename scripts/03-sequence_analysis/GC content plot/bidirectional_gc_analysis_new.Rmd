@@ -412,4 +412,20 @@ draw_gc_by_list(list_of_enhancer_seqs = list(
 
 ggsave('Jun12_tss_gc_major_minor.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 6, height=4, limitsize = FALSE)
 ```
+```{r}
+
+test_sc_t24 %>% classify_direction() %>% 
+  filter(group == 'bidirectional') %>%
+  ggplot(aes(x = ncells , y = nbidirection/ncells))+
+  geom_jitter(alpha = 0.3, width = 0.1, height = 0.005)+
+  stat_function(fun = function(x) 1/x, aes(color = "y = 1/x"))+
+  scale_colour_manual("Line",values = c("red"))+
+  xlim(1,69)+
+  labs(title = 'Bidirectional enhancers (t24)', 
+       y = 'nBidrectional / nCells',
+       x = 'nCells')+
+  theme_bw()
+
+ggsave(paste0('Jun23_ratio_bidirect_in_bidirectional_enhancers.png'), plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/supplementary\ figures/', scale = 1,dpi = 300, width = 5, height=3, limitsize = FALSE)
+```
 

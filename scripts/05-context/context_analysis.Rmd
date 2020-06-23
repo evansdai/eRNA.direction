@@ -1121,16 +1121,27 @@ regress_bias <- function(context_sum){
   #   lm(bias_p ~ active + txType + eid + A + M,data=.)%>%
   # summary() %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
   # filter(!str_detect(covariates, "eid"))
-  
-  # out_new_all = context_sum%>%
-  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
-  #   lm(M ~ active + txType + eid + A + bias_p + bias_d + bias_p2 + bias_d2,data=.)%>%
-  # summary() 
   # 
   # out_new_all = context_sum%>%
   # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
-  #   lm(M ~ active + txType + eid + A + bias_p + bias_d,data=.)%>%
+  #   lm(M ~ active + eid  + txType + A + bias_p + bias_d + bias_p2 + bias_d2,data=.)%>%
   # summary()
+  # 
+  # out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active * eid  + A + bias_p + bias_d ,data=.)%>%
+  # summary()
+  
+  
+  #   out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active * eid  + A + bias_p2 + bias_d2 ,data=.)%>%
+  # summary()
+  
+  out_new_all = context_sum%>%
+  mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  lm(M ~ active + eid + txType + bias_p2 + bias_d2,data=.)%>%
+  summary()
   # 
   #   out_new_all = context_sum%>%
   # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
@@ -1142,10 +1153,10 @@ regress_bias <- function(context_sum){
   #   lm(M ~ active * eid + txType + A + bias_p + bias_d,data=.)%>%
   # summary()
     
-    out_new_all = context_sum%>%
-  mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
-    lm(M ~ active * eid + txType + A + bias_p2 + bias_d2 + bias_cros2,data=.)%>%
-  summary()
+  #   out_new_all = context_sum%>%
+  # mutate(A = log(plus_counts+1)+log(minus_counts+1), M = log(plus_counts+1)-log(minus_counts+1)) %>%
+  #   lm(M ~ active * eid + txType + A + bias_p2 + bias_d2 + bias_cros2,data=.)%>%
+  # summary()
     
     
   out_new = out_new_all %>% .$coefficients %>% as.data.frame() %>% rownames_to_column('covariates') %>%
@@ -1178,6 +1189,7 @@ regress_bias <- function(context_sum){
   # print(p)
   
   # browser()
+  print(out_new)
   print(c(out_new[out_new['covariates']=='bias_d','t value'],
           out_new[out_new['covariates']=='bias_p','t value'],
           out_new[out_new['covariates']=='bias_cros','t value'],
@@ -1237,6 +1249,8 @@ test_context_t0_prod1e5_summed %>%
 
 test_context_t0_prod1e3_summed %>%
   regress_bias(context_sum = .) -> temp
+
+temp$adj.r.squared
 
 test_context_t0_prod1e4_summed %>%
   regress_bias(context_sum = .) -> temp
@@ -1301,6 +1315,8 @@ test_context_t24_prod1e6 %>%
 
 test_context_t6_prod1e3_summed %>%
   regress_bias(context_sum = .) -> temp
+
+temp$adj.r.squared
 
 test_context_t6_prod1e4_summed %>%
   regress_bias(context_sum = .) -> temp

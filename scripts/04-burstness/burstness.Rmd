@@ -312,7 +312,23 @@ lm(log(bulk_score) ~ log(ncell)+log(mean_TPM), data = summary_bursting_t6) %>%
 lm(log(bulk_score) ~ log(ncell)+log(mean_TPM), data = summary_bursting_t0) %>% 
   summary()
 
+
+
 ggsave('Jun11_regression_burst_size_freq_bulkscore.png', plot = ga, path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 11, height=4, limitsize = FALSE)
+```
+
+
+```{r}
+
+test_sc_t24 %>%
+  group_by(eid) %>%
+  summarise(n = n()) %>%
+   ggplot(aes(x = n))+
+  geom_histogram(binwidth = 1)+
+  labs(x = 'nCells', y = 'Count of enhancers', title = 't24')+
+  theme_bw()
+  
+
 ```
 
 

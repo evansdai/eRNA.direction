@@ -216,8 +216,8 @@ a = test_sc_t0 %>%
  filter(!(eid %in% c('chr21:9827341-9827855', 'chr17:79478552-79478972'))) %>%
   mutate(Burst_Direction = ifelse(plus_counts+minus_counts == 0, yes='nonactive', no = ifelse(plus_counts>1, yes = ifelse(minus_counts>1, yes = 'bidirectional',no='plus'), no=ifelse(minus_counts>1, yes = 'minus',no='basal')))) %>% 
   mutate(group = 't0', group2 = 'Single-cell')
-
-c %>% .$Burst_Direction %>% table()
+# 
+# c %>% .$Burst_Direction %>% table()
 
 
 b = test_sc_t6 %>%
@@ -247,11 +247,11 @@ f = test_bulk_t24 %>%
   mutate(group = 't24', group2 = 'Bulk')
 
 
-d %>%
-  rbind(e) %>%
-  rbind(f) %>% 
-  .$Burst_Direction %>%
-  table()
+# d %>%
+#   rbind(e) %>%
+#   rbind(f) %>% 
+#   .$Burst_Direction %>%
+#   table()
 
 
 a %>% 
@@ -260,19 +260,24 @@ a %>%
   rbind(d) %>%
   rbind(e) %>%
   rbind(f) %>%
+  mutate(minus_TPM = as.numeric(as.character(minus_TPM)),
+         plus_TPM = as.numeric(as.character(plus_TPM))) %>%
   # filter(Burst_Direction!='basal') %>%
-    ggplot(aes(x = log10(minus_counts+1)+log10(plus_counts+1), 
-             y = log10(plus_counts+1)-log10(minus_counts+1),
+    ggplot(aes(x = log10(minus_TPM+1)+log10(plus_TPM+1), 
+             y = log10(plus_TPM+1)-log10(minus_TPM+1),
              color = Burst_Direction))+
-  geom_jitter(alpha = 0.3, width = 0.1, height=0.1) + 
+  geom_point(alpha = 0.3)+
+  # geom_jitter(alpha = 0.3, width = 0.1, height=0.1) +
   scale_color_hue(limits = c('plus','bidirectional','minus','basal'))+
   facet_grid(group2~ factor(group, levels = c('t0','t6','t24')))+
   theme_bw()
 
 
-ggsave('Jun11_scatter_burst_events_direction.png', plot = last_plot(), path = 'C:/Users/evans/Documents/enhancer_project/report/figures\ and\ tables/', scale = 1,dpi = 300, width = 7, height=4, limitsize = FALSE)
+ggsave('Jun11_scatter_burst_events_direction_TPM.png', plot = last_plot(), path = 'C:/Users/evans/Documents/eRNA.direction/figures\ and\ tables/', scale = 1,dpi = 300, width = 7, height=4, limitsize = FALSE)
 
 ```
+
+
 
 
 ```{r scatter bulk}
